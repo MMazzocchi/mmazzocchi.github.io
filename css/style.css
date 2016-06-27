@@ -90,10 +90,25 @@ body {
   margin-bottom: 10px;
 }
 
-.job-title {
+.employer, .school-name {
   font-size: 14pt;
   font-weight: bold;
   color: #555555;
+}
+
+.job-title, .degree {
+  font-size: 12pt;
+  color: #555555;
+}
+
+.employment-duration, .school-details {
+  font-size: 10pt;
+  color: #555555;
+}
+
+.description {
+  padding-bottom: 10px;
+  font-size: 12pt;
 }
 
 .icon-container {
