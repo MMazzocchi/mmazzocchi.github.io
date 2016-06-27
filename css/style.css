@@ -114,3 +114,7 @@ body {
 .icon-container {
   text-align: center;
 }
+
+.glyphicon {
+  padding-right: 5px;
+}
