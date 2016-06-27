@@ -1,5 +1,6 @@
 body {
   padding-top: 41px;
+  font-family: 'Lato', sans-serif;
 }
 
 .background {
@@ -7,7 +8,6 @@ body {
 }
 
 .content {
-  width: 1000px;
   background-color: #FFFFFF;
 }
 
@@ -18,13 +18,14 @@ body {
   color: #FFFFFF;
 }
 
-.title-2 {
+.color-2 {
   color: #FFA500;
 }
 
 .header {
   background-color: #333333;
   min-height: 0px;
+  border-bottom: 2px solid #111111;
 }
 
 .greeting {
@@ -49,16 +50,19 @@ body {
   background-color: #555555;
 }
 
-.intro-container {
+.intro {
   background-color: #666666;
+  background-image: url("../images/intro_bg.jpg");
+  background-size: cover;
   padding-top: 10px;
   padding-bottom: 10px;
+  font-size: 14pt;
   color: #FFFFFF;
 }
 
 .icon {
-  width: 200px;
-  height: 200px;
+  min-width: 200px;
+  min-height: 200px;
 }
 
 .company-icon {
@@ -68,10 +72,11 @@ body {
 }
 
 .section-header {
-  background-color: #444499;
+  background-color: #333333;
   font-size: 24pt;
   color: #FFFFFF;
   margin-bottom: 8px;
+  font-family: 'Oswald', sans-serif;
 }
 
 .divider {

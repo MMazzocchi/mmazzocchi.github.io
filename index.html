@@ -5,20 +5,23 @@
     <title>Max Mazzocchi</title>
     <meta charset="utf-8"/>
     <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'> 
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'> 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
-  <body>
-    <nav class="navbar navbar-fixed-top header">
+  <body id="home">
+    <nav id="navbar" class="navbar navbar-fixed-top header">
       <div class="container-fluid">
-        <div class="title navbar-left">Max <span class="title-2">Mazzocchi</span></div>
+        <div class="title navbar-left">
+          Max <span class="color-2">Mazzocchi</span>
+        </div>
         <ul class="nav nav-pills navbar-right menu-container">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Professional</a></li>
-          <li><a href="#">Academic</a></li>
-          <li><a href="#">Skills</a></li>
-          <li><a href="#">Projects</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a class="scrollLink" href="#home">Home</a></li>
+          <li><a class="scrollLink" href="#professional">Professional</a></li>
+          <li><a class="scrollLink" href="#academic">Academic</a></li>
+          <li><a class="scrollLink" href="#skills">Skills</a></li>
+          <li><a class="scrollLink" href="#projects">Projects</a></li>
+          <li><a class="scrollLink" href="#contact">Contact</a></li>
         </ul>
       </div>
     </nav>
@@ -28,22 +31,22 @@
       <!-- Allow the navbar some room -->
       <div class="spacer"></div>
 
-      <div class="row intro-container">
+      <div class="row intro">
         <div class="col-xs-3">
           <img class="icon img-thumbnail" src="images/max.jpg"/>
         </div>
         <div class="col-xs-9">
           <div class="greeting">Welcome.</div>
-          <p>Thanks for visiting my homepage. I'm Max Mazzocchi, a software
+          <p>Thanks for visiting my homepage! I'm Max Mazzocchi, a software
              developer currently residing in Lakwood, Colorado. I work in the 
              aerospace and defense industry, but have a wide variety of 
              interests and experience.</p>
           <p>For more information, click the links above or scroll down.</p>
         </div>
       </div>
-      <div class="row section-header">
+      <div id="professional" class="row section-header">
         <div class="col-xs-12">
-          Professional Experience
+          Professional <span class="color-2">Experience</span>
         </div>
       </div>
       <div class="row job-header">
@@ -108,9 +111,9 @@
              use of tools like git and Jenkins.</p> 
         </div>
       </div>
-      <div class="row section-header">
+      <div id="academic" class="row section-header">
         <div class="col-xs-12">
-          Academic Experience
+          Academic <span class="color-2">Experience</span>
         </div>
       </div>
       <div class="row">
@@ -134,7 +137,7 @@
             Sensing, and Quantum Mechanics.</p>
         </div>
       </div>
-      <div class="row section-header">
+      <div id="skills" class="row section-header">
         <div class="col-xs-12">
           Skills
         </div>
@@ -180,8 +183,8 @@
         </div>
       </div>
       <div class="row section-header">
-        <div class="col-xs-12">
-          Personal Projects
+        <div id="projects" class="col-xs-12">
+          Personal <span class="color-2">Projects</span>
         </div>
       </div>
       <div class="row">
@@ -199,9 +202,9 @@
           </p>
         </div>
       </div> 
-      <div class="row section-header">
+      <div id="contact" class="row section-header">
         <div class="col-xs-12">
-          Contact/Links
+          Contact, <span class="color-2">Links</span>
         </div>
       </div>
       <div class="row">
@@ -222,5 +225,6 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/code.js"></script>
   </body>
 </html>
