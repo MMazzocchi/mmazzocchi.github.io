@@ -1,9 +1,9 @@
-.spacer {
-  padding-top: 50px;
+body {
+  padding-top: 41px;
 }
 
 .background {
-  background-color: #CCCCDD;
+  background-color: #999999;
 }
 
 .content {
@@ -12,31 +12,45 @@
 }
 
 .title {
-  font-size: 30pt;
-}
-
-.navigation {
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  background-color: #8888CC;
-  width: 100%;
-  z-index: 100;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  height: 50px;
-  text-align: center;
-}
-
-.nav-button {
+  font-size: 28px;
+  display: inline;
+  font-family: 'Oswald', sans-serif;
   color: #FFFFFF;
-  padding-right: 10px;
-  padding-left: 10px;
-  font-size: 16px;
+}
+
+.title-2 {
+  color: #FFA500;
 }
 
 .header {
-  background-color: #6666FF;
+  background-color: #333333;
+  min-height: 0px;
+}
+
+.greeting {
+  font-size: 50px;
+  color: #FFA600;
+  font-family: 'Oswald', sans-serif;
+}
+
+.nav-pills > li > a {
+  border-radius: 0px;
+  text-decoration: none;
+  color: #DDDDDD;
+}
+
+.nav-pills > li > a:hover {
+  color: #FFA500;
+  background-color: #555555;
+}
+
+.nav-pills >li > a:focus {
+  color: #FFA500;
+  background-color: #555555;
+}
+
+.intro-container {
+  background-color: #666666;
   padding-top: 10px;
   padding-bottom: 10px;
   color: #FFFFFF;
