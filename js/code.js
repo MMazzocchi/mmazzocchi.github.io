@@ -22,7 +22,10 @@ function setup() {
         var menuContainerHeight = $('#menu-container')[0].offsetHeight;
 
         var id = this.href.split('#')[1];
-        var position = $('#'+id)[0].offsetTop - navHeight + menuContainerHeight;
+        var position = $('#'+id)[0].offsetTop - navHeight;
+        if(mobile) {
+            position += menuContainerHeight;
+        }
 
         $('html,body').animate({
             scrollTop: position
