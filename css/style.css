@@ -3,12 +3,16 @@
     font-size: 16px;
     padding-top: 41px;
   }
+
+  .menu-btn {
+    display: none;
+  }
 }
 
 @media (min-width: 0px) and (max-width: 991px) {
   body {
     font-size: 40px;
-    padding-top: 41px;
+    padding-top: 102px;
   }
 
   .intro {
@@ -17,6 +21,10 @@
 
   .intro > div > p {
     text-align: left;
+  }
+
+  .menu-container {
+    display: none;
   }
 }
 
@@ -58,18 +66,18 @@ body {
   font-family: 'Oswald', sans-serif;
 }
 
-.nav-pills > li > a {
+.nav-pills > li > a, .menu-btn {
   border-radius: 0px;
   text-decoration: none;
   color: #DDDDDD;
 }
 
-.nav-pills > li > a:hover {
+.nav-pills > li > a:hover, .menu-btn {
   color: #FFA500;
   background-color: #555555;
 }
 
-.nav-pills >li > a:focus {
+.nav-pills >li > a:focus, .menu-btn {
   color: #FFA500;
   background-color: #555555;
 }
@@ -140,6 +148,12 @@ body {
   text-align: center;
 }
 
-.glyphicon {
+.scrollLink > span {
   padding-right: 5px;
+}
+
+.menu-btn {
+  font-size: 1.6em;
+  padding: 8px 8px 0px 10px;
+  margin: 5px 0px 0px 0px;
 }
