@@ -1,6 +1,11 @@
+@media (max-width: 480px) {
+  
+}
+
 body {
   padding-top: 41px;
   font-family: 'Lato', sans-serif;
+  font-size: 16px;
 }
 
 .background {
@@ -9,10 +14,12 @@ body {
 
 .content {
   background-color: #FFFFFF;
+  width: 100%;
+  max-width: 1150px;
 }
 
 .title {
-  font-size: 28px;
+  font-size: 2.0em;
   display: inline;
   font-family: 'Oswald', sans-serif;
   color: #FFFFFF;
@@ -26,10 +33,11 @@ body {
   background-color: #333333;
   min-height: 0px;
   border-bottom: 2px solid #111111;
+  font-size: 0.9em;
 }
 
 .greeting {
-  font-size: 50px;
+  font-size: 2.9em;
   color: #FFA600;
   font-family: 'Oswald', sans-serif;
 }
@@ -56,8 +64,8 @@ body {
   background-size: cover;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-size: 14pt;
   color: #FFFFFF;
+  font-size: 1.2em;
 }
 
 .icon {
@@ -73,7 +81,7 @@ body {
 
 .section-header {
   background-color: #333333;
-  font-size: 24pt;
+  font-size: 1.8em;
   color: #FFFFFF;
   margin-bottom: 8px;
   font-family: 'Oswald', sans-serif;
@@ -88,27 +96,27 @@ body {
 
 .job-header {
   margin-bottom: 10px;
+  font-size: 1.2em;
 }
 
 .employer, .school-name {
-  font-size: 14pt;
   font-weight: bold;
   color: #555555;
 }
 
 .job-title, .degree {
-  font-size: 12pt;
+  font-size: 0.9em;
   color: #555555;
 }
 
 .employment-duration, .school-details {
-  font-size: 10pt;
+  font-size: 0.7em;
   color: #555555;
 }
 
 .description {
   padding-bottom: 10px;
-  font-size: 12pt;
+  font-size: 0.9em;
 }
 
 .icon-container {
