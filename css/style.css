@@ -1,11 +1,27 @@
-@media (max-width: 480px) {
-  
+@media (min-width: 992px) {
+  body {
+    font-size: 16px;
+    padding-top: 41px;
+  }
+}
+
+@media (min-width: 0px) and (max-width: 991px) {
+  body {
+    font-size: 20px;
+    padding-top: 41px;
+  }
+
+  .intro {
+    text-align: center;
+  }
+
+  .intro > div > p {
+    text-align: left;
+  }
 }
 
 body {
-  padding-top: 41px;
   font-family: 'Lato', sans-serif;
-  font-size: 16px;
 }
 
 .background {
@@ -69,8 +85,9 @@ body {
 }
 
 .icon {
-  min-width: 200px;
-  min-height: 200px;
+  min-width: 150px;
+  min-height: 150px;
+  width: 250px;
 }
 
 .company-icon {
