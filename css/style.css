@@ -1,20 +1,10 @@
 @media (min-width: 992px) {
-  body {
-    font-size: 16px;
-    padding-top: 41px;
-  }
-
   .menu-btn {
     display: none;
   }
 }
 
 @media (min-width: 0px) and (max-width: 991px) {
-  body {
-    font-size: 16px;
-    padding-top: 102px;
-  }
-
   .intro {
     text-align: center;
   }
@@ -30,6 +20,8 @@
 
 body {
   font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  padding-top: 41px;
 }
 
 .background {
