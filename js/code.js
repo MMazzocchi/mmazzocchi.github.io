@@ -2,7 +2,7 @@ var menuOpen = false;
 var mobile = false;
 
 function reorient(e) {
-    $('#nav-container')[0].style.width = "100%";
+    $('#nav-container')[0].style.width = window.innerWidth;
 }
 
 function closeMenu() {
