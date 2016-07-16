@@ -1,6 +1,10 @@
 var menuOpen = false;
 var mobile = false;
 
+function reorient(e) {
+    $('#nav-container')[0].style.width = "100%";
+}
+
 function closeMenu() {
     menuOpen = false;
     $('#menu-container').slideUp('slow', function() {});
@@ -45,6 +49,8 @@ function setup() {
             openMenu();
         }
     });
+
+    $(window).on("orientationchange", reorient);
 }
 
 setup();
