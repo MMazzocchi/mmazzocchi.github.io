@@ -45,8 +45,11 @@ function setup() {
             openMenu();
         }
     });
+
+    $(document).ready(function(e) {
+        $('#loading')[0].style.display = "none";
+        $('#content')[0].style.display = "block";
+    });
 }
 
 setup();
-
-
