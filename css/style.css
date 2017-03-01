@@ -22,6 +22,10 @@
   .job-header {
     text-align: center;
   }
+
+  .navbar-left {
+    display: inline;
+  }
 }
 
 body {
