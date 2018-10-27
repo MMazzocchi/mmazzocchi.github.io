@@ -21,7 +21,7 @@ const MyNavItem = ({ dest, text }) => (
 const MyNav = ({ links }) => (
   <Navbar expand="md">
     <NavbarBrand href="/">
-      Max Mazzocchi
+      MM
     </NavbarBrand>
     <NavbarToggler />
     <Collapse navbar>
