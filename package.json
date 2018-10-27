@@ -1,0 +1,19 @@
+{
+  "name": "mmazzocchi.github.io",
+  "version": "1.0.0",
+  "description": "Personal website for Max Mazzocchi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MMazzocchi/mmazzocchi.github.io.git"
+  },
+  "author": "Max Mazzocchi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MMazzocchi/mmazzocchi.github.io/issues"
+  },
+  "homepage": "https://github.com/MMazzocchi/mmazzocchi.github.io#readme"
+}
