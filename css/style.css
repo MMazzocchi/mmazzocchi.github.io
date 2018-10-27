@@ -14,13 +14,8 @@
 .skill-icon {
   width: 2em;
   height: 2em;
-  background-color: red;
   border-radius: 50%;
-  font-size: 1.5em;
+  font-size: 1em;
   padding: 0.5em;
   color: white;
-}
-
-.skill-label {
-  color: red;
 }

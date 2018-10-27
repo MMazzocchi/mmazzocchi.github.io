@@ -9,14 +9,13 @@ const links = [
 ];
 
 const skills = [
-  { icon: "globe",    label: "Web Design" },
-  { icon: "desktop",  label: "Desktop" },
-  { icon: "wrench",   label: "Tools" },
-  { icon: "redo",     label: "Agile" },
-  { icon: "flask",    label: "Research" },
-  { icon: "dice-d20", label: "Board Gaming" },
-  { icon: "question", label: "More" }
-  
+  { icon: "globe",    label: "Web Design",   color: "red" },
+  { icon: "desktop",  label: "Desktop",      color: "blue" },
+  { icon: "wrench",   label: "Tools",        color: "grey" },
+  { icon: "redo",     label: "Agile",        color: "green" },
+  { icon: "flask",    label: "Research",     color: "purple" },
+  { icon: "dice-d20", label: "Board Gaming", color: "orange" },
+  { icon: "question", label: "More",         color: "black" }
 ];
 
 const App = () => (
@@ -36,7 +35,7 @@ const App = () => (
         </Row>
         <Row className="justify-content-center">
           { skills.map((skill) => (
-            <SkillIcon { ...skill } />
+            <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
           ))}
         </Row>
         <Row>
