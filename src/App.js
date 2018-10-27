@@ -12,10 +12,9 @@ const skills = [
   { icon: "globe",    label: "Web Design",   color: "red" },
   { icon: "desktop",  label: "Desktop",      color: "blue" },
   { icon: "wrench",   label: "Tools",        color: "grey" },
-  { icon: "redo",     label: "Agile",        color: "green" },
   { icon: "flask",    label: "Research",     color: "purple" },
-  { icon: "dice-d20", label: "Board Gaming", color: "orange" },
-  { icon: "question", label: "More",         color: "black" }
+  { icon: "dice-d20", label: "Board Gaming", color: "green" },
+  { icon: "question", label: "More",         color: "orange" }
 ];
 
 const App = () => (
