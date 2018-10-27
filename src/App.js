@@ -14,19 +14,18 @@ const App = () => (
     <Row className="align-items-center">
       <Col md="6">
         <img src="images/me.jpg"
-             className="rounded-circle img-fluid mx-auto d-block portrait" />
+             className="rounded-circle img-fluid mx-auto d-block portrait shadow" />
       </Col>
       <Col md="6">
         <Row className="border-bottom">
           <Col>
             <h1>Max Mazzocchi</h1>
-            <p>Software Developer, DC Metro Area</p>
+            <p>Software Developer, Northern Virginia/Washington DC</p>
           </Col>
         </Row>
       </Col>
     </Row>
   </Container>
 );
-
 
 export { App };
