@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import { Nav } from "./Nav.js";
 
 
@@ -11,6 +11,14 @@ const links = [
 const App = () => (
   <Container>
     <Nav links={ links } />
+    <Row>
+      <Col md="6">
+        <img src="images/me.jpg"
+             className="rounded-circle img-fluid mx-auto d-block portrait" />
+      </Col>
+      <Col md="6">
+      </Col>
+    </Row>
   </Container>
 );
 
