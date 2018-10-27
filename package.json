@@ -17,8 +17,14 @@
   },
   "homepage": "https://github.com/MMazzocchi/mmazzocchi.github.io#readme",
   "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babelify": "^10.0.0",
     "browserify": "^16.2.3",
     "gulp": "^4.0.0",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
     "vinyl-source-stream": "^2.0.0"
   }
 }

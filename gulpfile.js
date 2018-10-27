@@ -10,6 +10,9 @@ function build() {
   const filename = basename(MAIN);
 
   return browserify(MAIN)
+    .transform("babelify", {
+      presets: ["@babel/preset-env", "@babel/preset-react"]
+    })
     .bundle()
     .pipe(source(filename))
     .pipe(gulp.dest(JS));
