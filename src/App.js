@@ -1,11 +1,22 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import { Nav } from "./Nav.js";
-
+import { SkillIcon } from "./SkillIcon.js";
 
 const links = [
   { text: "Home",    dest: "/" },
   { text: "Contact", dest: "/" },
+];
+
+const skills = [
+  { icon: "globe",    label: "Web Design" },
+  { icon: "desktop",  label: "Desktop" },
+  { icon: "wrench",   label: "Tools" },
+  { icon: "redo",     label: "Agile" },
+  { icon: "flask",    label: "Research" },
+  { icon: "dice-d20", label: "Board Gaming" },
+  { icon: "question", label: "More" }
+  
 ];
 
 const App = () => (
@@ -24,12 +35,9 @@ const App = () => (
           </Col>
         </Row>
         <Row className="justify-content-center">
-          <Col className="skill-col">
-            <div>
-              <i className="fas fa-globe skill-icon"></i>
-            </div>
-            <p>Web Design</p>
-          </Col>
+          { skills.map((skill) => (
+            <SkillIcon { ...skill } />
+          ))}
         </Row>
         <Row>
           <Col>
