@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Collapse,
-  Container,
   Nav,
   NavItem,
   NavLink,
@@ -18,21 +17,41 @@ const MyNavItem = ({ dest, text }) => (
   </NavItem>
 );
 
-const MyNav = ({ links }) => (
-  <Navbar expand="md">
-    <NavbarBrand href="/">
-      MM
-    </NavbarBrand>
-    <NavbarToggler />
-    <Collapse navbar>
-      <Nav className="ml-auto" navbar>
-        { links.map((link) => (
-          <MyNavItem { ...link } key={ `navitem-${link.text}` } />
-        ))}
-      </Nav>
-    </Collapse>
-  </Navbar>
-);
+class MyNav extends React.Component {
+  constructor(props) {
+    super(props);
 
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  };
+
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  };
+
+  render() {
+    const links = this.props.links;
+
+    return (
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/">
+          MM
+        </NavbarBrand>
+        <NavbarToggler onClick={ this.toggle } />
+        <Collapse isOpen={ this.state.isOpen } navbar>
+          <Nav className="ml-auto" navbar>
+            { links.map((link) => (
+              <MyNavItem { ...link } key={ `navitem-${link.text}` } />
+            ))}
+          </Nav>
+        </Collapse>
+      </Navbar>
+    );
+  };
+};
 
 export { MyNav as Nav };
