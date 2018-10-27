@@ -23,6 +23,14 @@ const App = () => (
             <p>Software Developer, Northern Virginia/Washington DC</p>
           </Col>
         </Row>
+        <Row className="justify-content-center">
+          <Col className="skill-col">
+            <div>
+              <i className="fas fa-globe skill-icon"></i>
+            </div>
+            <p>Web Design</p>
+          </Col>
+        </Row>
         <Row>
           <Col>
             <p></p>
