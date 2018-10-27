@@ -20,7 +20,7 @@ const skills = [
 const App = () => (
   <Container>
     <Nav links={ links } />
-    <Row className="align-items-center">
+    <Row className="align-items-center border-bottom">
       <Col md="6">
         <img src="images/me.jpg"
              className="rounded-circle img-fluid mx-auto d-block portrait shadow" />
@@ -37,21 +37,21 @@ const App = () => (
             <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
           ))}
         </Row>
-        <Row>
-          <Col>
-            <p></p>
-            <p>
-              Thanks for visiting my homepage! I am a software developer
-              currently located in the Northern Virginia/DC metro area. My
-              professional experience includes software positions in aerospace,
-              defense, research, and development, working on a variety of
-              applications and solutions.
-            </p>
-            <p>
-              <a href="/contact">Let's Talk</a>
-            </p>
-          </Col>
-        </Row>
+      </Col>
+    </Row>
+    <Row>
+      <Col>
+        <p></p>
+        <p>
+          Thanks for visiting my homepage! I am a software developer
+          currently located in the Northern Virginia/DC metro area. My
+          professional experience includes software positions in aerospace,
+          defense, research, and development, working on a variety of
+          applications and solutions.
+        </p>
+        <p>
+          <a href="/contact">Let's Talk</a>
+        </p>
       </Col>
     </Row>
   </Container>
