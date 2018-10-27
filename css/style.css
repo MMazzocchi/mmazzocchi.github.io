@@ -12,9 +12,11 @@
 }
 
 .skill-icon {
+  width: 2em;
+  height: 2em;
   background-color: red;
   border-radius: 50%;
-  font-size: 2em;
+  font-size: 1.5em;
   padding: 0.5em;
   color: white;
 }
