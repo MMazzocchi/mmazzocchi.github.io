@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/MMazzocchi/mmazzocchi.github.io/issues"
   },
-  "homepage": "https://github.com/MMazzocchi/mmazzocchi.github.io#readme"
+  "homepage": "https://github.com/MMazzocchi/mmazzocchi.github.io#readme",
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "gulp": "^4.0.0",
+    "vinyl-source-stream": "^2.0.0"
+  }
 }
