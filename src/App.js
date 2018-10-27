@@ -1,9 +1,30 @@
 import React from "react";
-import { Container } from "reactstrap";
+import {
+  Collapse,
+  Container,
+  Nav,
+  NavItem,
+  NavLink,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler
+} from "reactstrap";
 
 const App = () => (
   <Container>
-   <h1>Hello world!</h1>
+    <Navbar expand="md">
+      <NavbarBrand href="/">
+        Max Mazzocchi
+      </NavbarBrand>
+      <NavbarToggler />
+      <Collapse navbar>
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+            <NavLink href="/">Home</NavLink>
+          </NavItem>
+        </Nav>
+      </Collapse>
+    </Navbar>
   </Container>
 );
 
