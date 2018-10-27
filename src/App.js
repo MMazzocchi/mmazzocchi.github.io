@@ -17,10 +17,25 @@ const App = () => (
              className="rounded-circle img-fluid mx-auto d-block portrait shadow" />
       </Col>
       <Col md="6">
-        <Row className="border-bottom">
-          <Col>
+        <Row>
+          <Col className="border-bottom">
             <h1>Max Mazzocchi</h1>
             <p>Software Developer, Northern Virginia/Washington DC</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <p></p>
+            <p>
+              Thanks for visiting my homepage! I am a software developer
+              currently located in the Northern Virginia/DC metro area. My
+              professional experience includes software positions in aerospace,
+              defense, research, and development, working on a variety of
+              applications and solutions.
+            </p>
+            <p>
+              <a href="/contact">Let's Talk</a>
+            </p>
           </Col>
         </Row>
       </Col>
