@@ -39,7 +39,7 @@ class MyNav extends React.Component {
     return (
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/">
-          MM
+          <h1>MM</h1>
         </NavbarBrand>
         <NavbarToggler onClick={ this.toggle } />
         <Collapse isOpen={ this.state.isOpen } navbar>
