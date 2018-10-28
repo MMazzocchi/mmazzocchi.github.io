@@ -1,5 +1,10 @@
 import React from "react";
-import { Row, Col, Card, CardHeader, CardTitle } from "reactstrap";
+import {
+  Card,
+  CardHeader,
+  Col,
+  Row
+} from "reactstrap";
 
 const CatBox = ({ title, children }) => (
   <React.Fragment>

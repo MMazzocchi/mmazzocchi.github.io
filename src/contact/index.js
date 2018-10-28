@@ -1,5 +1,11 @@
 import React from "react";
-import { Row, Col, Card, CardText, CardHeader, CardDeck, CardBody, CardTitle, CardSubtitle, CardFooter, Button } from "reactstrap";
+import {
+  CardBody,
+  CardDeck,
+  CardText,
+  Col,
+  Row
+} from "reactstrap";
 import { ContactCard } from "./ContactCard.js";
 import { CatBox } from "../CatBox.js";
 

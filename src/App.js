@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Row, Col, Card, CardBody, CardText, CardTitle } from "reactstrap";
+import { Container } from "reactstrap";
 import { Nav } from "./Nav.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Home } from "./home";

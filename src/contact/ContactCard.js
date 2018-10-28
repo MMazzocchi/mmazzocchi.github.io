@@ -1,5 +1,10 @@
 import React from "react";
-import { Row, Col, Card, CardDeck, CardBody, CardTitle, CardSubtitle, CardFooter, Button } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardSubtitle,
+  CardTitle
+} from "reactstrap";
 
 const ContactCard = ({ icon, title, link, color }) => (
   <Card className="text-center shadow contact-card"

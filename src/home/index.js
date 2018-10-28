@@ -1,5 +1,11 @@
 import React from "react";
-import { Button, Row, Col, Card, CardBody, CardText, CardHeader } from "reactstrap";
+import {
+  Button,
+  CardBody,
+  CardText,
+  Col,
+  Row
+} from "reactstrap";
 import { SkillIcon } from "./SkillIcon.js";
 import { Link } from "react-router-dom";
 import { CatBox } from "../CatBox.js";
