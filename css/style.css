@@ -20,6 +20,14 @@
   color: white;
 }
 
+.contact-icon {
+  width: 2em;
+  height: 2em;
+  font-size: 1.5em;
+  padding: 0.5em;
+  color: white;
+}
+
 .contact-card:hover {
   text-decoration: none;
 }
