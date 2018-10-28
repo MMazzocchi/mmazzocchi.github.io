@@ -27,3 +27,7 @@
 .contact-card:hover > .card-body {
   background-color: #EEEEFF;
 }
+
+.catbox {
+  padding: 1em;
+}

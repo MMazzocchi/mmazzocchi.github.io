@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Row, Col, Card, CardBody, CardText, CardHeader } from "reactstrap";
 import { SkillIcon } from "./SkillIcon.js";
 import { Link } from "react-router-dom";
+import { CatBox } from "./CatBox.js";
 
 const skills = [
   { icon: "globe",      label: "Web Design",   color: "red" },
@@ -37,28 +38,20 @@ const Home = () => (
         <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
       ))}
     </Row>
-    <Row className="justify-content-center">
-      <Col md="8">
-        <Card className="shadow">
-          <CardHeader tag="h3" className="text-center" style={{ fontFamily: "monospace" }}>
-            $ cat hello.txt
-          </CardHeader>
-
-          <CardBody>
-            <CardText> 
-              Thanks for visiting my homepage! I am a software developer
-              currently located in the Northern Virginia/DC metro area. My
-              professional experience includes software positions in aerospace,
-              defense, research, and development, working on a variety of
-              applications and solutions.
-            </CardText>
-            <Button color="primary" block tag={ Link } to="/contact">
-              Let's talk!
-            </Button>
-          </CardBody>
-        </Card>
-      </Col>
-    </Row>
+    <CatBox title="$ cat hello.txt">
+      <CardBody>
+        <CardText> 
+          Thanks for visiting my homepage! I am a software developer
+          currently located in the Northern Virginia/DC metro area. My
+          professional experience includes software positions in aerospace,
+          defense, research, and development, working on a variety of
+          applications and solutions.
+        </CardText>
+        <Button color="primary" block tag={ Link } to="/contact">
+          Let's talk!
+        </Button>
+      </CardBody>
+    </CatBox>
   </React.Fragment>
 );
 
