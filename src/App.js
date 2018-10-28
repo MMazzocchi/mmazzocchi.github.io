@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Card, CardBody, CardText, CardTitle } from "reactstrap";
+import { Button, Container, Row, Col, Card, CardBody, CardText, CardTitle } from "reactstrap";
 import { Nav } from "./Nav.js";
 import { SkillIcon } from "./SkillIcon.js";
 
@@ -48,7 +48,7 @@ const App = () => (
         <Card className="shadow">
           <CardBody>
             <CardTitle tag="h3" className="text-center">
-              Hello World
+              &#35; Hello World
             </CardTitle>
             <CardText> 
               Thanks for visiting my homepage! I am a software developer
@@ -57,6 +57,9 @@ const App = () => (
               defense, research, and development, working on a variety of
               applications and solutions.
             </CardText>
+            <Button color="primary" block>
+              Let's talk!
+            </Button>
           </CardBody>
         </Card>
       </Col>
