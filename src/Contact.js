@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Card, CardText, CardHeader, CardDeck, CardBody, CardTitle, CardSubtitle, CardFooter, Button } from "reactstrap";
 import { ContactCard } from "./ContactCard.js";
+import { CatBox } from "./CatBox.js";
 
 const contacts = [
   { icon: "fas fa-envelope", title: "Email", color: "red",
@@ -13,22 +14,15 @@ const contacts = [
 
 const Contact = () => (
   <React.Fragment>
-    <Row className="justify-content-center">
-      <Col md="8">
-        <Card className="shadow">
-          <CardHeader tag="h3" className="text-center" style={{ fontFamily: "monospace" }}>
-            $ cat contact.txt
-          </CardHeader>
+    <CatBox title="$ cat contact.txt">
+      <CardBody>
+        <CardText> 
+          Stay in touch! Please use the links below to get in contact, or to
+          see examples of things I'm currently working on.
+        </CardText>
+      </CardBody>
+    </CatBox>
 
-          <CardBody>
-            <CardText> 
-              Stay in touch! Please use the links below to get in contact, or to
-              see examples of things I'm currently working on.
-            </CardText>
-          </CardBody>
-        </Card>
-      </Col>
-    </Row>
     <Row className="align-items-center justify-content-center">
       <Col md="8">
         <CardDeck>
