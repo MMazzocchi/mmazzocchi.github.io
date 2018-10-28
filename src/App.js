@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Card, CardBody, CardText } from "reactstrap";
+import { Container, Row, Col, Card, CardBody, CardText, CardTitle } from "reactstrap";
 import { Nav } from "./Nav.js";
 import { SkillIcon } from "./SkillIcon.js";
 
@@ -35,15 +35,21 @@ const App = () => (
         </Row>
       </Col>
     </Row>
+    <Row>
+      <p></p>
+    </Row>
     <Row className="justify-content-center">
-      <Col md="10">
+      { skills.map((skill) => (
+        <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
+      ))}
+    </Row>
+    <Row className="justify-content-center">
+      <Col md="8">
         <Card className="shadow">
           <CardBody>
-            <Row className="justify-content-center">
-              { skills.map((skill) => (
-                <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
-              ))}
-            </Row>
+            <CardTitle tag="h3" className="text-center">
+              Hello World
+            </CardTitle>
             <CardText> 
               Thanks for visiting my homepage! I am a software developer
               currently located in the Northern Virginia/DC metro area. My
