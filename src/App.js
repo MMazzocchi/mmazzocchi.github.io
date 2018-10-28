@@ -9,13 +9,13 @@ const links = [
 ];
 
 const skills = [
-  { icon: "globe",    label: "Web Design",   color: "red" },
-  { icon: "desktop",  label: "Desktop",      color: "blue" },
-  { icon: "wrench",   label: "Tools",        color: "grey" },
-  { icon: "flask",    label: "Research",     color: "purple" },
-  { icon: "redo",     label: "Agile",        color: "black" },
-  { icon: "dice-d20", label: "Board Gaming", color: "green" },
-  { icon: "question", label: "More",         color: "orange" }
+  { icon: "globe",      label: "Web Design",   color: "red" },
+  { icon: "desktop",    label: "Desktop",      color: "blue" },
+  { icon: "wrench",     label: "Tools",        color: "grey" },
+  { icon: "flask",      label: "Research",     color: "purple" },
+  { icon: "redo",       label: "Agile",        color: "black" },
+  { icon: "dice-d20",   label: "Board Gaming", color: "green" },
+  { icon: "ellipsis-h", label: "More",         color: "orange" }
 ];
 
 const App = () => (
