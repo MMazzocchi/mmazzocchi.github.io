@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Card, CardDeck, CardBody, CardTitle, CardSubtitle, CardFooter, Button } from "reactstrap";
+import { Row, Col, Card, CardText, CardHeader, CardDeck, CardBody, CardTitle, CardSubtitle, CardFooter, Button } from "reactstrap";
 import { ContactCard } from "./ContactCard.js";
 
 const contacts = [
@@ -13,6 +13,22 @@ const contacts = [
 
 const Contact = () => (
   <React.Fragment>
+    <Row className="justify-content-center">
+      <Col md="8">
+        <Card className="shadow">
+          <CardHeader tag="h3" className="text-center" style={{ fontFamily: "monospace" }}>
+            $ cat contact.txt
+          </CardHeader>
+
+          <CardBody>
+            <CardText> 
+              Stay in touch! Please use the links below to get in contact, or to
+              see examples of things I'm currently working on.
+            </CardText>
+          </CardBody>
+        </Card>
+      </Col>
+    </Row>
     <Row className="align-items-center justify-content-center">
       <Col md="8">
         <CardDeck>
