@@ -8,10 +8,12 @@ import {
   NavbarBrand,
   NavbarToggler
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
 const MyNavItem = ({ dest, text }) => (
   <NavItem>
-    <NavLink href={ dest }>
+    <NavLink tag={ Link }
+             to={ dest }>
       { text }
     </NavLink>
   </NavItem>
@@ -38,7 +40,7 @@ class MyNav extends React.Component {
 
     return (
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">
+        <NavbarBrand tag={ Link } to="/">
           <h1>MM</h1>
         </NavbarBrand>
         <NavbarToggler onClick={ this.toggle } />
