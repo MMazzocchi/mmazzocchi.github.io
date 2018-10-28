@@ -11,7 +11,7 @@ const ContactCard = ({ icon, title, link, color }) => (
         tag="a" href={ link } target="_blank">
     <CardBody>
       <CardTitle>
-        <i className={ `${ icon } skill-icon` }
+        <i className={ `${ icon } contact-icon` }
            style={{ "backgroundColor": color }}></i>
       </CardTitle>
       <CardSubtitle style={{ "color": color }}>
