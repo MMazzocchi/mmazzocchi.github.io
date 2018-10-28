@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Row, Col, Card, CardBody, CardText, CardHeader } from "reactstrap";
 import { SkillIcon } from "./SkillIcon.js";
 import { Link } from "react-router-dom";
-import { CatBox } from "./CatBox.js";
+import { CatBox } from "../CatBox.js";
 
 const skills = [
   { icon: "globe",      label: "Web Design",   color: "red" },
