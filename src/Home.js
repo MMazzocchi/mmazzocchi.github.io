@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Row, Col, Card, CardBody, CardText, CardTitle } from "reactstrap";
+import { Button, Row, Col, Card, CardBody, CardText, CardHeader } from "reactstrap";
 import { SkillIcon } from "./SkillIcon.js";
 import { Link } from "react-router-dom";
 
@@ -40,10 +40,11 @@ const Home = () => (
     <Row className="justify-content-center">
       <Col md="8">
         <Card className="shadow">
+          <CardHeader tag="h3" className="text-center" style={{ fontFamily: "monospace" }}>
+            $ cat hello.txt
+          </CardHeader>
+
           <CardBody>
-            <CardTitle tag="h3" className="text-center">
-              &#35; Hello World
-            </CardTitle>
             <CardText> 
               Thanks for visiting my homepage! I am a software developer
               currently located in the Northern Virginia/DC metro area. My
