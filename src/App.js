@@ -3,7 +3,7 @@ import { Button, Container, Row, Col, Card, CardBody, CardText, CardTitle } from
 import { Nav } from "./Nav.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Home } from "./home";
-import { Contact } from "./Contact.js";
+import { Contact } from "./contact";
 
 const links = [
   { text: "Home",    dest: "/" },

@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Card, CardText, CardHeader, CardDeck, CardBody, CardTitle, CardSubtitle, CardFooter, Button } from "reactstrap";
 import { ContactCard } from "./ContactCard.js";
-import { CatBox } from "./CatBox.js";
+import { CatBox } from "../CatBox.js";
 
 const contacts = [
   { icon: "fas fa-envelope", title: "Email", color: "red",
