@@ -1,5 +1,10 @@
 import React from "react";
 import { Row, Col, Card, CardDeck, CardBody, CardTitle, CardSubtitle, CardFooter, Button } from "reactstrap";
+import { ContactCard } from "./ContactCard.js";
+
+const contacts = [
+  { icon: "envelope", title: "Email", color: "red", href: "/" },
+]
 
 const Contact = () => (
   <React.Fragment>
@@ -9,22 +14,9 @@ const Contact = () => (
       </Col>
       <Col md="8">
         <CardDeck>
-          <Card className="text-center">
-            <CardBody>
-              <CardTitle>
-                <i className="fas fa-envelope skill-icon"
-                   style={{ "backgroundColor": "red" }}></i>
-              </CardTitle>
-              <CardSubtitle>
-                Email
-              </CardSubtitle>
-            </CardBody>
-            <CardFooter>
-              <Button block>
-                Go There
-              </Button>
-            </CardFooter>
-          </Card>
+          { contacts.map((contact) => (
+            <ContactCard key={ `contact-card-${ contact.title }` } { ...contact } />
+          ))}
         </CardDeck>
       </Col>
     </Row>
