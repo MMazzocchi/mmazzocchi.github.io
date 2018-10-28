@@ -8,7 +8,7 @@ import {
 
 const ContactCard = ({ icon, title, link, color }) => (
   <Card className="text-center shadow contact-card"
-        tag="a" href={ link }>
+        tag="a" href={ link } target="_blank">
     <CardBody>
       <CardTitle>
         <i className={ `${ icon } skill-icon` }
@@ -16,6 +16,8 @@ const ContactCard = ({ icon, title, link, color }) => (
       </CardTitle>
       <CardSubtitle style={{ "color": color }}>
         { title }
+        &nbsp;
+        <i className="fas fa-external-link-alt"></i>
       </CardSubtitle>
     </CardBody>
   </Card>
