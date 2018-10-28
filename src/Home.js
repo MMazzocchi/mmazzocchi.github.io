@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Row, Col, Card, CardBody, CardText, CardTitle } from "reactstrap";
 import { SkillIcon } from "./SkillIcon.js";
+import { Link } from "react-router-dom";
 
 const skills = [
   { icon: "globe",      label: "Web Design",   color: "red" },
@@ -50,7 +51,7 @@ const Home = () => (
               defense, research, and development, working on a variety of
               applications and solutions.
             </CardText>
-            <Button color="primary" block>
+            <Button color="primary" block tag={ Link } to="/contact">
               Let's talk!
             </Button>
           </CardBody>

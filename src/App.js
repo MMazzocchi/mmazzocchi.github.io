@@ -4,10 +4,11 @@ import { Nav } from "./Nav.js";
 import { SkillIcon } from "./SkillIcon.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Home } from "./Home.js";
+import { Contact } from "./Contact.js";
 
 const links = [
   { text: "Home",    dest: "/" },
-  { text: "Contact", dest: "/" },
+  { text: "Contact", dest: "/contact" },
 ];
 
 const App = () => (
@@ -16,6 +17,7 @@ const App = () => (
       <Nav links={ links } />
 
       <Route exact path="/" component={ Home } />
+      <Route exact path="/contact" component={ Contact } />
      </Container>
   </Router>
 );
