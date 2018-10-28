@@ -13,6 +13,7 @@ const skills = [
   { icon: "desktop",  label: "Desktop",      color: "blue" },
   { icon: "wrench",   label: "Tools",        color: "grey" },
   { icon: "flask",    label: "Research",     color: "purple" },
+  { icon: "redo",     label: "Agile",        color: "black" },
   { icon: "dice-d20", label: "Board Gaming", color: "green" },
   { icon: "question", label: "More",         color: "orange" }
 ];
@@ -20,7 +21,7 @@ const skills = [
 const App = () => (
   <Container>
     <Nav links={ links } />
-    <Row className="align-items-center border-bottom">
+    <Row className="align-items-center">
       <Col md="6">
         <img src="images/me.jpg"
              className="rounded-circle img-fluid mx-auto d-block portrait shadow" />
@@ -32,12 +33,12 @@ const App = () => (
             <p>Software Developer, Northern Virginia/Washington DC</p>
           </Col>
         </Row>
-        <Row className="justify-content-center">
-          { skills.map((skill) => (
-            <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
-          ))}
-        </Row>
       </Col>
+    </Row>
+    <Row className="justify-content-center">
+      { skills.map((skill) => (
+        <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
+      ))}
     </Row>
     <Row>
       <Col>

@@ -3,7 +3,7 @@ import { Col } from "reactstrap";
 
 
 const SkillIcon = ({ icon, label, color }) => (
-  <Col className="skill-col" lg="2" xs="3">
+  <Col className="skill-col" lg="1" xs="3">
     <div>
       <i className={ `fas fa-${icon} skill-icon` }
          style={{ "backgroundColor": color }}></i>
