@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Card, CardBody, CardText } from "reactstrap";
 import { Nav } from "./Nav.js";
 import { SkillIcon } from "./SkillIcon.js";
 
@@ -36,23 +36,23 @@ const App = () => (
       </Col>
     </Row>
     <Row className="justify-content-center">
-      { skills.map((skill) => (
-        <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
-      ))}
-    </Row>
-    <Row>
-      <Col>
-        <p></p>
-        <p>
-          Thanks for visiting my homepage! I am a software developer
-          currently located in the Northern Virginia/DC metro area. My
-          professional experience includes software positions in aerospace,
-          defense, research, and development, working on a variety of
-          applications and solutions.
-        </p>
-        <p>
-          <a href="/contact">Let's Talk</a>
-        </p>
+      <Col md="10">
+        <Card className="shadow">
+          <CardBody>
+            <Row className="justify-content-center">
+              { skills.map((skill) => (
+                <SkillIcon key={ `skill-icon-${ skill.icon }` } { ...skill } />
+              ))}
+            </Row>
+            <CardText> 
+              Thanks for visiting my homepage! I am a software developer
+              currently located in the Northern Virginia/DC metro area. My
+              professional experience includes software positions in aerospace,
+              defense, research, and development, working on a variety of
+              applications and solutions.
+            </CardText>
+          </CardBody>
+        </Card>
       </Col>
     </Row>
   </Container>
