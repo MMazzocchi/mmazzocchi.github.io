@@ -21,5 +21,9 @@
 }
 
 .contact-card:hover {
+  text-decoration: none;
+}
+
+.contact-card:hover > .card-body {
   background-color: #EEEEFF;
 }
