@@ -6,7 +6,7 @@ import { Col } from "reactstrap";
 //);
 
 const LabeledSkillIcon = ({ icon, label, color, ...rest }) =>(
-  <Col className="skill-col" lg="1" xs="3" { ...rest }>
+  <div className="skill-col" { ...rest }>
     <div>
       <i className={ `fas fa-${icon} skill-icon` }
          style={{ "backgroundColor": color }}></i>
@@ -14,7 +14,7 @@ const LabeledSkillIcon = ({ icon, label, color, ...rest }) =>(
     <p style={{ "color": color }}>
       { label }
     </p>
-  </Col>
+  </div>
 );
 
 export { LabeledSkillIcon };

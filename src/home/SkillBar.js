@@ -10,7 +10,7 @@ import {
   Row,
   UncontrolledCollapse
 } from "reactstrap";
-import { SkillIcon } from "./SkillIcon.js";
+import { LabeledSkillIcon } from "./SkillIcon.js";
 import { Link } from "react-router-dom";
 import { CatBox } from "../CatBox.js";
 
@@ -57,10 +57,12 @@ class SkillBar extends React.Component {
       <React.Fragment>
         <Row className="justify-content-center">
           { skills.map((skill) => (
-            <SkillIcon key={ `skill-icon-${ skill.icon }` }
-                       id={ skill.id }
-                       onClick={ this.toggle }
-                       { ...skill } />
+            <Col lg="1" xs="3" key={ `skill-icon-${ skill.icon }` }>
+              <LabeledSkillIcon 
+                         id={ skill.id }
+                         onClick={ this.toggle }
+                         { ...skill } />
+            </Col>
           ))}
         </Row>
         <Row>
@@ -70,7 +72,9 @@ class SkillBar extends React.Component {
               <Card className="shadow">
                 <CardHeader>
                   <Row className="justify-content-center">
-                    <SkillIcon id={ `${ skill.icon }-header` } { ...skill } />
+                    <Col>
+                      <LabeledSkillIcon id={ `${ skill.icon }-header` } { ...skill } />
+                    </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
