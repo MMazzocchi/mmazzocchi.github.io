@@ -10,18 +10,18 @@ import {
   Row,
   UncontrolledCollapse
 } from "reactstrap";
-import { LabeledSkillIcon } from "./SkillIcon.js";
+import { LabeledSkillIcon, SkillIcon } from "./SkillIcon.js";
 import { Link } from "react-router-dom";
 import { CatBox } from "../CatBox.js";
 
 const skills = [
-  { icon: "globe",      label: "Web Design",   color: "red" },
-  { icon: "desktop",    label: "Desktop",      color: "blue" },
-  { icon: "wrench",     label: "Tools",        color: "grey" },
-  { icon: "flask",      label: "Research",     color: "purple" },
-  { icon: "redo",       label: "Agile",        color: "black" },
-  { icon: "dice-d20",   label: "Board Gaming", color: "green" },
-  { icon: "ellipsis-h", label: "More",         color: "orange" }
+  { icon: "fas fa-globe",      label: "Web Design",   color: "red" },
+  { icon: "fas fa-desktop",    label: "Desktop",      color: "blue" },
+  { icon: "fas fa-wrench",     label: "Tools",        color: "grey" },
+  { icon: "fas fa-flask",      label: "Research",     color: "purple" },
+  { icon: "fas fa-redo",       label: "Agile",        color: "black" },
+  { icon: "fas fa-dice-d20",   label: "Board Gaming", color: "green" },
+  { icon: "fas fa-ellipsis-h", label: "More",         color: "orange" }
 ];
 
 class SkillBar extends React.Component {
@@ -73,7 +73,7 @@ class SkillBar extends React.Component {
                 <CardHeader>
                   <Row className="justify-content-center">
                     <Col>
-                      <LabeledSkillIcon id={ `${ skill.icon }-header` } { ...skill } />
+                      <SkillIcon { ...skill } />
                     </Col>
                   </Row>
                 </CardHeader>

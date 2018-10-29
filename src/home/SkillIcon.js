@@ -1,20 +1,19 @@
 import React from "react";
-import { Col } from "reactstrap";
 
-
-//const SkillIcon = ({ id, icon, label, color, onClick }) => (
-//);
+const SkillIcon = ({ icon, color, ...rest }) => (
+  <div className="skill-col" { ...rest }>
+    <i className={ `${icon} skill-icon` }
+       style={{ backgroundColor: color }}></i>
+  </div>
+);
 
 const LabeledSkillIcon = ({ icon, label, color, ...rest }) =>(
   <div className="skill-col" { ...rest }>
-    <div>
-      <i className={ `fas fa-${icon} skill-icon` }
-         style={{ "backgroundColor": color }}></i>
-    </div>
+    <SkillIcon icon={ icon } color={ color } />
     <p style={{ "color": color }}>
       { label }
     </p>
   </div>
 );
 
-export { LabeledSkillIcon };
+export { LabeledSkillIcon, SkillIcon };
