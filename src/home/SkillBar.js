@@ -5,6 +5,7 @@ import {
   CardBody,
   CardHeader,
   CardText,
+  CardTitle,
   Col,
   Collapse,
   Row,
@@ -73,11 +74,14 @@ class SkillBar extends React.Component {
                 <CardHeader>
                   <Row className="justify-content-center">
                     <Col>
-                      <SkillIcon { ...skill } />
+                      <LabeledSkillIcon invert={ true } { ...skill } />
                     </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
+                  <CardTitle>
+                    { skill.label }
+                  </CardTitle>
                   <CardText>
 Lor    em ipsum dolor sit amet, consectetur adipiscing elit. Praesent sodales iaculis ex eget commodo. Quisque non varius ex. Vivamus mollis accumsan tempus. Nam eget odio vestibulum odio consectetur gravida nec sit amet mi. Ut vehicula massa tellus, sed eleifend arcu pretium accumsan. Aliquam laoreet tortor vitae mi porttitor accumsan. Suspendisse malesuada quis risus et convallis. Aliquam sed ipsum et lacus ornare rhoncus in et augue. In quis dictum est, nec blandit ex. Vivamus sollicitudin ipsum at felis sagittis fringilla. 
                   </CardText>
