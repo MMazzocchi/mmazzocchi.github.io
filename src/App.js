@@ -8,7 +8,7 @@ import { Projects } from "./projects";
 
 const links = [
   { text: "Home",     dest: "/",         component: Home },
-  { text: "Projects", dest: "/projects", component: Projects },
+//  { text: "Projects", dest: "/projects", component: Projects },
   { text: "Contact",  dest: "/contact",  component: Contact },
 ];
 
