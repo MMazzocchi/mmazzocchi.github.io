@@ -104,7 +104,7 @@ const skills = [
           career utilized an adapted version of Scrum Agile. While I've operated
           inside a strictly Agile team, I've also had the opportunity to see the
           methodology adjusted to suit the needs of individual projects, and the
-          benefits and drawbacks fo doing so.
+          benefits and drawbacks of doing so.
         </CardText>
       </CardBody>
     )
@@ -123,8 +123,8 @@ const skills = [
 
         <Row className="justify-content-center">
            {
-            [ 'Betrayal at House on the Hill', 'Avalon', 'Coup',
-              'Forbidden Island', 'Star Realms'].map((word, i) => (
+            [ 'Betrayal', 'Avalon', 'Coup', 'Forbidden Island',
+              'Star Realms'].map((word, i) => (
                <Col key={ `d-${i}` }
                     className="text-center">
                  <h5>{ word }</h5>
@@ -136,7 +136,37 @@ const skills = [
     )
   },
  
-  { icon: "fas fa-ellipsis-h", label: "More", color: "orange" }
+  { icon: "fas fa-ellipsis-h", label: "More", color: "orange",
+    content: (
+      <CardBody>
+        <CardText>
+          I've got a <strong>lot</strong> of interests. Here are just a few:
+        </CardText>
+        <Row className="justify-content-center">
+          <Col xs="6">
+            <ul>
+              <li>Computer Vision</li>
+              <li>Graphics Programming</li>
+              <li>Game Development</li>
+              <li>Podcasts</li>
+              <li>Swing Dancing</li>
+              <li>Baking</li>
+            </ul>
+          </Col>
+          <Col xs="6">
+            <ul>
+              <li>Artificial Intelligence</li>
+              <li>Reading</li>
+              <li>Hiking</li>
+              <li>Kayaking</li>
+              <li>History</li>
+              <li>And so much more...</li>
+            </ul>
+          </Col>
+        </Row>
+      </CardBody>
+    )
+  }
 ];
 
 
