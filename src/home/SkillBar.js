@@ -66,11 +66,7 @@ class SkillBar extends React.Component {
                       </Col>
                     </Row>
                   </CardHeader>
-                  <CardBody>
-                    <CardText>
-Lor    em   ipsum dolor sit amet, consectetur adipiscing elit. Praesent sodales iaculis ex eget commodo. Quisque non varius ex. Vivamus mollis accumsan tempus. Nam eget odio vestibulum odio consectetur gravida nec sit amet mi. Ut vehicula massa tellus, sed eleifend arcu pretium accumsan. Aliquam laoreet tortor vitae mi porttitor accumsan. Suspendisse malesuada quis risus et convallis. Aliquam sed ipsum et lacus ornare rhoncus in et augue. In quis dictum est, nec blandit ex. Vivamus sollicitudin ipsum at felis sagittis fringilla. 
-                    </CardText>
-                  </CardBody>
+                  { skill.content }
                 </Card>
               </Collapse>
             ))}
