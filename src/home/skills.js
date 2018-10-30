@@ -110,7 +110,32 @@ const skills = [
     )
   }, 
 
-  { icon: "fas fa-dice-d20", label: "Board Gaming", color: "green" }, 
+  { icon: "fas fa-dice-d20", label: "Board Gaming", color: "green",
+    content: (
+      <CardBody>
+        <CardText>
+          It's tough for me to find a board game I don't enjoy. My favorites are
+          undoubtedly strategy, logic, and planning games, shortly followed by
+          anything with an innovative structure (asymmetric, cooperative, etc).
+          Most importantly, though, I enjoy having a good group of people to
+          game with.
+        </CardText>
+
+        <Row className="justify-content-center">
+           {
+            [ 'Betrayal at House on the Hill', 'Avalon', 'Coup',
+              'Forbidden Island', 'Star Realms'].map((word, i) => (
+               <Col key={ `d-${i}` }
+                    className="text-center">
+                 <h5>{ word }</h5>
+               </Col>
+             ))
+          }
+        </Row>
+      </CardBody>
+    )
+  },
+ 
   { icon: "fas fa-ellipsis-h", label: "More", color: "orange" }
 ];
 
