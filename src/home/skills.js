@@ -57,7 +57,28 @@ const skills = [
       </CardBody>
     )
   },
-  { icon: "fas fa-wrench", label: "Tools", color: "grey" }, 
+  { icon: "fas fa-wrench", label: "Tools", color: "grey",
+    content: (
+      <CardBody>
+        <CardText>
+          I'm well versed in a variety of software development tools. Git is my
+          standard source control management system, both in professional and
+          personal projects.
+        </CardText>
+        <Row className="justify-content-center">
+           {
+            ["git", "subversion", "Atlassian Toolset", "RedMine", 
+             "GitLab" ].map((word, i) => (
+               <Col key={ `d-${i}` }
+                    className="text-center">
+                 <h5>{ word }</h5>
+               </Col>
+             ))
+          }
+        </Row>
+      </CardBody>
+    )
+  }, 
   { icon: "fas fa-flask", label: "Research", color: "purple" }, 
   { icon: "fas fa-redo", label: "Agile", color: "black" }, 
   { icon: "fas fa-dice-d20", label: "Board Gaming", color: "green" }, 
