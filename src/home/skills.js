@@ -34,6 +34,7 @@ const skills = [
       </CardBody>
     )
   },
+
   { icon: "fas fa-desktop", label: "Desktop", color: "blue",
     content: (
       <CardBody>
@@ -57,6 +58,7 @@ const skills = [
       </CardBody>
     )
   },
+
   { icon: "fas fa-wrench", label: "Tools", color: "grey",
     content: (
       <CardBody>
@@ -79,8 +81,35 @@ const skills = [
       </CardBody>
     )
   }, 
-  { icon: "fas fa-flask", label: "Research", color: "purple" }, 
-  { icon: "fas fa-redo", label: "Agile", color: "black" }, 
+
+  { icon: "fas fa-flask", label: "Research", color: "purple",
+    content: (
+      <CardBody>
+        <CardText>
+          I've held multiple research and development positions throughout my
+          career. These were mainly working on small, fast-paced projects with
+          dynamic and distributed teams. Throughout these projects, I served in
+          a variety of roles, including software development, database
+          administation, operations and maintenance, and project leadership.
+        </CardText>
+      </CardBody>
+    ) 
+  },
+
+  { icon: "fas fa-redo", label: "Agile", color: "black",
+    content: (
+      <CardBody>
+        <CardText>
+          The majority of projects I've worked on throughout my professional
+          career utilized an adapted version of Scrum Agile. While I've operated
+          inside a strictly Agile team, I've also had the opportunity to see the
+          methodology adjusted to suit the needs of individual projects, and the
+          benefits and drawbacks fo doing so.
+        </CardText>
+      </CardBody>
+    )
+  }, 
+
   { icon: "fas fa-dice-d20", label: "Board Gaming", color: "green" }, 
   { icon: "fas fa-ellipsis-h", label: "More", color: "orange" }
 ];
