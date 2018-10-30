@@ -60,9 +60,10 @@ class SkillBar extends React.Component {
           { skills.map((skill) => (
             <Col lg="1" xs="3" key={ `skill-icon-${ skill.icon }` }>
               <LabeledSkillIcon 
-                         id={ skill.id }
-                         onClick={ this.toggle }
-                         { ...skill } />
+                 id={ skill.id }
+                 onClick={ this.toggle }
+                 hoverable={ true }
+                 { ...skill } />
             </Col>
           ))}
         </Row>

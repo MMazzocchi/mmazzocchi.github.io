@@ -19,6 +19,20 @@
   padding: 0.5em;
 }
 
+.skill-col-hover:hover > div > .skill-icon {
+  background-color: skyblue !important;
+  color: white !important;
+}
+
+.skill-col-hover:hover > .skill-icon {
+  background-color: skyblue !important;
+  color: white !important;
+}
+
+.skill-col-hover:hover > p {
+  color: skyblue !important;
+}
+
 .contact-icon {
   width: 2em;
   height: 2em;

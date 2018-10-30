@@ -1,7 +1,8 @@
 import React from "react";
 
-const SkillIcon = ({ icon, color, invert, ...rest }) => (
-  <div className="skill-col" { ...rest }>
+const SkillIcon = ({ icon, color, invert, hoverable, ...rest }) => (
+  <div { ...rest }>
+    className={ `skill-col ${ hoverable ? "skill-col-hover" : ""}` }>
     <i className={ `${icon} skill-icon` }
        style={{
          backgroundColor: invert ? "" : color,
@@ -9,8 +10,10 @@ const SkillIcon = ({ icon, color, invert, ...rest }) => (
   </div>
 );
 
-const LabeledSkillIcon = ({ icon, label, color, invert, ...rest }) =>(
-  <div className="skill-col" { ...rest }>
+const LabeledSkillIcon = ({ icon, label, color, invert, hoverable,
+                            ...rest }) =>(
+  <div { ...rest }
+    className={ `skill-col ${ hoverable ? "skill-col-hover" : ""}` }>
     <SkillIcon icon={ icon } invert={ invert } color={ color } />
     <p style={{ "color": color }}>
       { label }
