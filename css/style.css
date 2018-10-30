@@ -1,9 +1,9 @@
 .portrait {
-  padding: 15%;
+  margin: 15%;
 }
 
 .shadow {
-  filter: drop-shadow(2mm 2mm 2mm #AAAAAA);
+  box-shadow: 2mm 2mm 2mm 0 #AAAAAA;
 }
 
 .skill-col {

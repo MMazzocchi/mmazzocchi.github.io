@@ -17,8 +17,10 @@ const Home = () => (
   <React.Fragment>
     <Row className="align-items-center">
       <Col md="6">
-        <img src="images/me.jpg"
-             className="rounded-circle img-fluid mx-auto d-block portrait shadow" />
+        <div className="portrait">
+          <img src="images/me.jpg"
+               className="rounded-circle img-fluid mx-auto d-block portrait shadow" />
+        </div>
       </Col>
       <Col md="6">
         <Row>
