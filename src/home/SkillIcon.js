@@ -1,7 +1,7 @@
 import React from "react";
 
 const SkillIcon = ({ icon, color, invert, hoverable, ...rest }) => (
-  <div { ...rest }>
+  <div { ...rest }
     className={ `skill-col ${ hoverable ? "skill-col-hover" : ""}` }>
     <i className={ `${icon} skill-icon` }
        style={{
