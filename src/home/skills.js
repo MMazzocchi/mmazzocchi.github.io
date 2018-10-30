@@ -11,12 +11,12 @@ const skills = [
     content: (
       <CardBody>
         <CardText>
-          I've held serveral professional positions in which I utilized web
+          I've held several professional positions in which I utilized web
           development technologies and web design principles. Most recently,
           I've had the opportunity to work across several Django/React projects
-          in my current job. In addition, I develop for the web in my spare time
-          on personal projects (including this site), mainly using NodeJS. I
-          strive for solutions that work elegantly in many environments,
+          in my current position. In addition, I develop for the web in my spare
+          time on personal projects (including this site), mainly using NodeJS.
+          I strive for solutions that work elegantly in many environments,
           including desktop and mobile. I'm especially excited by recent
           advancements in WebGL and 3D libraries like THREE.js.
         </CardText>
@@ -146,8 +146,8 @@ const skills = [
           <Col xs="6">
             <ul>
               <li>Computer Vision</li>
-              <li>Graphics Programming</li>
-              <li>Game Development</li>
+              <li>Graphics</li>
+              <li>Game Dev.</li>
               <li>Podcasts</li>
               <li>Swing Dancing</li>
               <li>Baking</li>
@@ -160,7 +160,7 @@ const skills = [
               <li>Hiking</li>
               <li>Kayaking</li>
               <li>History</li>
-              <li>And so much more...</li>
+              <li>And more!</li>
             </ul>
           </Col>
         </Row>

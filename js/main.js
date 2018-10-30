@@ -37055,7 +37055,7 @@ var skills = [{
   icon: "fas fa-globe",
   label: "Web Design",
   color: "red",
-  content: _react.default.createElement(_reactstrap.CardBody, null, _react.default.createElement(_reactstrap.CardText, null, "I've held serveral professional positions in which I utilized web development technologies and web design principles. Most recently, I've had the opportunity to work across several Django/React projects in my current job. In addition, I develop for the web in my spare time on personal projects (including this site), mainly using NodeJS. I strive for solutions that work elegantly in many environments, including desktop and mobile. I'm especially excited by recent advancements in WebGL and 3D libraries like THREE.js."), _react.default.createElement(_reactstrap.Row, {
+  content: _react.default.createElement(_reactstrap.CardBody, null, _react.default.createElement(_reactstrap.CardText, null, "I've held several professional positions in which I utilized web development technologies and web design principles. Most recently, I've had the opportunity to work across several Django/React projects in my current position. In addition, I develop for the web in my spare time on personal projects (including this site), mainly using NodeJS. I strive for solutions that work elegantly in many environments, including desktop and mobile. I'm especially excited by recent advancements in WebGL and 3D libraries like THREE.js."), _react.default.createElement(_reactstrap.Row, {
     className: "justify-content-center"
   }, ["Django", "NodeJS", "React", "PHP", "d3.js", "THREE.js", "SVG", "WebGL"].map(function (word, i) {
     return _react.default.createElement(_reactstrap.Col, {
@@ -37117,9 +37117,9 @@ var skills = [{
     className: "justify-content-center"
   }, _react.default.createElement(_reactstrap.Col, {
     xs: "6"
-  }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Computer Vision"), _react.default.createElement("li", null, "Graphics Programming"), _react.default.createElement("li", null, "Game Development"), _react.default.createElement("li", null, "Podcasts"), _react.default.createElement("li", null, "Swing Dancing"), _react.default.createElement("li", null, "Baking"))), _react.default.createElement(_reactstrap.Col, {
+  }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Computer Vision"), _react.default.createElement("li", null, "Graphics"), _react.default.createElement("li", null, "Game Dev."), _react.default.createElement("li", null, "Podcasts"), _react.default.createElement("li", null, "Swing Dancing"), _react.default.createElement("li", null, "Baking"))), _react.default.createElement(_reactstrap.Col, {
     xs: "6"
-  }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Artificial Intelligence"), _react.default.createElement("li", null, "Reading"), _react.default.createElement("li", null, "Hiking"), _react.default.createElement("li", null, "Kayaking"), _react.default.createElement("li", null, "History"), _react.default.createElement("li", null, "And so much more...")))))
+  }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Artificial Intelligence"), _react.default.createElement("li", null, "Reading"), _react.default.createElement("li", null, "Hiking"), _react.default.createElement("li", null, "Kayaking"), _react.default.createElement("li", null, "History"), _react.default.createElement("li", null, "And more!")))))
 }];
 exports.skills = skills;
 
