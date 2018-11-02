@@ -1,4 +1,10 @@
 {
+  "plugins": [
+    "react",
+  ],
   "parser": "babel-eslint",
-  "extends": "eslint:recommended"
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ]
 }
