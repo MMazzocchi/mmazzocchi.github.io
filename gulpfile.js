@@ -1,4 +1,4 @@
-const { src, task, series } = require('gulp');
+const { src, task, series, dest } = require('gulp');
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 const { basename, join } = require('path');
@@ -17,7 +17,7 @@ function build() {
     })
     .bundle()
     .pipe(source(filename))
-    .pipe(gulp.dest(JS));
+    .pipe(dest(JS));
 };
 
 function lint() {
