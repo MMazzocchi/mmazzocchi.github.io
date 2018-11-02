@@ -4,7 +4,8 @@ const source = require('vinyl-source-stream');
 const { basename, join } = require('path');
 const eslint = require('gulp-eslint');
 
-const MAIN = './src/main.js';
+const SRC = './src/';
+const MAIN = join(SRC, 'main.js');
 const JS = './js/';
 
 function build() {
@@ -20,7 +21,7 @@ function build() {
 };
 
 function lint() {
-  return src([join(JS, "**", "*.js")])
+  return src([join(SRC, "**", "*.js")])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
