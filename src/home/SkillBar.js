@@ -14,13 +14,11 @@ class SkillBar extends React.Component {
     super(props);
 
     const state = {};
-
     skills.forEach((skill, index) => {
       skill["id"] = "skill"+index;
       state[skill.id] = false;
     });
-
-    this.setState(state);
+    this.state = state;
 
     this.toggle = this.toggle.bind(this);
   }
