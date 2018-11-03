@@ -6,6 +6,8 @@ import {
   CardTitle
 } from "reactstrap";
 
+import PropTypes from "prop-types";
+
 const ContactCard = ({ icon, title, link, color }) => (
   <Card className="text-center shadow contact-card"
         tag="a" href={ link } target="_blank">
@@ -22,5 +24,12 @@ const ContactCard = ({ icon, title, link, color }) => (
     </CardBody>
   </Card>
 );
+
+ContactCard.propTypes = {
+  icon: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  color: PropTypes.string
+};
 
 export { ContactCard };
