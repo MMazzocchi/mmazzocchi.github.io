@@ -5,6 +5,7 @@ import {
   Col,
   Row
 } from "reactstrap";
+import PropTypes from "prop-types";
 
 const CatBox = ({ title, children }) => (
   <React.Fragment>
@@ -21,5 +22,10 @@ const CatBox = ({ title, children }) => (
     </Row>
   </React.Fragment>
 );
+
+CatBox.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.any
+};
 
 export { CatBox };
