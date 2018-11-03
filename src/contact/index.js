@@ -24,7 +24,7 @@ const Contact = () => (
       <CardBody>
         <CardText> 
           Stay in touch! Please use the links below to get in contact, or to
-          see examples of things I'm currently working on.
+          see examples of things I&#39;m currently working on.
         </CardText>
       </CardBody>
     </CatBox>

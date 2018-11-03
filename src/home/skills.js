@@ -11,13 +11,13 @@ const skills = [
     content: (
       <CardBody>
         <CardText>
-          I've held several professional positions in which I utilized web
+          I&#39;ve held several professional positions in which I utilized web
           development technologies and web design principles. Most recently,
-          I've had the opportunity to work across several Django/React projects
+          I&#39;ve had the opportunity to work across several Django/React projects
           in my current position. In addition, I develop for the web in my spare
           time on personal projects (including this site), mainly using NodeJS.
           I strive for solutions that work elegantly in many environments,
-          including desktop and mobile. I'm especially excited by recent
+          including desktop and mobile. I&#39;m especially excited by recent
           advancements in WebGL and 3D libraries like THREE.js.
         </CardText>
         <Row className="justify-content-center">
@@ -63,8 +63,8 @@ const skills = [
     content: (
       <CardBody>
         <CardText>
-          I'm well versed in a variety of software development tools. Git is my
-          standard source control management system, both in professional and
+          I&#39;m well versed in a variety of software development tools. Git is
+          my standard source control management system, both in professional and
           personal projects.
         </CardText>
         <Row className="justify-content-center">
@@ -86,11 +86,12 @@ const skills = [
     content: (
       <CardBody>
         <CardText>
-          I've held multiple research and development positions throughout my
-          career. These were mainly working on small, fast-paced projects with
-          dynamic and distributed teams. Throughout these projects, I served in
-          a variety of roles, including software development, database
-          administation, operations and maintenance, and project leadership.
+          I&#39;ve held multiple research and development positions throughout 
+          my career. These were mainly working on small, fast-paced projects 
+          with dynamic and distributed teams. Throughout these projects, I 
+          served in a variety of roles, including software development,
+          database administation, operations and maintenance, and project
+          leadership.
         </CardText>
       </CardBody>
     ) 
@@ -100,11 +101,11 @@ const skills = [
     content: (
       <CardBody>
         <CardText>
-          The majority of projects I've worked on throughout my professional
-          career utilized an adapted version of Scrum Agile. While I've operated
-          inside a strictly Agile team, I've also had the opportunity to see the
-          methodology adjusted to suit the needs of individual projects, and the
-          benefits and drawbacks of doing so.
+          The majority of projects I&#39;ve worked on throughout my professional
+          career utilized an adapted version of Scrum Agile. While I&#39;ve
+          operated  inside a strictly Agile team, I&#39;ve also had the 
+          opportunity to see the methodology adjusted to suit the needs of 
+          individual projects, and the benefits and drawbacks of doing so.
         </CardText>
       </CardBody>
     )
@@ -114,17 +115,17 @@ const skills = [
     content: (
       <CardBody>
         <CardText>
-          It's tough for me to find a board game I don't enjoy. My favorites are
-          undoubtedly strategy, logic, and planning games, shortly followed by
-          anything with an innovative structure (asymmetric, cooperative, etc).
-          Most importantly, though, I enjoy having a good group of people to
-          game with.
+          It&#39;s tough for me to find a board game I don&#39;t enjoy. My 
+          favorites are undoubtedly strategy, logic, and planning games, shortly
+          followed bt anything with an innovative structure (asymmetric,
+          cooperative, etc). Most importantly, though, I enjoy having a good 
+          group of people to game with.
         </CardText>
 
         <Row className="justify-content-center">
            {
             [ 'Betrayal', 'Avalon', 'Coup', 'Forbidden Island',
-              'Star Realms'].map((word, i) => (
+              'Star Realms', 'Pandemic'].map((word, i) => (
                <Col key={ `d-${i}` }
                     className="text-center">
                  <h5>{ word }</h5>
@@ -140,7 +141,7 @@ const skills = [
     content: (
       <CardBody>
         <CardText>
-          I've got a <strong>lot</strong> of interests. Here are just a few:
+          I&#39;ve got a <strong>lot</strong> of interests. Here are just a few:
         </CardText>
         <Row className="justify-content-center">
           <Col xs="6">

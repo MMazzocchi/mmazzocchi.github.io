@@ -9,6 +9,7 @@ import {
   NavbarToggler
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const MyNavItem = ({ dest, text }) => (
   <NavItem>
@@ -19,6 +20,11 @@ const MyNavItem = ({ dest, text }) => (
   </NavItem>
 );
 
+MyNavItem.propTypes = {
+  dest: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired
+};
+
 class MyNav extends React.Component {
   constructor(props) {
     super(props);
@@ -27,13 +33,13 @@ class MyNav extends React.Component {
     this.state = {
       isOpen: false
     };
-  };
+  }
 
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
-  };
+  }
 
   render() {
     const links = this.props.links;
@@ -53,7 +59,7 @@ class MyNav extends React.Component {
         </Collapse>
       </Navbar>
     );
-  };
-};
+  }
+}
 
 export { MyNav as Nav };

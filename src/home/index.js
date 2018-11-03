@@ -1,13 +1,10 @@
 import React from "react";
 import {
   Button,
-  Card,
   CardBody,
-  CardHeader,
   CardText,
   Col,
   Row,
-  UncontrolledCollapse
 } from "reactstrap";
 import { SkillBar } from "./SkillBar.js";
 import { Link } from "react-router-dom";
@@ -45,7 +42,7 @@ const Home = () => (
           applications and solutions.
         </CardText>
         <Button color="primary" block tag={ Link } to="/contact">
-          Let's talk!
+          Let&#39;s talk!
         </Button>
       </CardBody>
     </CatBox>

@@ -1,9 +1,11 @@
-const gulp = require('gulp');
+const { src, task, series, dest } = require('gulp');
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
-const basename = require('path').basename;
+const { basename, join } = require('path');
+const eslint = require('gulp-eslint');
 
-const MAIN = './src/main.js';
+const SRC = './src/';
+const MAIN = join(SRC, 'main.js');
 const JS = './js/';
 
 function build() {
@@ -15,8 +17,16 @@ function build() {
     })
     .bundle()
     .pipe(source(filename))
-    .pipe(gulp.dest(JS));
+    .pipe(dest(JS));
 };
 
-gulp.task('build', build);
-gulp.task('default', gulp.series('build'));
+function lint() {
+  return src([join(SRC, "**", "*.js")])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+};
+
+task('build', build);
+task('lint', lint);
+task('default', series('lint', 'build'));

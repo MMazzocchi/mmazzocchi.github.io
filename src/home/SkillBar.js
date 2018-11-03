@@ -1,26 +1,24 @@
 import React from "react";
 import {
   Card,
-  CardBody,
   CardHeader,
-  CardText,
   Col,
   Collapse,
   Row
 } from "reactstrap";
-import { LabeledSkillIcon, SkillIcon } from "./SkillIcon.js";
+import { LabeledSkillIcon } from "./SkillIcon.js";
 import { skills } from "./skills.js";
 
 class SkillBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
-
+    const state = {};
     skills.forEach((skill, index) => {
       skill["id"] = "skill"+index;
-      this.state[skill.id] = false;
+      state[skill.id] = false;
     });
+    this.state = state;
 
     this.toggle = this.toggle.bind(this);
   }
@@ -37,7 +35,7 @@ class SkillBar extends React.Component {
 
     state[target.id] = !this.state[target.id];
     this.setState(state);
-  };
+  }
 
   render() {
     return (
@@ -76,6 +74,6 @@ class SkillBar extends React.Component {
       </React.Fragment>
     );
   }
-};
+}
 
 export { SkillBar };
