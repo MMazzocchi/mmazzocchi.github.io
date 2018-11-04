@@ -3,6 +3,7 @@ import { CatBox } from "../CatBox.js";
 import { CardBody, CardText } from "reactstrap";
 import PropTypes from "prop-types";
 import { ProjectSelector } from "./ProjectSelector.js";
+import { projects } from "./projects.js";
 
 const Projects = ({ match: { url } }) => (
   <React.Fragment>
@@ -15,7 +16,7 @@ const Projects = ({ match: { url } }) => (
       </CardBody>
     </CatBox>
 
-    <ProjectSelector baseUrl={ url } />
+    <ProjectSelector baseUrl={ url } projects={ projects } />
   </React.Fragment>
 );
 
