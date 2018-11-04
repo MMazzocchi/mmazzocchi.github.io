@@ -53,3 +53,7 @@
   padding-top: 1em;
   padding-bottom: 1em;
 }
+
+.border-bottom {
+  margin-bottom: 1em;  
+}
