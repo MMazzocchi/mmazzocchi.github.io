@@ -10,8 +10,9 @@ const Project = ({ id, title, skills, links, body }) => (
       <Col md="4">
         <Row className="justify-content-center border-bottom">
           { skills.map((skill, i) => (
-            <LabeledSkillIcon key={ `project-skill-${ id }-${ i }` }
-                              invert={ true } { ...skill } />
+            <Col xs="4" key={ `project-skill-${ id }-${ i }` }>
+              <LabeledSkillIcon invert={ true } { ...skill } />
+            </Col>
           ))}
         </Row>
         { links ? (
