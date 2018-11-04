@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import hljs from "highlight.js/lib/highlight";
+import { registerLanguage, highlightBlock } from "highlight.js/lib/highlight";
 
 import python from "highlight.js/lib/languages/python";
-hljs.registerLanguage("python", python);
+registerLanguage("python", python);
 
 class CodeBlock extends React.Component {
   componentDidMount() {
-    hljs.highlightBlock(this.node);
+    highlightBlock(this.node);
   }
 
   render() {
