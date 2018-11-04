@@ -38211,7 +38211,7 @@ var skills = [{
   }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Computer Vision"), _react.default.createElement("li", null, "Graphics"), _react.default.createElement("li", null, "Game Dev."), _react.default.createElement("li", null, "Podcasts"), _react.default.createElement("li", null, "Swing Dancing"), _react.default.createElement("li", null, "Baking"))), _react.default.createElement(_reactstrap.Col, {
     xs: "6"
   }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Artificial Intelligence"), _react.default.createElement("li", null, "Reading"), _react.default.createElement("li", null, "Hiking"), _react.default.createElement("li", null, "Kayaking"), _react.default.createElement("li", null, "History"), _react.default.createElement("li", null, "And more!")))), _react.default.createElement(_reactstrap.CardText, null, _react.default.createElement(_Exp.Exp, {
-    date: "7/7/2014"
+    date: "6/7/2014"
   })))
 }];
 exports.skills = skills;

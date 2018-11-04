@@ -167,7 +167,7 @@ const skills = [
           </Col>
         </Row>
         <CardText>
-          <Exp date="7/7/2014" />
+          <Exp date="6/7/2014" />
         </CardText>
       </CardBody>
     )
