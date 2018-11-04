@@ -53,6 +53,958 @@
 }());
 
 },{}],2:[function(require,module,exports){
+/*
+Syntax highlighting with language autodetection.
+https://highlightjs.org/
+*/
+
+(function(factory) {
+
+  // Find the global object for export to both the browser and web workers.
+  var globalObject = typeof window === 'object' && window ||
+                     typeof self === 'object' && self;
+
+  // Setup highlight.js for different environments. First is Node.js or
+  // CommonJS.
+  if(typeof exports !== 'undefined') {
+    factory(exports);
+  } else if(globalObject) {
+    // Export hljs globally even when using AMD for cases when this script
+    // is loaded with others that may still expect a global hljs.
+    globalObject.hljs = factory({});
+
+    // Finally register the global hljs with AMD.
+    if(typeof define === 'function' && define.amd) {
+      define([], function() {
+        return globalObject.hljs;
+      });
+    }
+  }
+
+}(function(hljs) {
+  // Convenience variables for build-in objects
+  var ArrayProto = [],
+      objectKeys = Object.keys;
+
+  // Global internal variables used within the highlight.js library.
+  var languages = {},
+      aliases   = {};
+
+  // Regular expressions used throughout the highlight.js library.
+  var noHighlightRe    = /^(no-?highlight|plain|text)$/i,
+      languagePrefixRe = /\blang(?:uage)?-([\w-]+)\b/i,
+      fixMarkupRe      = /((^(<[^>]+>|\t|)+|(?:\n)))/gm;
+
+  var spanEndTag = '</span>';
+
+  // Global options used when within external APIs. This is modified when
+  // calling the `hljs.configure` function.
+  var options = {
+    classPrefix: 'hljs-',
+    tabReplace: null,
+    useBR: false,
+    languages: undefined
+  };
+
+
+  /* Utility functions */
+
+  function escape(value) {
+    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function tag(node) {
+    return node.nodeName.toLowerCase();
+  }
+
+  function testRe(re, lexeme) {
+    var match = re && re.exec(lexeme);
+    return match && match.index === 0;
+  }
+
+  function isNotHighlighted(language) {
+    return noHighlightRe.test(language);
+  }
+
+  function blockLanguage(block) {
+    var i, match, length, _class;
+    var classes = block.className + ' ';
+
+    classes += block.parentNode ? block.parentNode.className : '';
+
+    // language-* takes precedence over non-prefixed class names.
+    match = languagePrefixRe.exec(classes);
+    if (match) {
+      return getLanguage(match[1]) ? match[1] : 'no-highlight';
+    }
+
+    classes = classes.split(/\s+/);
+
+    for (i = 0, length = classes.length; i < length; i++) {
+      _class = classes[i]
+
+      if (isNotHighlighted(_class) || getLanguage(_class)) {
+        return _class;
+      }
+    }
+  }
+
+  function inherit(parent) {  // inherit(parent, override_obj, override_obj, ...)
+    var key;
+    var result = {};
+    var objects = Array.prototype.slice.call(arguments, 1);
+
+    for (key in parent)
+      result[key] = parent[key];
+    objects.forEach(function(obj) {
+      for (key in obj)
+        result[key] = obj[key];
+    });
+    return result;
+  }
+
+  /* Stream merging */
+
+  function nodeStream(node) {
+    var result = [];
+    (function _nodeStream(node, offset) {
+      for (var child = node.firstChild; child; child = child.nextSibling) {
+        if (child.nodeType === 3)
+          offset += child.nodeValue.length;
+        else if (child.nodeType === 1) {
+          result.push({
+            event: 'start',
+            offset: offset,
+            node: child
+          });
+          offset = _nodeStream(child, offset);
+          // Prevent void elements from having an end tag that would actually
+          // double them in the output. There are more void elements in HTML
+          // but we list only those realistically expected in code display.
+          if (!tag(child).match(/br|hr|img|input/)) {
+            result.push({
+              event: 'stop',
+              offset: offset,
+              node: child
+            });
+          }
+        }
+      }
+      return offset;
+    })(node, 0);
+    return result;
+  }
+
+  function mergeStreams(original, highlighted, value) {
+    var processed = 0;
+    var result = '';
+    var nodeStack = [];
+
+    function selectStream() {
+      if (!original.length || !highlighted.length) {
+        return original.length ? original : highlighted;
+      }
+      if (original[0].offset !== highlighted[0].offset) {
+        return (original[0].offset < highlighted[0].offset) ? original : highlighted;
+      }
+
+      /*
+      To avoid starting the stream just before it should stop the order is
+      ensured that original always starts first and closes last:
+
+      if (event1 == 'start' && event2 == 'start')
+        return original;
+      if (event1 == 'start' && event2 == 'stop')
+        return highlighted;
+      if (event1 == 'stop' && event2 == 'start')
+        return original;
+      if (event1 == 'stop' && event2 == 'stop')
+        return highlighted;
+
+      ... which is collapsed to:
+      */
+      return highlighted[0].event === 'start' ? original : highlighted;
+    }
+
+    function open(node) {
+      function attr_str(a) {return ' ' + a.nodeName + '="' + escape(a.value).replace('"', '&quot;') + '"';}
+      result += '<' + tag(node) + ArrayProto.map.call(node.attributes, attr_str).join('') + '>';
+    }
+
+    function close(node) {
+      result += '</' + tag(node) + '>';
+    }
+
+    function render(event) {
+      (event.event === 'start' ? open : close)(event.node);
+    }
+
+    while (original.length || highlighted.length) {
+      var stream = selectStream();
+      result += escape(value.substring(processed, stream[0].offset));
+      processed = stream[0].offset;
+      if (stream === original) {
+        /*
+        On any opening or closing tag of the original markup we first close
+        the entire highlighted node stack, then render the original tag along
+        with all the following original tags at the same offset and then
+        reopen all the tags on the highlighted stack.
+        */
+        nodeStack.reverse().forEach(close);
+        do {
+          render(stream.splice(0, 1)[0]);
+          stream = selectStream();
+        } while (stream === original && stream.length && stream[0].offset === processed);
+        nodeStack.reverse().forEach(open);
+      } else {
+        if (stream[0].event === 'start') {
+          nodeStack.push(stream[0].node);
+        } else {
+          nodeStack.pop();
+        }
+        render(stream.splice(0, 1)[0]);
+      }
+    }
+    return result + escape(value.substr(processed));
+  }
+
+  /* Initialization */
+
+  function expand_mode(mode) {
+    if (mode.variants && !mode.cached_variants) {
+      mode.cached_variants = mode.variants.map(function(variant) {
+        return inherit(mode, {variants: null}, variant);
+      });
+    }
+    return mode.cached_variants || (mode.endsWithParent && [inherit(mode)]) || [mode];
+  }
+
+  function compileLanguage(language) {
+
+    function reStr(re) {
+        return (re && re.source) || re;
+    }
+
+    function langRe(value, global) {
+      return new RegExp(
+        reStr(value),
+        'm' + (language.case_insensitive ? 'i' : '') + (global ? 'g' : '')
+      );
+    }
+
+    function compileMode(mode, parent) {
+      if (mode.compiled)
+        return;
+      mode.compiled = true;
+
+      mode.keywords = mode.keywords || mode.beginKeywords;
+      if (mode.keywords) {
+        var compiled_keywords = {};
+
+        var flatten = function(className, str) {
+          if (language.case_insensitive) {
+            str = str.toLowerCase();
+          }
+          str.split(' ').forEach(function(kw) {
+            var pair = kw.split('|');
+            compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
+          });
+        };
+
+        if (typeof mode.keywords === 'string') { // string
+          flatten('keyword', mode.keywords);
+        } else {
+          objectKeys(mode.keywords).forEach(function (className) {
+            flatten(className, mode.keywords[className]);
+          });
+        }
+        mode.keywords = compiled_keywords;
+      }
+      mode.lexemesRe = langRe(mode.lexemes || /\w+/, true);
+
+      if (parent) {
+        if (mode.beginKeywords) {
+          mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')\\b';
+        }
+        if (!mode.begin)
+          mode.begin = /\B|\b/;
+        mode.beginRe = langRe(mode.begin);
+        if (mode.endSameAsBegin)
+          mode.end = mode.begin;
+        if (!mode.end && !mode.endsWithParent)
+          mode.end = /\B|\b/;
+        if (mode.end)
+          mode.endRe = langRe(mode.end);
+        mode.terminator_end = reStr(mode.end) || '';
+        if (mode.endsWithParent && parent.terminator_end)
+          mode.terminator_end += (mode.end ? '|' : '') + parent.terminator_end;
+      }
+      if (mode.illegal)
+        mode.illegalRe = langRe(mode.illegal);
+      if (mode.relevance == null)
+        mode.relevance = 1;
+      if (!mode.contains) {
+        mode.contains = [];
+      }
+      mode.contains = Array.prototype.concat.apply([], mode.contains.map(function(c) {
+        return expand_mode(c === 'self' ? mode : c)
+      }));
+      mode.contains.forEach(function(c) {compileMode(c, mode);});
+
+      if (mode.starts) {
+        compileMode(mode.starts, parent);
+      }
+
+      var terminators =
+        mode.contains.map(function(c) {
+          return c.beginKeywords ? '\\.?(' + c.begin + ')\\.?' : c.begin;
+        })
+        .concat([mode.terminator_end, mode.illegal])
+        .map(reStr)
+        .filter(Boolean);
+      mode.terminators = terminators.length ? langRe(terminators.join('|'), true) : {exec: function(/*s*/) {return null;}};
+    }
+
+    compileMode(language);
+  }
+
+  /*
+  Core highlighting function. Accepts a language name, or an alias, and a
+  string with the code to highlight. Returns an object with the following
+  properties:
+
+  - relevance (int)
+  - value (an HTML string with highlighting markup)
+
+  */
+  function highlight(name, value, ignore_illegals, continuation) {
+
+    function escapeRe(value) {
+      return new RegExp(value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'm');
+    }
+
+    function subMode(lexeme, mode) {
+      var i, length;
+
+      for (i = 0, length = mode.contains.length; i < length; i++) {
+        if (testRe(mode.contains[i].beginRe, lexeme)) {
+          if (mode.contains[i].endSameAsBegin) {
+            mode.contains[i].endRe = escapeRe( mode.contains[i].beginRe.exec(lexeme)[0] );
+          }
+          return mode.contains[i];
+        }
+      }
+    }
+
+    function endOfMode(mode, lexeme) {
+      if (testRe(mode.endRe, lexeme)) {
+        while (mode.endsParent && mode.parent) {
+          mode = mode.parent;
+        }
+        return mode;
+      }
+      if (mode.endsWithParent) {
+        return endOfMode(mode.parent, lexeme);
+      }
+    }
+
+    function isIllegal(lexeme, mode) {
+      return !ignore_illegals && testRe(mode.illegalRe, lexeme);
+    }
+
+    function keywordMatch(mode, match) {
+      var match_str = language.case_insensitive ? match[0].toLowerCase() : match[0];
+      return mode.keywords.hasOwnProperty(match_str) && mode.keywords[match_str];
+    }
+
+    function buildSpan(classname, insideSpan, leaveOpen, noPrefix) {
+      var classPrefix = noPrefix ? '' : options.classPrefix,
+          openSpan    = '<span class="' + classPrefix,
+          closeSpan   = leaveOpen ? '' : spanEndTag
+
+      openSpan += classname + '">';
+
+      return openSpan + insideSpan + closeSpan;
+    }
+
+    function processKeywords() {
+      var keyword_match, last_index, match, result;
+
+      if (!top.keywords)
+        return escape(mode_buffer);
+
+      result = '';
+      last_index = 0;
+      top.lexemesRe.lastIndex = 0;
+      match = top.lexemesRe.exec(mode_buffer);
+
+      while (match) {
+        result += escape(mode_buffer.substring(last_index, match.index));
+        keyword_match = keywordMatch(top, match);
+        if (keyword_match) {
+          relevance += keyword_match[1];
+          result += buildSpan(keyword_match[0], escape(match[0]));
+        } else {
+          result += escape(match[0]);
+        }
+        last_index = top.lexemesRe.lastIndex;
+        match = top.lexemesRe.exec(mode_buffer);
+      }
+      return result + escape(mode_buffer.substr(last_index));
+    }
+
+    function processSubLanguage() {
+      var explicit = typeof top.subLanguage === 'string';
+      if (explicit && !languages[top.subLanguage]) {
+        return escape(mode_buffer);
+      }
+
+      var result = explicit ?
+                   highlight(top.subLanguage, mode_buffer, true, continuations[top.subLanguage]) :
+                   highlightAuto(mode_buffer, top.subLanguage.length ? top.subLanguage : undefined);
+
+      // Counting embedded language score towards the host language may be disabled
+      // with zeroing the containing mode relevance. Usecase in point is Markdown that
+      // allows XML everywhere and makes every XML snippet to have a much larger Markdown
+      // score.
+      if (top.relevance > 0) {
+        relevance += result.relevance;
+      }
+      if (explicit) {
+        continuations[top.subLanguage] = result.top;
+      }
+      return buildSpan(result.language, result.value, false, true);
+    }
+
+    function processBuffer() {
+      result += (top.subLanguage != null ? processSubLanguage() : processKeywords());
+      mode_buffer = '';
+    }
+
+    function startNewMode(mode) {
+      result += mode.className? buildSpan(mode.className, '', true): '';
+      top = Object.create(mode, {parent: {value: top}});
+    }
+
+    function processLexeme(buffer, lexeme) {
+
+      mode_buffer += buffer;
+
+      if (lexeme == null) {
+        processBuffer();
+        return 0;
+      }
+
+      var new_mode = subMode(lexeme, top);
+      if (new_mode) {
+        if (new_mode.skip) {
+          mode_buffer += lexeme;
+        } else {
+          if (new_mode.excludeBegin) {
+            mode_buffer += lexeme;
+          }
+          processBuffer();
+          if (!new_mode.returnBegin && !new_mode.excludeBegin) {
+            mode_buffer = lexeme;
+          }
+        }
+        startNewMode(new_mode, lexeme);
+        return new_mode.returnBegin ? 0 : lexeme.length;
+      }
+
+      var end_mode = endOfMode(top, lexeme);
+      if (end_mode) {
+        var origin = top;
+        if (origin.skip) {
+          mode_buffer += lexeme;
+        } else {
+          if (!(origin.returnEnd || origin.excludeEnd)) {
+            mode_buffer += lexeme;
+          }
+          processBuffer();
+          if (origin.excludeEnd) {
+            mode_buffer = lexeme;
+          }
+        }
+        do {
+          if (top.className) {
+            result += spanEndTag;
+          }
+          if (!top.skip && !top.subLanguage) {
+            relevance += top.relevance;
+          }
+          top = top.parent;
+        } while (top !== end_mode.parent);
+        if (end_mode.starts) {
+          if (end_mode.endSameAsBegin) {
+            end_mode.starts.endRe = end_mode.endRe;
+          }
+          startNewMode(end_mode.starts, '');
+        }
+        return origin.returnEnd ? 0 : lexeme.length;
+      }
+
+      if (isIllegal(lexeme, top))
+        throw new Error('Illegal lexeme "' + lexeme + '" for mode "' + (top.className || '<unnamed>') + '"');
+
+      /*
+      Parser should not reach this point as all types of lexemes should be caught
+      earlier, but if it does due to some bug make sure it advances at least one
+      character forward to prevent infinite looping.
+      */
+      mode_buffer += lexeme;
+      return lexeme.length || 1;
+    }
+
+    var language = getLanguage(name);
+    if (!language) {
+      throw new Error('Unknown language: "' + name + '"');
+    }
+
+    compileLanguage(language);
+    var top = continuation || language;
+    var continuations = {}; // keep continuations for sub-languages
+    var result = '', current;
+    for(current = top; current !== language; current = current.parent) {
+      if (current.className) {
+        result = buildSpan(current.className, '', true) + result;
+      }
+    }
+    var mode_buffer = '';
+    var relevance = 0;
+    try {
+      var match, count, index = 0;
+      while (true) {
+        top.terminators.lastIndex = index;
+        match = top.terminators.exec(value);
+        if (!match)
+          break;
+        count = processLexeme(value.substring(index, match.index), match[0]);
+        index = match.index + count;
+      }
+      processLexeme(value.substr(index));
+      for(current = top; current.parent; current = current.parent) { // close dangling modes
+        if (current.className) {
+          result += spanEndTag;
+        }
+      }
+      return {
+        relevance: relevance,
+        value: result,
+        language: name,
+        top: top
+      };
+    } catch (e) {
+      if (e.message && e.message.indexOf('Illegal') !== -1) {
+        return {
+          relevance: 0,
+          value: escape(value)
+        };
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  /*
+  Highlighting with language detection. Accepts a string with the code to
+  highlight. Returns an object with the following properties:
+
+  - language (detected language)
+  - relevance (int)
+  - value (an HTML string with highlighting markup)
+  - second_best (object with the same structure for second-best heuristically
+    detected language, may be absent)
+
+  */
+  function highlightAuto(text, languageSubset) {
+    languageSubset = languageSubset || options.languages || objectKeys(languages);
+    var result = {
+      relevance: 0,
+      value: escape(text)
+    };
+    var second_best = result;
+    languageSubset.filter(getLanguage).filter(autoDetection).forEach(function(name) {
+      var current = highlight(name, text, false);
+      current.language = name;
+      if (current.relevance > second_best.relevance) {
+        second_best = current;
+      }
+      if (current.relevance > result.relevance) {
+        second_best = result;
+        result = current;
+      }
+    });
+    if (second_best.language) {
+      result.second_best = second_best;
+    }
+    return result;
+  }
+
+  /*
+  Post-processing of the highlighted markup:
+
+  - replace TABs with something more useful
+  - replace real line-breaks with '<br>' for non-pre containers
+
+  */
+  function fixMarkup(value) {
+    return !(options.tabReplace || options.useBR)
+      ? value
+      : value.replace(fixMarkupRe, function(match, p1) {
+          if (options.useBR && match === '\n') {
+            return '<br>';
+          } else if (options.tabReplace) {
+            return p1.replace(/\t/g, options.tabReplace);
+          }
+          return '';
+      });
+  }
+
+  function buildClassName(prevClassName, currentLang, resultLang) {
+    var language = currentLang ? aliases[currentLang] : resultLang,
+        result   = [prevClassName.trim()];
+
+    if (!prevClassName.match(/\bhljs\b/)) {
+      result.push('hljs');
+    }
+
+    if (prevClassName.indexOf(language) === -1) {
+      result.push(language);
+    }
+
+    return result.join(' ').trim();
+  }
+
+  /*
+  Applies highlighting to a DOM node containing code. Accepts a DOM node and
+  two optional parameters for fixMarkup.
+  */
+  function highlightBlock(block) {
+    var node, originalStream, result, resultNode, text;
+    var language = blockLanguage(block);
+
+    if (isNotHighlighted(language))
+        return;
+
+    if (options.useBR) {
+      node = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+      node.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ \/]*>/g, '\n');
+    } else {
+      node = block;
+    }
+    text = node.textContent;
+    result = language ? highlight(language, text, true) : highlightAuto(text);
+
+    originalStream = nodeStream(node);
+    if (originalStream.length) {
+      resultNode = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+      resultNode.innerHTML = result.value;
+      result.value = mergeStreams(originalStream, nodeStream(resultNode), text);
+    }
+    result.value = fixMarkup(result.value);
+
+    block.innerHTML = result.value;
+    block.className = buildClassName(block.className, language, result.language);
+    block.result = {
+      language: result.language,
+      re: result.relevance
+    };
+    if (result.second_best) {
+      block.second_best = {
+        language: result.second_best.language,
+        re: result.second_best.relevance
+      };
+    }
+  }
+
+  /*
+  Updates highlight.js global options with values passed in the form of an object.
+  */
+  function configure(user_options) {
+    options = inherit(options, user_options);
+  }
+
+  /*
+  Applies highlighting to all <pre><code>..</code></pre> blocks on a page.
+  */
+  function initHighlighting() {
+    if (initHighlighting.called)
+      return;
+    initHighlighting.called = true;
+
+    var blocks = document.querySelectorAll('pre code');
+    ArrayProto.forEach.call(blocks, highlightBlock);
+  }
+
+  /*
+  Attaches highlighting to the page load event.
+  */
+  function initHighlightingOnLoad() {
+    addEventListener('DOMContentLoaded', initHighlighting, false);
+    addEventListener('load', initHighlighting, false);
+  }
+
+  function registerLanguage(name, language) {
+    var lang = languages[name] = language(hljs);
+    if (lang.aliases) {
+      lang.aliases.forEach(function(alias) {aliases[alias] = name;});
+    }
+  }
+
+  function listLanguages() {
+    return objectKeys(languages);
+  }
+
+  function getLanguage(name) {
+    name = (name || '').toLowerCase();
+    return languages[name] || languages[aliases[name]];
+  }
+
+  function autoDetection(name) {
+    var lang = getLanguage(name);
+    return lang && !lang.disableAutodetect;
+  }
+
+  /* Interface definition */
+
+  hljs.highlight = highlight;
+  hljs.highlightAuto = highlightAuto;
+  hljs.fixMarkup = fixMarkup;
+  hljs.highlightBlock = highlightBlock;
+  hljs.configure = configure;
+  hljs.initHighlighting = initHighlighting;
+  hljs.initHighlightingOnLoad = initHighlightingOnLoad;
+  hljs.registerLanguage = registerLanguage;
+  hljs.listLanguages = listLanguages;
+  hljs.getLanguage = getLanguage;
+  hljs.autoDetection = autoDetection;
+  hljs.inherit = inherit;
+
+  // Common regexps
+  hljs.IDENT_RE = '[a-zA-Z]\\w*';
+  hljs.UNDERSCORE_IDENT_RE = '[a-zA-Z_]\\w*';
+  hljs.NUMBER_RE = '\\b\\d+(\\.\\d+)?';
+  hljs.C_NUMBER_RE = '(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)'; // 0x..., 0..., decimal, float
+  hljs.BINARY_NUMBER_RE = '\\b(0b[01]+)'; // 0b...
+  hljs.RE_STARTERS_RE = '!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~';
+
+  // Common modes
+  hljs.BACKSLASH_ESCAPE = {
+    begin: '\\\\[\\s\\S]', relevance: 0
+  };
+  hljs.APOS_STRING_MODE = {
+    className: 'string',
+    begin: '\'', end: '\'',
+    illegal: '\\n',
+    contains: [hljs.BACKSLASH_ESCAPE]
+  };
+  hljs.QUOTE_STRING_MODE = {
+    className: 'string',
+    begin: '"', end: '"',
+    illegal: '\\n',
+    contains: [hljs.BACKSLASH_ESCAPE]
+  };
+  hljs.PHRASAL_WORDS_MODE = {
+    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
+  };
+  hljs.COMMENT = function (begin, end, inherits) {
+    var mode = hljs.inherit(
+      {
+        className: 'comment',
+        begin: begin, end: end,
+        contains: []
+      },
+      inherits || {}
+    );
+    mode.contains.push(hljs.PHRASAL_WORDS_MODE);
+    mode.contains.push({
+      className: 'doctag',
+      begin: '(?:TODO|FIXME|NOTE|BUG|XXX):',
+      relevance: 0
+    });
+    return mode;
+  };
+  hljs.C_LINE_COMMENT_MODE = hljs.COMMENT('//', '$');
+  hljs.C_BLOCK_COMMENT_MODE = hljs.COMMENT('/\\*', '\\*/');
+  hljs.HASH_COMMENT_MODE = hljs.COMMENT('#', '$');
+  hljs.NUMBER_MODE = {
+    className: 'number',
+    begin: hljs.NUMBER_RE,
+    relevance: 0
+  };
+  hljs.C_NUMBER_MODE = {
+    className: 'number',
+    begin: hljs.C_NUMBER_RE,
+    relevance: 0
+  };
+  hljs.BINARY_NUMBER_MODE = {
+    className: 'number',
+    begin: hljs.BINARY_NUMBER_RE,
+    relevance: 0
+  };
+  hljs.CSS_NUMBER_MODE = {
+    className: 'number',
+    begin: hljs.NUMBER_RE + '(' +
+      '%|em|ex|ch|rem'  +
+      '|vw|vh|vmin|vmax' +
+      '|cm|mm|in|pt|pc|px' +
+      '|deg|grad|rad|turn' +
+      '|s|ms' +
+      '|Hz|kHz' +
+      '|dpi|dpcm|dppx' +
+      ')?',
+    relevance: 0
+  };
+  hljs.REGEXP_MODE = {
+    className: 'regexp',
+    begin: /\//, end: /\/[gimuy]*/,
+    illegal: /\n/,
+    contains: [
+      hljs.BACKSLASH_ESCAPE,
+      {
+        begin: /\[/, end: /\]/,
+        relevance: 0,
+        contains: [hljs.BACKSLASH_ESCAPE]
+      }
+    ]
+  };
+  hljs.TITLE_MODE = {
+    className: 'title',
+    begin: hljs.IDENT_RE,
+    relevance: 0
+  };
+  hljs.UNDERSCORE_TITLE_MODE = {
+    className: 'title',
+    begin: hljs.UNDERSCORE_IDENT_RE,
+    relevance: 0
+  };
+  hljs.METHOD_GUARD = {
+    // excludes method names from keyword processing
+    begin: '\\.\\s*' + hljs.UNDERSCORE_IDENT_RE,
+    relevance: 0
+  };
+
+  return hljs;
+}));
+
+},{}],3:[function(require,module,exports){
+module.exports = function(hljs) {
+  var KEYWORDS = {
+    keyword:
+      'and elif is global as in if from raise for except finally print import pass return ' +
+      'exec else break not with class assert yield try while continue del or def lambda ' +
+      'async await nonlocal|10 None True False',
+    built_in:
+      'Ellipsis NotImplemented'
+  };
+  var PROMPT = {
+    className: 'meta',  begin: /^(>>>|\.\.\.) /
+  };
+  var SUBST = {
+    className: 'subst',
+    begin: /\{/, end: /\}/,
+    keywords: KEYWORDS,
+    illegal: /#/
+  };
+  var STRING = {
+    className: 'string',
+    contains: [hljs.BACKSLASH_ESCAPE],
+    variants: [
+      {
+        begin: /(u|b)?r?'''/, end: /'''/,
+        contains: [hljs.BACKSLASH_ESCAPE, PROMPT],
+        relevance: 10
+      },
+      {
+        begin: /(u|b)?r?"""/, end: /"""/,
+        contains: [hljs.BACKSLASH_ESCAPE, PROMPT],
+        relevance: 10
+      },
+      {
+        begin: /(fr|rf|f)'''/, end: /'''/,
+        contains: [hljs.BACKSLASH_ESCAPE, PROMPT, SUBST]
+      },
+      {
+        begin: /(fr|rf|f)"""/, end: /"""/,
+        contains: [hljs.BACKSLASH_ESCAPE, PROMPT, SUBST]
+      },
+      {
+        begin: /(u|r|ur)'/, end: /'/,
+        relevance: 10
+      },
+      {
+        begin: /(u|r|ur)"/, end: /"/,
+        relevance: 10
+      },
+      {
+        begin: /(b|br)'/, end: /'/
+      },
+      {
+        begin: /(b|br)"/, end: /"/
+      },
+      {
+        begin: /(fr|rf|f)'/, end: /'/,
+        contains: [hljs.BACKSLASH_ESCAPE, SUBST]
+      },
+      {
+        begin: /(fr|rf|f)"/, end: /"/,
+        contains: [hljs.BACKSLASH_ESCAPE, SUBST]
+      },
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE
+    ]
+  };
+  var NUMBER = {
+    className: 'number', relevance: 0,
+    variants: [
+      {begin: hljs.BINARY_NUMBER_RE + '[lLjJ]?'},
+      {begin: '\\b(0o[0-7]+)[lLjJ]?'},
+      {begin: hljs.C_NUMBER_RE + '[lLjJ]?'}
+    ]
+  };
+  var PARAMS = {
+    className: 'params',
+    begin: /\(/, end: /\)/,
+    contains: ['self', PROMPT, NUMBER, STRING]
+  };
+  SUBST.contains = [STRING, NUMBER, PROMPT];
+  return {
+    aliases: ['py', 'gyp'],
+    keywords: KEYWORDS,
+    illegal: /(<\/|->|\?)|=>/,
+    contains: [
+      PROMPT,
+      NUMBER,
+      STRING,
+      hljs.HASH_COMMENT_MODE,
+      {
+        variants: [
+          {className: 'function', beginKeywords: 'def'},
+          {className: 'class', beginKeywords: 'class'}
+        ],
+        end: /:/,
+        illegal: /[${=;\n,]/,
+        contains: [
+          hljs.UNDERSCORE_TITLE_MODE,
+          PARAMS,
+          {
+            begin: /->/, endsWithParent: true,
+            keywords: 'None'
+          }
+        ]
+      },
+      {
+        className: 'meta',
+        begin: /^[\t ]*@/, end: /$/
+      },
+      {
+        begin: /\b(print|exec)\(/ // don’t highlight keywords-turned-functions in Python 3
+      }
+    ]
+  };
+};
+},{}],4:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -108,7 +1060,7 @@ var supportsGoWithoutReloadUsingHash = exports.supportsGoWithoutReloadUsingHash 
 var isExtraneousPopstateEvent = exports.isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
   return event.state === undefined && navigator.userAgent.indexOf('CriOS') === -1;
 };
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -187,7 +1139,7 @@ var createLocation = exports.createLocation = function createLocation(path, stat
 var locationsAreEqual = exports.locationsAreEqual = function locationsAreEqual(a, b) {
   return a.pathname === b.pathname && a.search === b.search && a.hash === b.hash && a.key === b.key && (0, _valueEqual2.default)(a.state, b.state);
 };
-},{"./PathUtils":4,"resolve-pathname":60,"value-equal":67}],4:[function(require,module,exports){
+},{"./PathUtils":6,"resolve-pathname":62,"value-equal":69}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -249,7 +1201,7 @@ var createPath = exports.createPath = function createPath(location) {
 
   return path;
 };
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -557,7 +1509,7 @@ var createBrowserHistory = function createBrowserHistory() {
 };
 
 exports.default = createBrowserHistory;
-},{"./DOMUtils":2,"./LocationUtils":3,"./PathUtils":4,"./createTransitionManager":8,"invariant":12,"warning":10}],6:[function(require,module,exports){
+},{"./DOMUtils":4,"./LocationUtils":5,"./PathUtils":6,"./createTransitionManager":10,"invariant":14,"warning":12}],8:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -882,7 +1834,7 @@ var createHashHistory = function createHashHistory() {
 };
 
 exports.default = createHashHistory;
-},{"./DOMUtils":2,"./LocationUtils":3,"./PathUtils":4,"./createTransitionManager":8,"invariant":12,"warning":10}],7:[function(require,module,exports){
+},{"./DOMUtils":4,"./LocationUtils":5,"./PathUtils":6,"./createTransitionManager":10,"invariant":14,"warning":12}],9:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1053,7 +2005,7 @@ var createMemoryHistory = function createMemoryHistory() {
 };
 
 exports.default = createMemoryHistory;
-},{"./LocationUtils":3,"./PathUtils":4,"./createTransitionManager":8,"warning":10}],8:[function(require,module,exports){
+},{"./LocationUtils":5,"./PathUtils":6,"./createTransitionManager":10,"warning":12}],10:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1139,7 +2091,7 @@ var createTransitionManager = function createTransitionManager() {
 };
 
 exports.default = createTransitionManager;
-},{"warning":10}],9:[function(require,module,exports){
+},{"warning":12}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1192,7 +2144,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.createBrowserHistory = _createBrowserHistory3.default;
 exports.createHashHistory = _createHashHistory3.default;
 exports.createMemoryHistory = _createMemoryHistory3.default;
-},{"./LocationUtils":3,"./PathUtils":4,"./createBrowserHistory":5,"./createHashHistory":6,"./createMemoryHistory":7}],10:[function(require,module,exports){
+},{"./LocationUtils":5,"./PathUtils":6,"./createBrowserHistory":7,"./createHashHistory":8,"./createMemoryHistory":9}],12:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -1256,7 +2208,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":20}],11:[function(require,module,exports){
+},{"_process":22}],13:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1326,7 +2278,7 @@ function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
 
 module.exports = hoistNonReactStatics;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1379,7 +2331,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":20}],13:[function(require,module,exports){
+},{"_process":22}],15:[function(require,module,exports){
 (function (global){
 /**
  * Lodash (Custom Build) <https://lodash.com/>
@@ -1538,7 +2490,7 @@ function isObject(value) {
 module.exports = isFunction;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * lodash 3.0.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -1577,7 +2529,7 @@ function isObject(value) {
 
 module.exports = isObject;
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
@@ -1744,7 +2696,7 @@ function toNumber(value) {
 
 module.exports = toNumber;
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -1836,7 +2788,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var isarray = require('isarray')
 
 /**
@@ -2264,12 +3216,12 @@ function pathToRegexp (path, keys, options) {
   return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
 }
 
-},{"isarray":18}],18:[function(require,module,exports){
+},{"isarray":20}],20:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (global){
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
@@ -4813,7 +5765,7 @@ return Popper;
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -4999,7 +5951,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -5094,7 +6046,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":25,"_process":20}],22:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":27,"_process":22}],24:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -5155,7 +6107,7 @@ module.exports = function() {
   return ReactPropTypes;
 };
 
-},{"./lib/ReactPropTypesSecret":25}],23:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":27}],25:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -5714,7 +6666,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 };
 
 }).call(this,require('_process'))
-},{"./checkPropTypes":21,"./lib/ReactPropTypesSecret":25,"_process":20,"object-assign":16}],24:[function(require,module,exports){
+},{"./checkPropTypes":23,"./lib/ReactPropTypesSecret":27,"_process":22,"object-assign":18}],26:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -5746,7 +6698,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./factoryWithThrowingShims":22,"./factoryWithTypeCheckers":23,"_process":20}],25:[function(require,module,exports){
+},{"./factoryWithThrowingShims":24,"./factoryWithTypeCheckers":25,"_process":22}],27:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -5760,7 +6712,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 (function (process){
 /** @license React v16.6.0
  * react-dom.development.js
@@ -24654,7 +25606,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":20,"object-assign":16,"prop-types/checkPropTypes":21,"react":58,"scheduler":65,"scheduler/tracing":66}],27:[function(require,module,exports){
+},{"_process":22,"object-assign":18,"prop-types/checkPropTypes":23,"react":60,"scheduler":67,"scheduler/tracing":68}],29:[function(require,module,exports){
 /** @license React v16.6.0
  * react-dom.production.min.js
  *
@@ -24906,7 +25858,7 @@ void 0:r("40");return a._reactRootContainer?(Ji(function(){Wi(null,null,a,!1,fun
 Pa,Qa,Ga.injectEventPluginsByName,sa,Wa,function(a){Ba(a,Va)},Wb,Xb,ee,Ia]},unstable_createRoot:function(a,b){Ui(a)?void 0:r("278");return new Ti(a,!0,null!=b&&!0===b.hydrate)}};(function(a){var b=a.findFiberByHostInstance;return Cf(n({},a,{findHostInstanceByFiber:function(a){a=Jd(a);return null===a?null:a.stateNode},findFiberByHostInstance:function(a){return b?b(a):null}}))})({findFiberByHostInstance:Na,bundleType:0,version:"16.6.0",rendererPackageName:"react-dom"});
 var mj={default:Yi},nj=mj&&Yi||mj;module.exports=nj.default||nj;
 
-},{"object-assign":16,"react":58,"scheduler":65}],28:[function(require,module,exports){
+},{"object-assign":18,"react":60,"scheduler":67}],30:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24948,7 +25900,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":26,"./cjs/react-dom.production.min.js":27,"_process":20}],29:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":28,"./cjs/react-dom.production.min.js":29,"_process":22}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -25112,7 +26064,7 @@ function polyfill(Component) {
 
 exports.polyfill = polyfill;
 
-},{}],30:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -25583,7 +26535,7 @@ exports.placements = placements;
 exports.Arrow = Arrow;
 
 
-},{"popper.js":19,"prop-types":24,"react":58}],31:[function(require,module,exports){
+},{"popper.js":21,"prop-types":26,"react":60}],33:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25651,7 +26603,7 @@ BrowserRouter.propTypes = {
   children: _propTypes2.default.node
 };
 exports.default = BrowserRouter;
-},{"./Router":39,"history":9,"prop-types":24,"react":58,"warning":68}],32:[function(require,module,exports){
+},{"./Router":41,"history":11,"prop-types":26,"react":60,"warning":70}],34:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25718,7 +26670,7 @@ HashRouter.propTypes = {
   children: _propTypes2.default.node
 };
 exports.default = HashRouter;
-},{"./Router":39,"history":9,"prop-types":24,"react":58,"warning":68}],33:[function(require,module,exports){
+},{"./Router":41,"history":11,"prop-types":26,"react":60,"warning":70}],35:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25836,7 +26788,7 @@ Link.contextTypes = {
   }).isRequired
 };
 exports.default = Link;
-},{"history":9,"invariant":12,"prop-types":24,"react":58}],34:[function(require,module,exports){
+},{"history":11,"invariant":14,"prop-types":26,"react":60}],36:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25848,7 +26800,7 @@ var _MemoryRouter2 = _interopRequireDefault(_MemoryRouter);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _MemoryRouter2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/MemoryRouter":46}],35:[function(require,module,exports){
+},{"react-router/MemoryRouter":48}],37:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25940,7 +26892,7 @@ NavLink.defaultProps = {
 };
 
 exports.default = NavLink;
-},{"./Link":33,"./Route":38,"prop-types":24,"react":58}],36:[function(require,module,exports){
+},{"./Link":35,"./Route":40,"prop-types":26,"react":60}],38:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25952,7 +26904,7 @@ var _Prompt2 = _interopRequireDefault(_Prompt);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Prompt2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/Prompt":47}],37:[function(require,module,exports){
+},{"react-router/Prompt":49}],39:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25964,7 +26916,7 @@ var _Redirect2 = _interopRequireDefault(_Redirect);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Redirect2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/Redirect":48}],38:[function(require,module,exports){
+},{"react-router/Redirect":50}],40:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25976,7 +26928,7 @@ var _Route2 = _interopRequireDefault(_Route);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Route2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/Route":49}],39:[function(require,module,exports){
+},{"react-router/Route":51}],41:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25988,7 +26940,7 @@ var _Router2 = _interopRequireDefault(_Router);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Router2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/Router":50}],40:[function(require,module,exports){
+},{"react-router/Router":52}],42:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26000,7 +26952,7 @@ var _StaticRouter2 = _interopRequireDefault(_StaticRouter);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _StaticRouter2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/StaticRouter":51}],41:[function(require,module,exports){
+},{"react-router/StaticRouter":53}],43:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26012,7 +26964,7 @@ var _Switch2 = _interopRequireDefault(_Switch);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _Switch2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/Switch":52}],42:[function(require,module,exports){
+},{"react-router/Switch":54}],44:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26024,7 +26976,7 @@ var _generatePath2 = _interopRequireDefault(_generatePath);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _generatePath2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/generatePath":53}],43:[function(require,module,exports){
+},{"react-router/generatePath":55}],45:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26102,7 +27054,7 @@ exports.Switch = _Switch3.default;
 exports.generatePath = _generatePath3.default;
 exports.matchPath = _matchPath3.default;
 exports.withRouter = _withRouter3.default;
-},{"./BrowserRouter":31,"./HashRouter":32,"./Link":33,"./MemoryRouter":34,"./NavLink":35,"./Prompt":36,"./Redirect":37,"./Route":38,"./Router":39,"./StaticRouter":40,"./Switch":41,"./generatePath":42,"./matchPath":44,"./withRouter":45}],44:[function(require,module,exports){
+},{"./BrowserRouter":33,"./HashRouter":34,"./Link":35,"./MemoryRouter":36,"./NavLink":37,"./Prompt":38,"./Redirect":39,"./Route":40,"./Router":41,"./StaticRouter":42,"./Switch":43,"./generatePath":44,"./matchPath":46,"./withRouter":47}],46:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26114,7 +27066,7 @@ var _matchPath2 = _interopRequireDefault(_matchPath);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _matchPath2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/matchPath":54}],45:[function(require,module,exports){
+},{"react-router/matchPath":56}],47:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26126,7 +27078,7 @@ var _withRouter2 = _interopRequireDefault(_withRouter);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _withRouter2.default; // Written in this round about way for babel-transform-imports
-},{"react-router/withRouter":55}],46:[function(require,module,exports){
+},{"react-router/withRouter":57}],48:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26194,7 +27146,7 @@ MemoryRouter.propTypes = {
   children: _propTypes2.default.node
 };
 exports.default = MemoryRouter;
-},{"./Router":50,"history":9,"prop-types":24,"react":58,"warning":68}],47:[function(require,module,exports){
+},{"./Router":52,"history":11,"prop-types":26,"react":60,"warning":70}],49:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26285,7 +27237,7 @@ Prompt.contextTypes = {
   }).isRequired
 };
 exports.default = Prompt;
-},{"invariant":12,"prop-types":24,"react":58}],48:[function(require,module,exports){
+},{"invariant":14,"prop-types":26,"react":60}],50:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26417,7 +27369,7 @@ Redirect.contextTypes = {
   }).isRequired
 };
 exports.default = Redirect;
-},{"./generatePath":53,"history":9,"invariant":12,"prop-types":24,"react":58,"warning":68}],49:[function(require,module,exports){
+},{"./generatePath":55,"history":11,"invariant":14,"prop-types":26,"react":60,"warning":70}],51:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26575,7 +27527,7 @@ Route.childContextTypes = {
   router: _propTypes2.default.object.isRequired
 };
 exports.default = Route;
-},{"./matchPath":54,"invariant":12,"prop-types":24,"react":58,"warning":68}],50:[function(require,module,exports){
+},{"./matchPath":56,"invariant":14,"prop-types":26,"react":60,"warning":70}],52:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26695,7 +27647,7 @@ Router.childContextTypes = {
   router: _propTypes2.default.object.isRequired
 };
 exports.default = Router;
-},{"invariant":12,"prop-types":24,"react":58,"warning":68}],51:[function(require,module,exports){
+},{"invariant":14,"prop-types":26,"react":60,"warning":70}],53:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26865,7 +27817,7 @@ StaticRouter.childContextTypes = {
   router: _propTypes2.default.object.isRequired
 };
 exports.default = StaticRouter;
-},{"./Router":50,"history":9,"invariant":12,"prop-types":24,"react":58,"warning":68}],52:[function(require,module,exports){
+},{"./Router":52,"history":11,"invariant":14,"prop-types":26,"react":60,"warning":70}],54:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26960,7 +27912,7 @@ Switch.propTypes = {
   location: _propTypes2.default.object
 };
 exports.default = Switch;
-},{"./matchPath":54,"invariant":12,"prop-types":24,"react":58,"warning":68}],53:[function(require,module,exports){
+},{"./matchPath":56,"invariant":14,"prop-types":26,"react":60,"warning":70}],55:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -27006,7 +27958,7 @@ var generatePath = function generatePath() {
 };
 
 exports.default = generatePath;
-},{"path-to-regexp":17}],54:[function(require,module,exports){
+},{"path-to-regexp":19}],56:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -27087,7 +28039,7 @@ var matchPath = function matchPath(pathname) {
 };
 
 exports.default = matchPath;
-},{"path-to-regexp":17}],55:[function(require,module,exports){
+},{"path-to-regexp":19}],57:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -27141,7 +28093,7 @@ var withRouter = function withRouter(Component) {
 };
 
 exports.default = withRouter;
-},{"./Route":49,"hoist-non-react-statics":11,"prop-types":24,"react":58}],56:[function(require,module,exports){
+},{"./Route":51,"hoist-non-react-statics":13,"prop-types":26,"react":60}],58:[function(require,module,exports){
 (function (process){
 /** @license React v16.6.0
  * react.development.js
@@ -28885,7 +29837,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":20,"object-assign":16,"prop-types/checkPropTypes":21}],57:[function(require,module,exports){
+},{"_process":22,"object-assign":18,"prop-types/checkPropTypes":23}],59:[function(require,module,exports){
 /** @license React v16.6.0
  * react.production.min.js
  *
@@ -28911,7 +29863,7 @@ _currentValue:a,_currentValue2:a,Provider:null,Consumer:null};a.Provider={$$type
 g=a.key,h=a.ref,f=a._owner;if(null!=b){void 0!==b.ref&&(h=b.ref,f=K.current);void 0!==b.key&&(g=""+b.key);var l=void 0;a.type&&a.type.defaultProps&&(l=a.type.defaultProps);for(c in b)L.call(b,c)&&!M.hasOwnProperty(c)&&(d[c]=void 0===b[c]&&void 0!==l?l[c]:b[c])}c=arguments.length-2;if(1===c)d.children=e;else if(1<c){l=Array(c);for(var m=0;m<c;m++)l[m]=arguments[m+2];d.children=l}return{$$typeof:p,type:a.type,key:g,ref:h,props:d,_owner:f}},createFactory:function(a){var b=N.bind(null,a);b.type=a;return b},
 isValidElement:O,version:"16.6.0",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:K,assign:k}},Y={default:X},Z=Y&&X||Y;module.exports=Z.default||Z;
 
-},{"object-assign":16}],58:[function(require,module,exports){
+},{"object-assign":18}],60:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -28922,7 +29874,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":56,"./cjs/react.production.min.js":57,"_process":20}],59:[function(require,module,exports){
+},{"./cjs/react.development.js":58,"./cjs/react.production.min.js":59,"_process":22}],61:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -35211,7 +36163,7 @@ exports.Util = utils;
 
 
 }).call(this,require('_process'))
-},{"_process":20,"classnames":1,"lodash.isfunction":13,"lodash.isobject":14,"lodash.tonumber":15,"prop-types":24,"react":58,"react-dom":28,"react-lifecycles-compat":29,"react-popper":30}],60:[function(require,module,exports){
+},{"_process":22,"classnames":1,"lodash.isfunction":15,"lodash.isobject":16,"lodash.tonumber":17,"prop-types":26,"react":60,"react-dom":30,"react-lifecycles-compat":31,"react-popper":32}],62:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -35286,7 +36238,7 @@ function resolvePathname(to) {
 
 exports.default = resolvePathname;
 module.exports = exports['default'];
-},{}],61:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 (function (process){
 /** @license React v16.6.0
  * scheduler-tracing.development.js
@@ -35706,7 +36658,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 }
 
 }).call(this,require('_process'))
-},{"_process":20}],62:[function(require,module,exports){
+},{"_process":22}],64:[function(require,module,exports){
 /** @license React v16.6.0
  * scheduler-tracing.production.min.js
  *
@@ -35718,7 +36670,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 
 'use strict';Object.defineProperty(exports,"__esModule",{value:!0});var b=0;exports.__interactionsRef=null;exports.__subscriberRef=null;exports.unstable_clear=function(a){return a()};exports.unstable_getCurrent=function(){return null};exports.unstable_getThreadID=function(){return++b};exports.unstable_trace=function(a,d,c){return c()};exports.unstable_wrap=function(a){return a};exports.unstable_subscribe=function(){};exports.unstable_unsubscribe=function(){};
 
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function (process){
 /** @license React v16.6.0
  * scheduler.development.js
@@ -36376,7 +37328,7 @@ exports.unstable_getCurrentPriorityLevel = unstable_getCurrentPriorityLevel;
 }
 
 }).call(this,require('_process'))
-},{"_process":20}],64:[function(require,module,exports){
+},{"_process":22}],66:[function(require,module,exports){
 /** @license React v16.6.0
  * scheduler.production.min.js
  *
@@ -36397,7 +37349,7 @@ exports.unstable_UserBlockingPriority=2;exports.unstable_NormalPriority=3;export
 exports.unstable_scheduleCallback=function(a,b){var d=-1!==h?h:exports.unstable_now();if("object"===typeof b&&null!==b&&"number"===typeof b.timeout)b=d+b.timeout;else switch(f){case 1:b=d+-1;break;case 2:b=d+250;break;case 4:b=d+1073741823;break;default:b=d+5E3}a={callback:a,priorityLevel:f,expirationTime:b,next:null,previous:null};if(null===c)c=a.next=a.previous=a,r();else{d=null;var e=c;do{if(e.expirationTime>b){d=e;break}e=e.next}while(e!==c);null===d?d=c:d===c&&(c=a,r());b=d.previous;b.next=d.previous=
 a;a.next=d;a.previous=b}return a};exports.unstable_cancelCallback=function(a){var b=a.next;if(null!==b){if(b===a)c=null;else{a===c&&(c=b);var d=a.previous;d.next=b;b.previous=d}a.next=a.previous=null}};exports.unstable_wrapCallback=function(a){var b=f;return function(){var d=f,e=h;f=b;h=exports.unstable_now();try{return a.apply(this,arguments)}finally{f=d,h=e,x()}}};exports.unstable_getCurrentPriorityLevel=function(){return f};
 
-},{}],65:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -36408,7 +37360,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/scheduler.development.js":63,"./cjs/scheduler.production.min.js":64,"_process":20}],66:[function(require,module,exports){
+},{"./cjs/scheduler.development.js":65,"./cjs/scheduler.production.min.js":66,"_process":22}],68:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -36419,7 +37371,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/scheduler-tracing.development.js":61,"./cjs/scheduler-tracing.production.min.js":62,"_process":20}],67:[function(require,module,exports){
+},{"./cjs/scheduler-tracing.development.js":63,"./cjs/scheduler-tracing.production.min.js":64,"_process":22}],69:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36463,7 +37415,7 @@ function valueEqual(a, b) {
 
 exports.default = valueEqual;
 module.exports = exports['default'];
-},{}],68:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -36529,7 +37481,7 @@ if (__DEV__) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":20}],69:[function(require,module,exports){
+},{"_process":22}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36549,15 +37501,19 @@ var _home = require("./home");
 
 var _contact = require("./contact");
 
+var _projects = require("./projects");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import { Projects } from "./projects";
 var links = [{
   text: "Home",
   dest: "/",
   component: _home.Home
-}, //  { text: "Projects", dest: "/projects", component: Projects },
-{
+}, {
+  text: "Projects",
+  dest: "/projects",
+  component: _projects.Projects
+}, {
   text: "Contact",
   dest: "/contact",
   component: _contact.Contact
@@ -36580,7 +37536,7 @@ var App = function App() {
 
 exports.App = App;
 
-},{"./Nav.js":71,"./contact":73,"./home":76,"react":58,"react-router-dom":43,"reactstrap":59}],70:[function(require,module,exports){
+},{"./Nav.js":74,"./contact":76,"./home":79,"./projects":90,"react":60,"react-router-dom":45,"reactstrap":61}],72:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36607,11 +37563,10 @@ var CatBox = function CatBox(_ref) {
     className: "shadow"
   }, _react.default.createElement(_reactstrap.CardHeader, {
     tag: "h3",
-    className: "text-center",
-    style: {
-      fontFamily: "monospace"
-    }
-  }, title), children))));
+    className: "text-center"
+  }, _react.default.createElement("span", {
+    className: "mono"
+  }, title)), children))));
 };
 
 exports.CatBox = CatBox;
@@ -36620,7 +37575,55 @@ CatBox.propTypes = {
   children: _propTypes.default.any
 };
 
-},{"prop-types":24,"react":58,"reactstrap":59}],71:[function(require,module,exports){
+},{"prop-types":26,"react":60,"reactstrap":61}],73:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ContactCard = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactstrap = require("reactstrap");
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ContactCard = function ContactCard(_ref) {
+  var icon = _ref.icon,
+      label = _ref.label,
+      link = _ref.link,
+      color = _ref.color;
+  return _react.default.createElement(_reactstrap.Card, {
+    className: "text-center shadow contact-card",
+    tag: "a",
+    href: link,
+    target: "_blank"
+  }, _react.default.createElement(_reactstrap.CardBody, null, _react.default.createElement(_reactstrap.CardTitle, null, _react.default.createElement("i", {
+    className: "".concat(icon, " contact-icon"),
+    style: {
+      "backgroundColor": color
+    }
+  })), _react.default.createElement(_reactstrap.CardSubtitle, {
+    style: {
+      "color": color
+    }
+  }, label, "\xA0", _react.default.createElement("i", {
+    className: "fas fa-external-link-alt"
+  }))));
+};
+
+exports.ContactCard = ContactCard;
+ContactCard.propTypes = {
+  icon: _propTypes.default.string.isRequired,
+  label: _propTypes.default.string.isRequired,
+  link: _propTypes.default.string.isRequired,
+  color: _propTypes.default.string
+};
+
+},{"prop-types":26,"react":60,"reactstrap":61}],74:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36729,55 +37732,68 @@ function (_React$Component) {
 
 exports.Nav = MyNav;
 
-},{"prop-types":24,"react":58,"react-router-dom":43,"reactstrap":59}],72:[function(require,module,exports){
+},{"prop-types":26,"react":60,"react-router-dom":45,"reactstrap":61}],75:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ContactCard = void 0;
+exports.SkillIcon = exports.LabeledSkillIcon = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _reactstrap = require("reactstrap");
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ContactCard = function ContactCard(_ref) {
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+var SkillIcon = function SkillIcon(_ref) {
   var icon = _ref.icon,
-      title = _ref.title,
-      link = _ref.link,
-      color = _ref.color;
-  return _react.default.createElement(_reactstrap.Card, {
-    className: "text-center shadow contact-card",
-    tag: "a",
-    href: link,
-    target: "_blank"
-  }, _react.default.createElement(_reactstrap.CardBody, null, _react.default.createElement(_reactstrap.CardTitle, null, _react.default.createElement("i", {
-    className: "".concat(icon, " contact-icon"),
+      color = _ref.color,
+      invert = _ref.invert,
+      hoverable = _ref.hoverable,
+      rest = _objectWithoutProperties(_ref, ["icon", "color", "invert", "hoverable"]);
+
+  return _react.default.createElement("div", _extends({}, rest, {
+    className: "skill-col ".concat(hoverable ? "skill-col-hover" : "")
+  }), _react.default.createElement("i", {
+    className: "".concat(icon, " skill-icon"),
     style: {
-      "backgroundColor": color
+      backgroundColor: invert ? "" : color,
+      color: invert ? color : "white"
     }
-  })), _react.default.createElement(_reactstrap.CardSubtitle, {
+  }));
+};
+
+exports.SkillIcon = SkillIcon;
+
+var LabeledSkillIcon = function LabeledSkillIcon(_ref2) {
+  var icon = _ref2.icon,
+      label = _ref2.label,
+      color = _ref2.color,
+      invert = _ref2.invert,
+      hoverable = _ref2.hoverable,
+      rest = _objectWithoutProperties(_ref2, ["icon", "label", "color", "invert", "hoverable"]);
+
+  return _react.default.createElement("div", _extends({}, rest, {
+    className: "skill-col ".concat(hoverable ? "skill-col-hover" : "")
+  }), _react.default.createElement(SkillIcon, {
+    icon: icon,
+    invert: invert,
+    color: color
+  }), _react.default.createElement("p", {
     style: {
       "color": color
     }
-  }, title, "\xA0", _react.default.createElement("i", {
-    className: "fas fa-external-link-alt"
-  }))));
+  }, label));
 };
 
-exports.ContactCard = ContactCard;
-ContactCard.propTypes = {
-  icon: _propTypes.default.string.isRequired,
-  title: _propTypes.default.string.isRequired,
-  link: _propTypes.default.string.isRequired,
-  color: _propTypes.default.string
-};
+exports.LabeledSkillIcon = LabeledSkillIcon;
 
-},{"prop-types":24,"react":58,"reactstrap":59}],73:[function(require,module,exports){
+},{"react":60}],76:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36789,7 +37805,7 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactstrap = require("reactstrap");
 
-var _ContactCard = require("./ContactCard.js");
+var _ContactCard = require("../ContactCard.js");
 
 var _CatBox = require("../CatBox.js");
 
@@ -36799,17 +37815,17 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 var contacts = [{
   icon: "fas fa-envelope",
-  title: "Email",
+  label: "Email",
   color: "red",
   link: "mailto:maxwell.mazzocchi@gmail.com"
 }, {
   icon: "fab fa-github",
-  title: "GitHub",
+  label: "GitHub",
   color: "black",
   link: "https://github.com/mmazzocchi"
 }, {
   icon: "fab fa-linkedin-in",
-  title: "LinkedIn",
+  label: "LinkedIn",
   color: "blue",
   link: "https://www.linkedin.com/in/maxwellmazzocchi/"
 }];
@@ -36823,14 +37839,129 @@ var Contact = function Contact() {
     md: "8"
   }, _react.default.createElement(_reactstrap.CardDeck, null, contacts.map(function (contact) {
     return _react.default.createElement(_ContactCard.ContactCard, _extends({
-      key: "contact-card-".concat(contact.title)
+      key: "contact-card-".concat(contact.label)
     }, contact));
   })))));
 };
 
 exports.Contact = Contact;
 
-},{"../CatBox.js":70,"./ContactCard.js":72,"react":58,"reactstrap":59}],74:[function(require,module,exports){
+},{"../CatBox.js":72,"../ContactCard.js":73,"react":60,"reactstrap":61}],77:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Exp = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var MS_PER_MIN = 1000 * 60;
+var MS_PER_HOUR = MS_PER_MIN * 60;
+var MS_PER_DAY = MS_PER_HOUR * 24;
+var MS_PER_YEAR = MS_PER_DAY * 365;
+var MS_PER_MONTH = MS_PER_DAY * 30;
+var MS_PER_WEEK = MS_PER_DAY * 7;
+
+var Exp =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Exp, _React$Component);
+
+  function Exp(props) {
+    var _this;
+
+    _classCallCheck(this, Exp);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Exp).call(this, props));
+    _this.state = {
+      diff: 0
+    };
+    return _this;
+  }
+
+  _createClass(Exp, [{
+    key: "tick",
+    value: function tick() {
+      var now = new Date();
+      var then = new Date(this.props.date);
+      this.setState({
+        diff: now - then
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      this.interval_id = setInterval(function () {
+        _this2.tick();
+      }, 1000);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearInterval(this.interval_id);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var remainder = this.state.diff;
+      var years = Math.floor(remainder / MS_PER_YEAR);
+      var year_label = " ".concat(years, " year").concat(years == 1 ? "" : "s");
+      remainder -= years * MS_PER_YEAR;
+      var months = Math.floor(remainder / MS_PER_MONTH);
+      var month_label = " ".concat(months, " month").concat(months == 1 ? "" : "s");
+      remainder -= months * MS_PER_MONTH;
+      var weeks = Math.floor(remainder / MS_PER_WEEK);
+      var week_label = " ".concat(weeks, " week").concat(weeks == 1 ? "" : "s");
+      remainder -= weeks * MS_PER_WEEK;
+      var days = Math.floor(remainder / MS_PER_DAY);
+      var day_label = " ".concat(days, " day").concat(days == 1 ? "" : "s");
+      remainder -= days * MS_PER_DAY;
+      var hours = Math.floor(remainder / MS_PER_HOUR);
+      var hour_label = " ".concat(hours, " hour").concat(hours == 1 ? "" : "s");
+      remainder -= hours * MS_PER_HOUR;
+      var mins = Math.floor(remainder / MS_PER_MIN);
+      var min_label = " ".concat(mins, " minute").concat(mins == 1 ? "" : "s");
+      remainder -= mins * MS_PER_MIN;
+      var secs = Math.floor(remainder / 1000);
+      var sec_label = " ".concat(secs, " second").concat(secs == 1 ? "" : "s");
+      return _react.default.createElement(_react.default.Fragment, null, "Software developer with ", "".concat(year_label, ", ").concat(month_label, ", ") + "".concat(week_label, ", ").concat(day_label, ", ") + "".concat(hour_label, ", ").concat(min_label, ", ") + "".concat(sec_label), " of experience.");
+    }
+  }]);
+
+  return Exp;
+}(_react.default.Component);
+
+exports.Exp = Exp;
+Exp.propTypes = {
+  date: _propTypes.default.string.isRequired
+};
+
+},{"prop-types":26,"react":60}],78:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36842,7 +37973,7 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactstrap = require("reactstrap");
 
-var _SkillIcon = require("./SkillIcon.js");
+var _SkillIcon = require("../SkillIcon.js");
 
 var _skills = require("./skills.js");
 
@@ -36949,68 +38080,7 @@ function (_React$Component) {
 
 exports.SkillBar = SkillBar;
 
-},{"./SkillIcon.js":75,"./skills.js":77,"react":58,"reactstrap":59}],75:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SkillIcon = exports.LabeledSkillIcon = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-var SkillIcon = function SkillIcon(_ref) {
-  var icon = _ref.icon,
-      color = _ref.color,
-      invert = _ref.invert,
-      hoverable = _ref.hoverable,
-      rest = _objectWithoutProperties(_ref, ["icon", "color", "invert", "hoverable"]);
-
-  return _react.default.createElement("div", _extends({}, rest, {
-    className: "skill-col ".concat(hoverable ? "skill-col-hover" : "")
-  }), _react.default.createElement("i", {
-    className: "".concat(icon, " skill-icon"),
-    style: {
-      backgroundColor: invert ? "" : color,
-      color: invert ? color : "white"
-    }
-  }));
-};
-
-exports.SkillIcon = SkillIcon;
-
-var LabeledSkillIcon = function LabeledSkillIcon(_ref2) {
-  var icon = _ref2.icon,
-      label = _ref2.label,
-      color = _ref2.color,
-      invert = _ref2.invert,
-      hoverable = _ref2.hoverable,
-      rest = _objectWithoutProperties(_ref2, ["icon", "label", "color", "invert", "hoverable"]);
-
-  return _react.default.createElement("div", _extends({}, rest, {
-    className: "skill-col ".concat(hoverable ? "skill-col-hover" : "")
-  }), _react.default.createElement(SkillIcon, {
-    icon: icon,
-    invert: invert,
-    color: color
-  }), _react.default.createElement("p", {
-    style: {
-      "color": color
-    }
-  }, label));
-};
-
-exports.LabeledSkillIcon = LabeledSkillIcon;
-
-},{"react":58}],76:[function(require,module,exports){
+},{"../SkillIcon.js":75,"./skills.js":80,"react":60,"reactstrap":61}],79:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37044,7 +38114,7 @@ var Home = function Home() {
     md: "6"
   }, _react.default.createElement(_reactstrap.Row, null, _react.default.createElement(_reactstrap.Col, {
     className: "border-bottom"
-  }, _react.default.createElement("h1", null, "Max Mazzocchi"), _react.default.createElement("p", null, "Software Developer, Northern Virginia/Washington DC"))))), _react.default.createElement(_reactstrap.Row, null, _react.default.createElement("p", null)), _react.default.createElement(_SkillBar.SkillBar, null), _react.default.createElement(_CatBox.CatBox, {
+  }, _react.default.createElement("h1", null, "Max Mazzocchi"), _react.default.createElement("p", null, "Software Developer, Northern Virginia/Washington DC"))))), _react.default.createElement(_SkillBar.SkillBar, null), _react.default.createElement(_CatBox.CatBox, {
     title: "$ cat hello.txt"
   }, _react.default.createElement(_reactstrap.CardBody, null, _react.default.createElement(_reactstrap.CardText, null, "Thanks for visiting my homepage! I am a software developer currently located in the Northern Virginia/DC metro area. My professional experience includes software positions in aerospace, defense, research, and development, working on a variety of applications and solutions."), _react.default.createElement(_reactstrap.Button, {
     color: "primary",
@@ -37056,7 +38126,7 @@ var Home = function Home() {
 
 exports.Home = Home;
 
-},{"../CatBox.js":70,"./SkillBar.js":74,"react":58,"react-router-dom":43,"reactstrap":59}],77:[function(require,module,exports){
+},{"../CatBox.js":72,"./SkillBar.js":78,"react":60,"react-router-dom":45,"reactstrap":61}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37067,6 +38137,8 @@ exports.skills = void 0;
 var _react = _interopRequireDefault(require("react"));
 
 var _reactstrap = require("reactstrap");
+
+var _Exp = require("./Exp.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37138,11 +38210,13 @@ var skills = [{
     xs: "6"
   }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Computer Vision"), _react.default.createElement("li", null, "Graphics"), _react.default.createElement("li", null, "Game Dev."), _react.default.createElement("li", null, "Podcasts"), _react.default.createElement("li", null, "Swing Dancing"), _react.default.createElement("li", null, "Baking"))), _react.default.createElement(_reactstrap.Col, {
     xs: "6"
-  }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Artificial Intelligence"), _react.default.createElement("li", null, "Reading"), _react.default.createElement("li", null, "Hiking"), _react.default.createElement("li", null, "Kayaking"), _react.default.createElement("li", null, "History"), _react.default.createElement("li", null, "And more!")))))
+  }, _react.default.createElement("ul", null, _react.default.createElement("li", null, "Artificial Intelligence"), _react.default.createElement("li", null, "Reading"), _react.default.createElement("li", null, "Hiking"), _react.default.createElement("li", null, "Kayaking"), _react.default.createElement("li", null, "History"), _react.default.createElement("li", null, "And more!")))), _react.default.createElement(_reactstrap.CardText, null, _react.default.createElement(_Exp.Exp, {
+    date: "7/7/2014"
+  })))
 }];
 exports.skills = skills;
 
-},{"react":58,"reactstrap":59}],78:[function(require,module,exports){
+},{"./Exp.js":77,"react":60,"reactstrap":61}],81:[function(require,module,exports){
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -37157,4 +38231,475 @@ var app = _react.default.createElement(_App.App, null);
 
 _reactDom.default.render(app, document.getElementById("root"));
 
-},{"./App.js":69,"react":58,"react-dom":28}]},{},[78]);
+},{"./App.js":71,"react":60,"react-dom":30}],82:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CodeBlock = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _highlight = require("highlight.js/lib/highlight");
+
+var _python = _interopRequireDefault(require("highlight.js/lib/languages/python"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+(0, _highlight.registerLanguage)("python", _python.default);
+
+var CodeBlock =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(CodeBlock, _React$Component);
+
+  function CodeBlock() {
+    _classCallCheck(this, CodeBlock);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(CodeBlock).apply(this, arguments));
+  }
+
+  _createClass(CodeBlock, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      (0, _highlight.highlightBlock)(this.node);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      var _this$props = this.props,
+          language = _this$props.language,
+          children = _this$props.children;
+      return _react.default.createElement("pre", {
+        ref: function ref(node) {
+          return _this.node = node;
+        }
+      }, _react.default.createElement("code", {
+        className: language
+      }, children.trim()));
+    }
+  }]);
+
+  return CodeBlock;
+}(_react.default.Component);
+
+exports.CodeBlock = CodeBlock;
+CodeBlock.propTypes = {
+  language: _propTypes.default.string.isRequired,
+  children: _propTypes.default.string
+};
+
+},{"highlight.js/lib/highlight":2,"highlight.js/lib/languages/python":3,"prop-types":26,"react":60}],83:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Project = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactstrap = require("reactstrap");
+
+var _SkillIcon = require("../SkillIcon.js");
+
+var _ContactCard = require("../ContactCard.js");
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+var Project = function Project(_ref) {
+  var id = _ref.id,
+      title = _ref.title,
+      skills = _ref.skills,
+      links = _ref.links,
+      body = _ref.body;
+  return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactstrap.Row, null, _react.default.createElement(_reactstrap.Col, {
+    md: "4"
+  }, _react.default.createElement(_reactstrap.Row, {
+    className: "justify-content-center border-bottom"
+  }, skills.map(function (skill, i) {
+    return _react.default.createElement(_reactstrap.Col, {
+      xs: "4",
+      key: "project-skill-".concat(id, "-").concat(i)
+    }, _react.default.createElement(_SkillIcon.LabeledSkillIcon, _extends({
+      invert: true
+    }, skill)));
+  })), links ? _react.default.createElement(_reactstrap.Row, {
+    className: "justify-content-center"
+  }, _react.default.createElement(_reactstrap.CardDeck, null, links.map(function (link, i) {
+    return _react.default.createElement(_ContactCard.ContactCard, _extends({
+      key: "project-link-".concat(id, "-").concat(i)
+    }, link));
+  }))) : ""), _react.default.createElement(_reactstrap.Col, {
+    md: "8"
+  }, _react.default.createElement(_reactstrap.Card, {
+    className: "shadow"
+  }, _react.default.createElement(_reactstrap.CardBody, null, _react.default.createElement(_reactstrap.CardTitle, {
+    tag: "h3"
+  }, _react.default.createElement("span", {
+    className: "mono"
+  }, title)), body)))));
+};
+
+exports.Project = Project;
+Project.propTypes = {
+  id: _propTypes.default.string.isRequired,
+  title: _propTypes.default.string.isRequired,
+  skills: _propTypes.default.array.isRequired,
+  links: _propTypes.default.array,
+  body: _propTypes.default.any
+};
+
+},{"../ContactCard.js":73,"../SkillIcon.js":75,"prop-types":26,"react":60,"reactstrap":61}],84:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ProjectSelector = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactstrap = require("reactstrap");
+
+var _reactRouterDom = require("react-router-dom");
+
+var _Project = require("./Project.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var ProjectSelector =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ProjectSelector, _React$Component);
+
+  function ProjectSelector(props) {
+    var _this;
+
+    _classCallCheck(this, ProjectSelector);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ProjectSelector).call(this, props));
+
+    _this.props.projects.forEach(function (project) {
+      project.url = "".concat(props.baseUrl, "/").concat(project.id, "/");
+    });
+
+    var state = {
+      url: undefined
+    };
+    _this.state = state;
+    return _this;
+  }
+
+  _createClass(ProjectSelector, [{
+    key: "clicked",
+    value: function clicked(url) {
+      this.setState({
+        url: url
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactstrap.Row, {
+        className: "justify-content-center"
+      }, _react.default.createElement(_reactstrap.Navbar, null, _react.default.createElement(_reactstrap.Nav, {
+        pills: true
+      }, this.props.projects.map(function (_ref) {
+        var id = _ref.id,
+            title = _ref.title,
+            url = _ref.url;
+        return _react.default.createElement(_reactstrap.NavItem, {
+          key: "project-link-".concat(id)
+        }, _react.default.createElement(_reactstrap.NavLink, {
+          tag: _reactRouterDom.Link,
+          to: "".concat(url),
+          active: _this2.state.url == url ? true : false,
+          onClick: function onClick() {
+            _this2.clicked(url);
+          }
+        }, title));
+      })))), this.props.projects.map(function (project) {
+        return _react.default.createElement(_reactRouterDom.Route, {
+          key: "project-".concat(project.id),
+          path: "".concat(project.url, "/"),
+          component: function component() {
+            return _react.default.createElement(_Project.Project, project);
+          }
+        });
+      })));
+    }
+  }]);
+
+  return ProjectSelector;
+}(_react.default.Component);
+
+exports.ProjectSelector = ProjectSelector;
+
+},{"./Project.js":83,"react":60,"react-router-dom":45,"reactstrap":61}],85:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _space_dud = _interopRequireDefault(require("./space_dud.js"));
+
+var _podfeed = _interopRequireDefault(require("./podfeed.js"));
+
+var _warp_racer = _interopRequireDefault(require("./warp_racer.js"));
+
+var _site = _interopRequireDefault(require("./site.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var projects = [_podfeed.default, _space_dud.default, _warp_racer.default, _site.default];
+var _default = projects;
+exports.default = _default;
+
+},{"./podfeed.js":86,"./site.js":87,"./space_dud.js":88,"./warp_racer.js":89}],86:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactstrap = require("reactstrap");
+
+var _CodeBlock = require("../CodeBlock.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var podfeed = {
+  id: "podfeed",
+  title: "podfeed",
+  skills: [{
+    icon: "fab fa-python",
+    label: "Python 3",
+    color: "goldenrod"
+  }],
+  links: [{
+    icon: "fab fa-github",
+    label: "Github Repository",
+    color: "black",
+    link: "https://github.com/mmazzocchi/podfeed"
+  }],
+  body: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactstrap.CardText, null, _react.default.createElement("span", {
+    className: "mono"
+  }, "podfeed"), " is a Python 3 podcast aggregation library. In essence, it's designed to be a scriptable, automatable library for reading a set of RSS feeds, gathering the links for any new episodes, and optionally downloading the audio file itself."), _react.default.createElement(_reactstrap.CardText, null, _react.default.createElement("span", {
+    className: "mono"
+  }, "podfeed"), " will definitely become a pypi package. Any day now."), _react.default.createElement(_CodeBlock.CodeBlock, {
+    language: "python"
+  }, "\nfrom podfeed.parser import parseFeed\n\n# Collect episodes published after May 1st, 2018 \nepisodes = parseFeed(\"https://www.npr.org/rss/podcast.php?id=510289\", 1525132800)\n\n# Write each episode to a file\nfor episode in episodes:\n  episode.writeFile(\"./{0}_{1}.{2}\".format(\n    episode.getTitle(), episode.getDate(), episode.getExt()))\n        "))
+};
+var _default = podfeed;
+exports.default = _default;
+
+},{"../CodeBlock.js":82,"react":60,"reactstrap":61}],87:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactstrap = require("reactstrap");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var site = {
+  id: "site",
+  title: "This Site",
+  skills: [{
+    icon: "fab fa-react",
+    label: "React",
+    color: "royalblue"
+  }, {
+    icon: "fab fa-js",
+    label: "JavaScript",
+    color: "orange"
+  }],
+  links: [{
+    icon: "fab fa-github",
+    label: "Github Repository",
+    color: "black",
+    link: "https://github.com/mmazzocchi/mmazzocchi.github.io"
+  }],
+  body: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactstrap.CardText, null, "This site is built using React, bootstrap, browserify, gulp, and few other things."), _react.default.createElement(_reactstrap.CardText, null, "Hosted through the magic of GitHub static pages!"))
+};
+var _default = site;
+exports.default = _default;
+
+},{"react":60,"reactstrap":61}],88:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactstrap = require("reactstrap");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var space_dud = {
+  id: "spacedud",
+  title: "space-dud",
+  skills: [{
+    icon: "fab fa-node-js",
+    label: "nodeJS",
+    color: "darkolivegreen"
+  }, {
+    icon: "fab fa-js",
+    label: "JavaScript",
+    color: "orange"
+  }],
+  links: [{
+    icon: "fab fa-github",
+    label: "Github Repository",
+    color: "black",
+    link: "https://github.com/mmazzocchi/space-dud"
+  }],
+  body: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactstrap.CardText, null, _react.default.createElement("span", {
+    className: "mono"
+  }, "space-dud"), " is a nodeJS package built to simplify the streaming of events between multiple web clients. It was created to be the underlying pairing and transport mechanism for web-based games that need multiple clients per user. For example, a web-based VR game would need one client to accept input (from a keyboard or game controller) while the other client would be displaying the current game state."))
+};
+var _default = space_dud;
+exports.default = _default;
+
+},{"react":60,"reactstrap":61}],89:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactstrap = require("reactstrap");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var warp_racer = {
+  id: "warpracer",
+  title: "Warp Racer",
+  skills: [{
+    icon: "fab fa-node-js",
+    label: "nodeJS",
+    color: "darkolivegreen"
+  }, {
+    icon: "fab fa-js",
+    label: "JavaScript",
+    color: "orange"
+  }, {
+    icon: "fas fa-cubes",
+    label: "THREE.js",
+    color: "blue"
+  }],
+  body: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactstrap.CardText, null, "Warp Racer is an in-progress multiplayer racing game built on the", _react.default.createElement("span", {
+    className: "mono"
+  }, " space-dud"), " library. It allows multiple users to connect to the server, select a racer, and race on dynamically generated tracks in real-time."), _react.default.createElement(_reactstrap.CardText, null, "Users can play using a keyboard, or mobile device."), _react.default.createElement(_reactstrap.CardImg, {
+    bottom: true,
+    width: "100%",
+    src: "/images/warp_racer.jpg"
+  }))
+};
+var _default = warp_racer;
+exports.default = _default;
+
+},{"react":60,"reactstrap":61}],90:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Projects = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _CatBox = require("../CatBox.js");
+
+var _reactstrap = require("reactstrap");
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _ProjectSelector = require("./ProjectSelector.js");
+
+var _data = _interopRequireDefault(require("./data"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Projects = function Projects(_ref) {
+  var url = _ref.match.url;
+  return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_CatBox.CatBox, {
+    title: "$ cat projects.txt"
+  }, _react.default.createElement(_reactstrap.CardBody, null, _react.default.createElement(_reactstrap.CardText, null, "Please use the links below to peruse some of the projects I work on in my spare time."))), _react.default.createElement(_ProjectSelector.ProjectSelector, {
+    baseUrl: url,
+    projects: _data.default
+  }));
+};
+
+exports.Projects = Projects;
+Projects.propTypes = {
+  match: _propTypes.default.shape({
+    url: _propTypes.default.string.isRequired
+  })
+};
+
+},{"../CatBox.js":72,"./ProjectSelector.js":84,"./data":85,"prop-types":26,"react":60,"reactstrap":61}]},{},[81]);

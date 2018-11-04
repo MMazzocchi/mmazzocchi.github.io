@@ -5,6 +5,7 @@ import {
   Row,
   Col
 } from "reactstrap";
+import { Exp } from "./Exp.js";
 
 const skills = [
   { icon: "fas fa-globe", label: "Web Design", color: "red",
@@ -165,6 +166,9 @@ const skills = [
             </ul>
           </Col>
         </Row>
+        <CardText>
+          <Exp date="7/7/2014" />
+        </CardText>
       </CardBody>
     )
   }

@@ -6,15 +6,15 @@ import {
   Col,
   Row
 } from "reactstrap";
-import { ContactCard } from "./ContactCard.js";
+import { ContactCard } from "../ContactCard.js";
 import { CatBox } from "../CatBox.js";
 
 const contacts = [
-  { icon: "fas fa-envelope", title: "Email", color: "red",
+  { icon: "fas fa-envelope", label: "Email", color: "red",
     link: "mailto:maxwell.mazzocchi@gmail.com" },
-  { icon: "fab fa-github", title: "GitHub", color: "black",
+  { icon: "fab fa-github", label: "GitHub", color: "black",
     link: "https://github.com/mmazzocchi" },
-  { icon: "fab fa-linkedin-in", title: "LinkedIn", color: "blue", 
+  { icon: "fab fa-linkedin-in", label: "LinkedIn", color: "blue", 
     link: "https://www.linkedin.com/in/maxwellmazzocchi/" },
 ]
 
@@ -33,7 +33,7 @@ const Contact = () => (
       <Col md="8">
         <CardDeck>
           { contacts.map((contact) => (
-            <ContactCard key={ `contact-card-${ contact.title }` } { ...contact } />
+            <ContactCard key={ `contact-card-${ contact.label }` } { ...contact } />
           ))}
         </CardDeck>
       </Col>

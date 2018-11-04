@@ -6,7 +6,7 @@ import {
   Collapse,
   Row
 } from "reactstrap";
-import { LabeledSkillIcon } from "./SkillIcon.js";
+import { LabeledSkillIcon } from "../SkillIcon.js";
 import { skills } from "./skills.js";
 
 class SkillBar extends React.Component {

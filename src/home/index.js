@@ -28,9 +28,6 @@ const Home = () => (
         </Row>
       </Col>
     </Row>
-    <Row>
-      <p></p>
-    </Row>
     <SkillBar />
     <CatBox title="$ cat hello.txt">
       <CardBody>
