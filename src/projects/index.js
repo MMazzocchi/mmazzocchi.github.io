@@ -7,7 +7,8 @@ import PropTypes from "prop-types";
 import { Project } from "./Project.js";
 
 const projects = [
-  { title: "podfeed", sidebar: (
+  { id: "podfeed", title: "podfeed",
+    sidebar: (
       <Row className="justify-content-center">
         <Col xs="3" md="2" className="text-center">
           <div>
@@ -44,10 +45,6 @@ if __name__ == "__main__":
   },
 ];
 
-const Podfeed = () => (
-  <Project { ...projects[0] } />
-);
-
 const Projects = ({ match: { url } }) => (
   <React.Fragment>
     <CatBox title="$ cat projects.txt">
@@ -63,15 +60,21 @@ const Projects = ({ match: { url } }) => (
       <React.Fragment>
         <Row>
           <Nav>
-            <NavItem>
-              <NavLink tag={ Link } to={ `${ url }/podfeed/` }>
-                podfeed
-              </NavLink>
-            </NavItem>
+            { projects.map(({ id, title }) => (
+              <NavItem key={ `project-link-${ id }` }>
+                <NavLink tag={ Link } to={ `${ url }/${ id }/` }>
+                  { title }
+                </NavLink>
+              </NavItem>
+            ))}
           </Nav>
         </Row>
 
-        <Route path={ `${ url }/podfeed/` } component={ Podfeed } />
+        { projects.map((project) => (
+          <Route key={ `project-${ project.id }` }
+                 path={ `${ url }/${ project.id }/` }
+                 component={ () => (<Project { ...project } />) } />
+        ))}
       </React.Fragment>
     </Router>
   </React.Fragment>
