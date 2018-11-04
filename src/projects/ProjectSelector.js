@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Nav, NavItem, NavLink } from "reactstrap";
+import { Row, Nav, Navbar, NavItem, NavLink } from "reactstrap";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Project } from "./Project.js";
 
@@ -24,6 +24,7 @@ class ProjectSelector extends React.Component {
       <Router>
         <React.Fragment>
           <Row>
+            <Navbar>
               <Nav pills>
                 { this.props.projects.map(({ id, title, url }) => (
                   <NavItem key={ `project-link-${ id }` }>
@@ -37,6 +38,7 @@ class ProjectSelector extends React.Component {
                   </NavItem>
                 ))}
               </Nav>
+            </Navbar>
           </Row>
 
           { this.props.projects.map((project) => (
