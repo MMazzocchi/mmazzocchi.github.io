@@ -12,7 +12,7 @@ const warp_racer = {
     <React.Fragment>
       <CardText>
         Warp Racer is an in-progress multiplayer racing game built on the 
-        <span className="mono">space-dud</span> library. It allows multiple
+        <span className="mono"> space-dud</span> library. It allows multiple
         users to connect to the server, select a racer, and race on
         dynamically generated tracks in real-time.
       </CardText>
