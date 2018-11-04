@@ -46,16 +46,34 @@ if __name__ == "__main__":
 ];
 
 class ProjectSelector extends React.Component {
+  constructor(props) {
+    super(props);
+
+    projects.forEach((project) => {
+      project.url = `${ props.baseUrl }/${ project.id }/`;
+    });
+
+    const state = { url: undefined };
+    this.state = state;
+  }
+
+  clicked(url) {
+    this.setState({ url: url });
+  }
 
   render() {
     return (
       <Router>
         <React.Fragment>
           <Row>
-              <Nav pills>
-                { projects.map(({ id, title }) => (
+              <Nav tabs>
+                { projects.map(({ id, title, url }) => (
                   <NavItem key={ `project-link-${ id }` }>
-                    <NavLink tag={ Link } to={ `${ this.props.url }/${ id }/` } active>
+                    <NavLink
+                       tag={ Link }
+                       to={ `${ url  }` }
+                       active={ this.state.url == url ? true : false }
+                       onClick={ () => { this.clicked(url) } }>
                       { title }
                     </NavLink>
                   </NavItem>
@@ -65,7 +83,7 @@ class ProjectSelector extends React.Component {
 
           { projects.map((project) => (
             <Route key={ `project-${ project.id }` }
-                   path={ `${ this.props.url }/${ project.id }/` }
+                   path={ `${ project.url }/` }
                    component={ () => (<Project { ...project } />) } />
           ))}
         </React.Fragment>
@@ -85,7 +103,7 @@ const Projects = ({ match: { url } }) => (
       </CardBody>
     </CatBox>
 
-    <ProjectSelector url={ url } />
+    <ProjectSelector baseUrl={ url } />
   </React.Fragment>
 );
 
