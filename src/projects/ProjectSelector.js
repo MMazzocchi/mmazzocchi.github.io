@@ -24,7 +24,7 @@ class ProjectSelector extends React.Component {
       <Router>
         <React.Fragment>
           <Row>
-              <Nav tabs>
+              <Nav pills>
                 { this.props.projects.map(({ id, title, url }) => (
                   <NavItem key={ `project-link-${ id }` }>
                     <NavLink
