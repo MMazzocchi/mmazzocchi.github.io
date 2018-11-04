@@ -8,7 +8,7 @@ import {
 
 import PropTypes from "prop-types";
 
-const ContactCard = ({ icon, title, link, color }) => (
+const ContactCard = ({ icon, label, link, color }) => (
   <Card className="text-center shadow contact-card"
         tag="a" href={ link } target="_blank">
     <CardBody>
@@ -17,7 +17,7 @@ const ContactCard = ({ icon, title, link, color }) => (
            style={{ "backgroundColor": color }}></i>
       </CardTitle>
       <CardSubtitle style={{ "color": color }}>
-        { title }
+        { label }
         &nbsp;
         <i className="fas fa-external-link-alt"></i>
       </CardSubtitle>

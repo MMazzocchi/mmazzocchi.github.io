@@ -10,11 +10,11 @@ import { ContactCard } from "../ContactCard.js";
 import { CatBox } from "../CatBox.js";
 
 const contacts = [
-  { icon: "fas fa-envelope", title: "Email", color: "red",
+  { icon: "fas fa-envelope", label: "Email", color: "red",
     link: "mailto:maxwell.mazzocchi@gmail.com" },
-  { icon: "fab fa-github", title: "GitHub", color: "black",
+  { icon: "fab fa-github", label: "GitHub", color: "black",
     link: "https://github.com/mmazzocchi" },
-  { icon: "fab fa-linkedin-in", title: "LinkedIn", color: "blue", 
+  { icon: "fab fa-linkedin-in", label: "LinkedIn", color: "blue", 
     link: "https://www.linkedin.com/in/maxwellmazzocchi/" },
 ]
 
