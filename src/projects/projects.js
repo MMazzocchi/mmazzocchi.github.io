@@ -2,14 +2,22 @@ import React from "react";
 import { Row, CardText } from "reactstrap";
 import { CodeBlock } from "./CodeBlock.js";
 import { LabeledSkillIcon } from "../SkillIcon.js";
+import { ContactCard } from "../ContactCard.js";
 
 const projects = [
   { id: "podfeed", title: "podfeed",
     sidebar: (
-      <Row className="justify-content-center border-bottom">
-        <LabeledSkillIcon icon="fab fa-python" label="Python 3"
-                          color="goldenrod" invert={ true } />
-      </Row>
+      <React.Fragment>
+        <Row className="justify-content-center border-bottom">
+          <LabeledSkillIcon icon="fab fa-python" label="Python 3"
+                            color="goldenrod" invert={ true } />
+        </Row>
+        <Row className="justify-content-center">
+          <ContactCard icon="fab fa-github" title="Github Repository"
+                       color="black"
+                       link="https://github.com/mmazzocchi/podfeed" /> 
+        </Row>
+      </React.Fragment>
     ),
 
     body: (
