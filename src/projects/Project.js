@@ -11,8 +11,8 @@ const Project = ({ title, sidebar, body }) => (
       <Col md="8">
         <Card className="shadow">
           <CardBody>
-            <CardTitle tag="h3" style={{ fontFamily: "monospace" }}>
-              { title }
+            <CardTitle tag="h3" >
+              <span className="mono">{ title }</span>
             </CardTitle>
 
             { body}

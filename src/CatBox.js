@@ -12,8 +12,8 @@ const CatBox = ({ title, children }) => (
     <Row className="justify-content-center catbox">
       <Col md="8">
         <Card className="shadow">
-          <CardHeader tag="h3" className="text-center" style={{ fontFamily: "monospace" }}>
-            { title } 
+          <CardHeader tag="h3" className="text-center">
+            <span className="mono">{ title }</span>
           </CardHeader>
 
           { children }
