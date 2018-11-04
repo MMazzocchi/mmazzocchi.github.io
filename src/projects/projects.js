@@ -24,7 +24,7 @@ const projects = [
           podfeed is a Python 3 podcast aggregation library. In essence,
           it&#39;s designed to be a scriptable, automatable library for
           reading a set of RSS feeds, gathering the links for any new 
-          episodes, and optionally downloading the MP3 files itself.
+          episodes, and optionally downloading the audio file itself.
         </CardText>
         <CardText>
           podfeed will definitely become a pypi package. Any day now.
@@ -32,8 +32,15 @@ const projects = [
 
         <CodeBlock language="python">
           {`
-if __name__ == "__main__":
-  print("Hello, world")
+from podfeed.parser import parseFeed
+
+# Collect episodes published after May 1st, 2018 
+episodes = parseFeed("https://www.npr.org/rss/podcast.php?id=510289", 1525132800)
+
+# Write each episode to a file
+for episode in episodes:
+  episode.writeFile("./{0}_{1}.{2}".format(
+    episode.getTitle(), episode.getDate(), episode.getExt()))
           `}
         </CodeBlock>
       </React.Fragment>
