@@ -6,7 +6,7 @@ import {
   Col,
   Row
 } from "reactstrap";
-import { ContactCard } from "./ContactCard.js";
+import { ContactCard } from "../ContactCard.js";
 import { CatBox } from "../CatBox.js";
 
 const contacts = [
