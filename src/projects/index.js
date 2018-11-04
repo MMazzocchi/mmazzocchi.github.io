@@ -1,54 +1,51 @@
 import React from "react";
 import { CatBox } from "../CatBox.js";
-import { Row, Col, Card, CardTitle, CardBody, CardText, Nav, NavItem, NavLink } from "reactstrap";
+import { Row, Col, CardBody, CardText, Nav, NavItem, NavLink } from "reactstrap";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { CodeBlock } from "./CodeBlock.js";
 import PropTypes from "prop-types";
+import { Project } from "./Project.js";
 
+const projects = [
+  { title: "podfeed", sidebar: (
+      <Row className="justify-content-center">
+        <Col xs="3" md="2" className="text-center">
+          <div>
+            <i className="fab fa-python skill-icon"
+               style={{ "color": "white", "backgroundColor": "gold" }}></i>
+          </div>
+          <p style={{ "color": "gold" }}>
+            Python
+          </p>
+        </Col>
+      </Row>
+    ),
 
-const Podfeed = () => (
-  <React.Fragment>
-    <Row>
-      <Col md="4">
-        <Row className="justify-content-center">
-          <Col xs="3" md="2" className="text-center">
-            <div>
-              <i className="fab fa-python skill-icon"
-                 style={{ "color": "white", "backgroundColor": "gold" }}></i>
-            </div>
-            <p style={{ "color": "gold" }}>
-              Python
-            </p>
-          </Col>
-        </Row>
-      </Col>
-      <Col md="8">
-        <Card className="shadow">
-          <CardBody>
-            <CardTitle tag="h3" style={{ fontFamily: "monospace" }}>
-              podfeed
-            </CardTitle>
+    body: (
+      <React.Fragment>
+        <CardText>
+          podfeed is a Python 3 podcast aggregation library. In essence,
+          it&#39;s designed to be a scriptable, automatable library for
+          reading a set of RSS feeds, gathering the links for any new 
+          episodes, and optionally downloading the MP3 files itself.
+        </CardText>
+        <CardText>
+          podfeed will definitely become a pypi package. Any day now.
+        </CardText>
 
-            <CardText>
-              podfeed is a Python 3 podcast aggregation library. In essence,
-              it&#39;s designed to be a scriptable, automatable library for
-              reading a set of RSS feeds, gathering the links for any new 
-              episodes, and optionally downloading the MP3 files itself.
-            </CardText>
-            <CardText>
-              podfeed will definitely become a pypi package. Any day now.
-            </CardText>
-
-            <CodeBlock language="python">{`
+        <CodeBlock language="python">
+          {`
 if __name__ == "__main__":
   print("Hello, world")
-`}
-            </CodeBlock>
-          </CardBody>
-        </Card>
-      </Col>
-    </Row>
-  </React.Fragment>
+          `}
+        </CodeBlock>
+      </React.Fragment>
+    )
+  },
+];
+
+const Podfeed = () => (
+  <Project { ...projects[0] } />
 );
 
 const Projects = ({ match: { url } }) => (
