@@ -33,7 +33,7 @@ const Contact = () => (
       <Col md="8">
         <CardDeck>
           { contacts.map((contact) => (
-            <ContactCard key={ `contact-card-${ contact.title }` } { ...contact } />
+            <ContactCard key={ `contact-card-${ contact.label }` } { ...contact } />
           ))}
         </CardDeck>
       </Col>
