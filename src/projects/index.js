@@ -45,6 +45,35 @@ if __name__ == "__main__":
   },
 ];
 
+class ProjectSelector extends React.Component {
+
+  render() {
+    return (
+      <Router>
+        <React.Fragment>
+          <Row>
+              <Nav pills>
+                { projects.map(({ id, title }) => (
+                  <NavItem key={ `project-link-${ id }` }>
+                    <NavLink tag={ Link } to={ `${ this.props.url }/${ id }/` } active>
+                      { title }
+                    </NavLink>
+                  </NavItem>
+                ))}
+              </Nav>
+          </Row>
+
+          { projects.map((project) => (
+            <Route key={ `project-${ project.id }` }
+                   path={ `${ this.props.url }/${ project.id }/` }
+                   component={ () => (<Project { ...project } />) } />
+          ))}
+        </React.Fragment>
+      </Router>
+    );
+  }
+}
+
 const Projects = ({ match: { url } }) => (
   <React.Fragment>
     <CatBox title="$ cat projects.txt">
@@ -56,27 +85,7 @@ const Projects = ({ match: { url } }) => (
       </CardBody>
     </CatBox>
 
-    <Router>
-      <React.Fragment>
-        <Row>
-          <Nav>
-            { projects.map(({ id, title }) => (
-              <NavItem key={ `project-link-${ id }` }>
-                <NavLink tag={ Link } to={ `${ url }/${ id }/` }>
-                  { title }
-                </NavLink>
-              </NavItem>
-            ))}
-          </Nav>
-        </Row>
-
-        { projects.map((project) => (
-          <Route key={ `project-${ project.id }` }
-                 path={ `${ url }/${ project.id }/` }
-                 component={ () => (<Project { ...project } />) } />
-        ))}
-      </React.Fragment>
-    </Router>
+    <ProjectSelector url={ url } />
   </React.Fragment>
 );
 
