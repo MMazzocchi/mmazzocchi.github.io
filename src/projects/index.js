@@ -3,7 +3,7 @@ import { CatBox } from "../CatBox.js";
 import { CardBody, CardText } from "reactstrap";
 import PropTypes from "prop-types";
 import { ProjectSelector } from "./ProjectSelector.js";
-import { projects } from "./projects.js";
+import projects from "./data";
 
 const Projects = ({ match: { url } }) => (
   <React.Fragment>
