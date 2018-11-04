@@ -4,11 +4,11 @@ import { Nav } from "./Nav.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Home } from "./home";
 import { Contact } from "./contact";
-//import { Projects } from "./projects";
+import { Projects } from "./projects";
 
 const links = [
   { text: "Home",     dest: "/",         component: Home },
-//  { text: "Projects", dest: "/projects", component: Projects },
+  { text: "Projects", dest: "/projects", component: Projects },
   { text: "Contact",  dest: "/contact",  component: Contact },
 ];
 
