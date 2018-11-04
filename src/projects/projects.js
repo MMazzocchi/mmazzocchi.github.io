@@ -23,13 +23,15 @@ const projects = [
     body: (
       <React.Fragment>
         <CardText>
-          podfeed is a Python 3 podcast aggregation library. In essence,
-          it&#39;s designed to be a scriptable, automatable library for
-          reading a set of RSS feeds, gathering the links for any new 
-          episodes, and optionally downloading the audio file itself.
+          <span className="mono">podfeed</span> is a Python 3 podcast
+          aggregation library. In essence, it&#39;s designed to be a 
+          scriptable, automatable library for reading a set of RSS feeds,
+          gathering the links for any new episodes, and optionally downloading
+          the audio file itself.
         </CardText>
         <CardText>
-          podfeed will definitely become a pypi package. Any day now.
+          <span className="mono">podfeed</span> will definitely become a pypi
+          package. Any day now.
         </CardText>
 
         <CodeBlock language="python">
