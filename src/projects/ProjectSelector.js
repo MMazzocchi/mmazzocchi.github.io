@@ -23,7 +23,7 @@ class ProjectSelector extends React.Component {
     return (
       <Router>
         <React.Fragment>
-          <Row>
+          <Row className="justify-content-center">
             <Navbar>
               <Nav pills>
                 { this.props.projects.map(({ id, title, url }) => (
