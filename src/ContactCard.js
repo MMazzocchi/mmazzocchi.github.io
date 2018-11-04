@@ -27,7 +27,7 @@ const ContactCard = ({ icon, label, link, color }) => (
 
 ContactCard.propTypes = {
   icon: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   color: PropTypes.string
 };
