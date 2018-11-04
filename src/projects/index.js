@@ -3,6 +3,30 @@ import { CatBox } from "../CatBox.js";
 import { Row, Col, Card, CardTitle, CardBody, CardText, Nav, NavItem, NavLink } from "reactstrap";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import hljs from "highlight.js";
+
+class CodeBlock extends React.Component {
+  componentDidMount() {
+    hljs.highlightBlock(this.node);
+  }
+
+  render() {
+    const { language, children } = this.props;
+
+    return (
+      <pre ref={(node) => this.node = node}>
+        <code className={ language }>
+          { children.trim() }
+        </code>
+      </pre>
+    );
+  }
+}
+
+CodeBlock.propTypes = {
+  language: PropTypes.string.isRequired,
+  children: PropTypes.string
+};
 
 const Podfeed = () => (
   <React.Fragment>
@@ -37,8 +61,11 @@ const Podfeed = () => (
               podfeed will definitely become a pypi package. Any day now.
             </CardText>
 
-
-
+            <CodeBlock language="python">{`
+if __name__ == "__main__":
+  print("Hello, world")
+`}
+            </CodeBlock>
           </CardBody>
         </Card>
       </Col>
