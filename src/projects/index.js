@@ -9,10 +9,10 @@ const Podfeed = () => (
     <Row>
       <Col md="4">
         <Row className="justify-content-center">
-          <Col xs="3" md="2">
+          <Col xs="3" md="2" className="text-center">
             <div>
               <i className="fab fa-python skill-icon"
-                 style={{ "backgroundColor": "gold" }}></i>
+                 style={{ "color": "white", "backgroundColor": "gold" }}></i>
             </div>
             <p style={{ "color": "gold" }}>
               Python
