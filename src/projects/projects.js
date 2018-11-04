@@ -1,20 +1,14 @@
 import React from "react";
-import { Row, Col, CardText } from "reactstrap";
+import { Row, CardText } from "reactstrap";
 import { CodeBlock } from "./CodeBlock.js";
+import { LabeledSkillIcon } from "../SkillIcon.js";
 
 const projects = [
   { id: "podfeed", title: "podfeed",
     sidebar: (
-      <Row className="justify-content-center">
-        <Col xs="3" md="2" className="text-center">
-          <div>
-            <i className="fab fa-python skill-icon"
-               style={{ "color": "white", "backgroundColor": "gold" }}></i>
-          </div>
-          <p style={{ "color": "gold" }}>
-            Python
-          </p>
-        </Col>
+      <Row className="justify-content-center border-bottom">
+        <LabeledSkillIcon icon="fab fa-python" label="Python 3"
+                          color="goldenrod" invert={ true } />
       </Row>
     ),
 
