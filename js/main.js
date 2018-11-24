@@ -39431,6 +39431,11 @@ var podfeed = {
     label: "Github Repository",
     color: "black",
     link: "https://github.com/mmazzocchi/podfeed"
+  }, {
+    icon: "fab fa-python",
+    label: "PyPi",
+    color: "steelblue",
+    link: "https://pypi.org/project/podfeed/"
   }],
   body: _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactstrap.CardText, null, _react.default.createElement("span", {
     className: "mono"

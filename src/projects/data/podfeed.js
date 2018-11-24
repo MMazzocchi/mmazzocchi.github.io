@@ -11,6 +11,8 @@ const podfeed = {
   links: [
     { icon: "fab fa-github", label: "Github Repository", color: "black",
       link: "https://github.com/mmazzocchi/podfeed" },
+    { icon: "fab fa-python", label: "PyPi", color: "steelblue",
+      link: "https://pypi.org/project/podfeed/" },
   ],
 
   body: (
@@ -21,10 +23,6 @@ const podfeed = {
         scriptable, automatable library for reading a set of RSS feeds,
         gathering the links for any new episodes, and optionally downloading
         the audio file itself.
-      </CardText>
-      <CardText>
-        <span className="mono">podfeed</span> will definitely become a pypi
-        package. Any day now.
       </CardText>
 
       <CodeBlock language="python">
