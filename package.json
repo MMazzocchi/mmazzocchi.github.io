@@ -1,6 +1,6 @@
 {
   "name": "mmazzocchi.github.io",
-  "version": "2.2.2",
+  "version": "3.0.0-alpha",
   "description": "Personal website for Max Mazzocchi",
   "main": "index.js",
   "scripts": {
