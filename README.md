@@ -3,22 +3,18 @@ The personal site for Max Mazzocchi.
 
 ## Getting Started
 ### Prerequisites
-Install `npm` if not already installed, then install the build dependencies:
-```
-$ npm install -g gulp@4.0.0 browserify
-```
-
-Clone the repository, and download the site dependencies:
+Install `npm` if not already installed.
+Clone the repository and download dependencies:
 
 ```
-$ cd mmazzocchi.github.io
+$ git clone https://github.com/mmazzocchi/mmazzocchi.github.io/
+$ cd mmazzocchi.github.io/
 $ npm install
 ```
 
 ### Build
 ```
-$ cd mmazzocchi.github.io
-$ gulp
+$ npm run build
 ```
 
 ## License
