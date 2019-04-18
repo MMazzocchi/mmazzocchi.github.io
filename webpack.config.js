@@ -13,6 +13,9 @@ module.exports = {
         test: /.jsx?$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
+        options: {
+          cache: true,
+        }
       },
       {
         test: /.jsx?$/,
