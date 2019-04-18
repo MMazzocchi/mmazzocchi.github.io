@@ -62,4 +62,8 @@ class MyNav extends React.Component {
   }
 }
 
+MyNav.propTypes = {
+  links: PropTypes.arrayOf(PropTypes.shape(MyNavItem.propTypes)).isRequired
+};
+
 export { MyNav as Nav };
