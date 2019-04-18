@@ -1,4 +1,5 @@
 import React from "react";
+import { PropTypes } from 'prop-types';
 
 const SkillIcon = ({ icon, color, invert, hoverable, ...rest }) => (
   <div { ...rest }
@@ -10,6 +11,13 @@ const SkillIcon = ({ icon, color, invert, hoverable, ...rest }) => (
   </div>
 );
 
+SkillIcon.propTypes = {
+  icon: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  invert: PropTypes.bool,
+  hoverable: PropTypes.bool,
+};
+
 const LabeledSkillIcon = ({ icon, label, color, invert, hoverable,
                             ...rest }) =>(
   <div { ...rest }
@@ -20,5 +28,13 @@ const LabeledSkillIcon = ({ icon, label, color, invert, hoverable,
     </p>
   </div>
 );
+
+LabeledSkillIcon.propTypes = {
+  icon: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  invert: PropTypes.bool,
+  hoverable: PropTypes.bool,
+};
 
 export { LabeledSkillIcon, SkillIcon };

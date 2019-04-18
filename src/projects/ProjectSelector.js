@@ -1,4 +1,5 @@
 import React from "react";
+import { PropTypes } from 'prop-types';
 import { Row, Nav, Navbar, NavItem, NavLink } from "reactstrap";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Project } from "./Project.js";
@@ -51,5 +52,13 @@ class ProjectSelector extends React.Component {
     );
   }
 }
+
+ProjectSelector.propTypes = {
+  projects: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    url: PropTypes.string.isRequired
+  })).isRequired,
+  baseUrl: PropTypes.string.isRequired,
+};
 
 export { ProjectSelector };
