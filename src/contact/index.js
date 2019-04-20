@@ -1,11 +1,9 @@
 import React from "react";
-import {
-  CardBody,
-  CardDeck,
-  CardText,
-  Col,
-  Row
-} from "reactstrap";
+import CardBody from 'reactstrap/lib/CardBody';
+import CardDeck from 'reactstrap/lib/CardDeck';
+import CardText from 'reactstrap/lib/CardText';
+import Col from 'reactstrap/lib/Col';
+import Row from 'reactstrap/lib/Row';
 import { ContactCard } from "../ContactCard.js";
 import { CatBox } from "../CatBox.js";
 

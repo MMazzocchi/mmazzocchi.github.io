@@ -1,13 +1,11 @@
 import React from "react";
-import {
-  Collapse,
-  Nav,
-  NavItem,
-  NavLink,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler
-} from "reactstrap";
+import Collapse from 'reactstrap/lib/Collapse';
+import Nav from 'reactstrap/lib/Nav';
+import NavItem from 'reactstrap/lib/NavItem';
+import NavLink from 'reactstrap/lib/NavLink';
+import Navbar from 'reactstrap/lib/Navbar';
+import NavbarBrand from 'reactstrap/lib/NavbarBrand';
+import NavbarToggler from 'reactstrap/lib/NavbarToggler';
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 

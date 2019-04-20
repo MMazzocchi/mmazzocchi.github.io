@@ -1,11 +1,9 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  Col,
-  Collapse,
-  Row
-} from "reactstrap";
+import Card from 'reactstrap/lib/Card';
+import CardHeader from 'reactstrap/lib/CardHeader';
+import Col from 'reactstrap/lib/Col';
+import Collapse from 'reactstrap/lib/Collapse';
+import Row from 'reactstrap/lib/Row';
 import { LabeledSkillIcon } from "../SkillIcon.js";
 import { skills } from "./skills.js";
 

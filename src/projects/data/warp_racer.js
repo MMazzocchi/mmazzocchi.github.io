@@ -1,5 +1,6 @@
 import React from "react";
-import { CardText, CardImg } from "reactstrap";
+import CardText from 'reactstrap/lib/CardText';
+import CardImg from 'reactstrap/lib/CardImg';
 
 const warp_racer = {
   id: "warpracer", title: "Warp Racer",

@@ -1,10 +1,8 @@
 import React from "react";
-import {
-  CardBody,
-  CardText,
-  Row,
-  Col
-} from "reactstrap";
+import CardBody from 'reactstrap/lib/CardBody';
+import CardText from 'reactstrap/lib/CardText';
+import Row from 'reactstrap/lib/Row';
+import Col from 'reactstrap/lib/Col';
 import { Exp } from "./Exp.js";
 
 const skills = [

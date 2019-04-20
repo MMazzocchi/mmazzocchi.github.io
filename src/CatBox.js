@@ -1,10 +1,8 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  Col,
-  Row
-} from "reactstrap";
+import Card from 'reactstrap/lib/Card';
+import CardHeader from 'reactstrap/lib/CardHeader';
+import Col from 'reactstrap/lib/Col';
+import Row from 'reactstrap/lib/Row';
 import PropTypes from "prop-types";
 
 const CatBox = ({ title, children }) => (

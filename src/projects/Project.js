@@ -1,5 +1,10 @@
 import React from "react";
-import { Row, Col, Card, CardDeck, CardTitle, CardBody, } from "reactstrap";
+import Row from 'reactstrap/lib/Row';
+import Col from 'reactstrap/lib/Col';
+import Card from 'reactstrap/lib/Card';
+import CardDeck from 'reactstrap/lib/CardDeck';
+import CardTitle from 'reactstrap/lib/CardTitle';
+import CardBody from 'reactstrap/lib/CardBody';
 import { LabeledSkillIcon } from "../SkillIcon.js";
 import { ContactCard } from "../ContactCard.js";
 import PropTypes from "prop-types";

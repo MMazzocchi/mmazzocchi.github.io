@@ -1,6 +1,7 @@
 import React from "react";
 import { CatBox } from "../CatBox.js";
-import { CardBody, CardText } from "reactstrap";
+import CardBody from 'reactstrap/lib/CardBody';
+import CardText from 'reactstrap/lib/CardText';
 import PropTypes from "prop-types";
 import { ProjectSelector } from "./ProjectSelector.js";
 import projects from "./data";
