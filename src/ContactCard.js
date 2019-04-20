@@ -1,11 +1,8 @@
 import React from "react";
-import {
-  Card,
-  CardBody,
-  CardSubtitle,
-  CardTitle
-} from "reactstrap";
-
+import Card from 'reactstrap/lib/Card';
+import CardBody from 'reactstrap/lib/CardBody';
+import CardSubtitle from 'reactstrap/lib/CardSubtitle';
+import CardTitle from 'reactstrap/lib/CardTitle';
 import PropTypes from "prop-types";
 
 const ContactCard = ({ icon, label, link, color }) => (

@@ -1,11 +1,9 @@
 import React from "react";
-import {
-  Button,
-  CardBody,
-  CardText,
-  Col,
-  Row,
-} from "reactstrap";
+import Button from 'reactstrap/lib/Button';
+import CardBody from 'reactstrap/lib/CardBody';
+import CardText from 'reactstrap/lib/CardText';
+import Col from 'reactstrap/lib/Col';
+import Row from 'reactstrap/lib/Row';
 import { SkillBar } from "./SkillBar.js";
 import { Link } from "react-router-dom";
 import { CatBox } from "../CatBox.js";

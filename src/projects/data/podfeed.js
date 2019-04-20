@@ -1,5 +1,5 @@
 import React from "react";
-import { CardText } from "reactstrap";
+import CardText from 'reactstrap/lib/CardText';
 import { CodeBlock } from "../CodeBlock.js";
 
 const podfeed = {

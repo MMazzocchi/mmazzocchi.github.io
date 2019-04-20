@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "reactstrap";
+import Container from 'reactstrap/lib/Container';
 import { Nav } from "./Nav.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Home } from "./home";
