@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/MMazzocchi/mmazzocchi.github.io/issues"
   },
-  "homepage": "https://github.com/MMazzocchi/mmazzocchi.github.io#readme",
+  "homepage": "https://mmazzocchi.github.io/",
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
