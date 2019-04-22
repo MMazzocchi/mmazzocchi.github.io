@@ -1,7 +1,18 @@
 {
   "name": "mmazzocchi.github.io",
-  "version": "0.1.0",
+  "version": "4.0.0",
+  "description": "Personal website for Max Mazzocchi",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MMazzocchi/mmazzocchi.github.io.git"
+  },
+  "author": "Max Mazzocchi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MMazzocchi/mmazzocchi.github.io/issues"
+  },
+  "homepage": "https://github.com/MMazzocchi/mmazzocchi.github.io#readme",
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
