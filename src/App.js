@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import './App.css';
 import NavBar from './navbar';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles.js';
+import Home from './home/';
 
 const styles = {
   container: {
@@ -21,7 +21,7 @@ const App = ({ classes }) => (
     <div className={ classes.container }>
       <Grid container justify="center">
         <Grid item xs={12} md={8} className={ classes.content }>
-          <Paper style={{ width: '100%', height: '300px' }} />          
+          <Home />
         </Grid>
       </Grid>
     </div>
