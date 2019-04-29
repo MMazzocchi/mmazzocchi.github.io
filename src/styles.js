@@ -1,18 +1,8 @@
-const fg_color = '#E9E7DA';
+const fg_color = '#F4F3EC';
+const bg_color = '#286DA8';
 
 const styles = {
-  navbar: {
-    'border-bottom': `1px solid${ fg_color }`,
-    padding: 0,
-  },
-  text: {
-    color: 'white',
-  },
-  home_icon: {
-    color: fg_color,
-    'font-weight': 500,
-    padding: '10px',
-  }
 };
 
+export { styles, fg_color, bg_color };
 export default styles;
