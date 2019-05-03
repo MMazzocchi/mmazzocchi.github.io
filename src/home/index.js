@@ -25,12 +25,6 @@ const styles = {
     'font-size': 'xx-large',
     'padding-bottom': '2vh',
   },
-  greeting_sub: {
-    'font-size': 'medium'
-  },
-  greeting_sub_sub: {
-    'font-size': 'small'
-  }
 };
 
 const Home = ({ classes }) => (
@@ -41,10 +35,10 @@ const Home = ({ classes }) => (
           <div className={ classes.greeting }>
             Welcome.
           </div>
-          <div className={ classes.greeting_sub }>
+          <div style={{ fontSize: 'medium' }}>
             Max Mazzocchi, Software Developer
           </div>
-          <div className={ classes.greeting_sub_sub }>
+          <div style={{ fontSize: 'small' }}>
             Washington DC/Northern Virginia
           </div>
         </div>
