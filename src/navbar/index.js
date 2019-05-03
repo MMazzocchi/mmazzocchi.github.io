@@ -1,11 +1,11 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import Toolbar from '@material-ui/core/Toolbar';
 import HomeIcon from './HomeIcon.js';
 import { fg_color, color3 } from '../styles.js';
 
 const styles = {
   navbar: {
+    'display': 'flex',
     'border-bottom': `3px solid${ fg_color }`,
     padding: 0,
     'background-color': color3,
@@ -14,9 +14,9 @@ const styles = {
 }; 
 
 const NavBar = ({ classes }) => (
-  <Toolbar className={ classes.navbar }>
+  <div className={ classes.navbar }>
     <HomeIcon />
-  </Toolbar>
+  </div>
 );
 
 export default withStyles(styles)(NavBar);
