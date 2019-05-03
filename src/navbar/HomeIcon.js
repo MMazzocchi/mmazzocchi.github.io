@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import lockAspect from '../utils/lockAspect.js';
-import { fg_color, bg_color } from '../styles.js';
+import { fg_color, color3 } from '../styles.js';
 
 const styles = {
   home_icon_text: {
@@ -10,6 +10,7 @@ const styles = {
     'padding': '10px',
     'font-size': 'xx-large',
     'transition': 'color 0.2s',
+    'z-index': 1,
   },
   home_icon: {
     'margin': '10px',
@@ -24,7 +25,6 @@ const styles = {
     'height': 0,
     'transition': 'width 0.5s, height 0.5s',
     'background-color': fg_color,
-    'z-index': -1,
   },
   cover_right: {
     'position': 'absolute',
@@ -34,7 +34,6 @@ const styles = {
     'height': 0,
     'transition': 'width 0.5s, height 0.5s',
     'background-color': fg_color,
-    'z-index': -1,
   }
 };
 
@@ -42,7 +41,7 @@ const BaseHomeIcon = ({ classes, hover }) => (
   <div
     className={ classes.home_icon_text }
     style={ hover ? {
-      'color': bg_color
+      'color': color3
     } : {} }>
     MM
   </div>
