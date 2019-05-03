@@ -7,8 +7,8 @@ const styles = {
   home_icon_text: {
     'color': fg_color,
     'font-weight': 500,
-    'padding': '10px',
-    'font-size': 'xx-large',
+    'padding': '5px',
+    'font-size': 'x-large',
     'transition': 'color 0.2s',
     'z-index': 1,
   },
