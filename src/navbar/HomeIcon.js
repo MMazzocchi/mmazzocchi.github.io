@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import lockAspect from '../utils/lockAspect.js';
-import { fg_color, color3 } from '../styles.js';
+import { color1, color3 } from '../styles.js';
 
 const styles = {
   home_icon_text: {
-    'color': fg_color,
+    'color': color1,
     'font-weight': 500,
     'padding': '5px',
     'font-size': 'x-large',
@@ -14,7 +14,7 @@ const styles = {
   },
   home_icon: {
     'margin': '10px',
-    'border': '2px solid '+fg_color,
+    'border': '2px solid '+color1,
     'position': 'relative',
   },
   cover_left: {
@@ -24,7 +24,7 @@ const styles = {
     'width': 0,
     'height': 0,
     'transition': 'width 0.5s, height 0.5s',
-    'background-color': fg_color,
+    'background-color': color1,
   },
   cover_right: {
     'position': 'absolute',
@@ -33,7 +33,7 @@ const styles = {
     'width': 0,
     'height': 0,
     'transition': 'width 0.5s, height 0.5s',
-    'background-color': fg_color,
+    'background-color': color1,
   }
 };
 
