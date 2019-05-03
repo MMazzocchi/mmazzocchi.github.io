@@ -1,7 +1,7 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import HomeIcon from './HomeIcon.js';
-import { color1, color3 } from '../styles.js';
+import { color1, color3, standard_shadow } from '../styles.js';
 
 const styles = {
   navbar: {
@@ -9,7 +9,7 @@ const styles = {
     'border-bottom': `3px solid${ color1 }`,
     padding: 0,
     'background-color': color3,
-    'box-shadow': '0 0 8px 0 '+color3,
+    'box-shadow': standard_shadow
   },
 }; 
 
