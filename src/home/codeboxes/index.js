@@ -3,39 +3,11 @@ import withStyles from '@material-ui/core/styles/withStyles.js';
 import dc from './dc.png';
 import useAutoWarningCounter from './useAutoWarningCounter.js';
 import code_strings from './code_strings.js';
-import {
-  color1,
-  color3,
-  standard_shadow,
-  semi_transparent
-} from '../../styles.js';
+import CodeBox from './CodeBox.js';
 
 const styles = {
   container: {
     'padding': '10px',
-  },
-  overlay: {
-    'display': 'flex',
-    'position': 'absolute',
-    'top': 0,
-    'left': 0,
-    'width': '100%',
-    'height': '100%',
-    'align-items': 'center',
-    'justify-content': 'center',
-  },
-  textbox: {
-    'background': color3+semi_transparent,
-    'box-shadow': standard_shadow,
-    'transition': 'max-height 0.5s',
-    'overflow-y': 'hidden',
-    'max-height': 0,
-  },
-  code: {
-    'padding': '10px',
-    'color': color1,
-    'font-size': 'large',
-    'margin': 0,
   },
   row: {
     'display': 'flex',
@@ -47,18 +19,6 @@ const styles = {
   }
 };
 
-const TextBoxes = ({ index, closing, classes }) => (
-  <div className={ classes.overlay }>
-    <div
-      className={ classes.textbox }
-      style={ closing ? {} : { maxHeight: '100%' }}>
-      <pre className={ classes.code }>
-        { code_strings[index] }
-      </pre>
-    </div>
-  </div>
-);
-
 const FadingBoxes = ({ classes }) => {
   const { count, warning } =
     useAutoWarningCounter({ warning_duration: 500, duration: 5000 });
@@ -67,10 +27,11 @@ const FadingBoxes = ({ classes }) => {
     <div className={ classes.row }>
       <div className={ classes.boxes_container }>
         <img src={ dc } width="300px" alt="DC" />
-        <TextBoxes
+        <CodeBox
           classes={ classes }
-          index={ count % code_strings.length }
-          closing={ warning } />
+          closing={ warning }>
+          { code_strings[count % code_strings.length] }
+        </CodeBox>
       </div>
     </div>
   );
