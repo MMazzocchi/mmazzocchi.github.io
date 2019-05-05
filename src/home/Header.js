@@ -10,7 +10,7 @@ const styles = {
     'justify-content': 'space-around',
   },
   col: {
-    'padding': '100px',
+    'padding': '50px',
   },
 };
 
