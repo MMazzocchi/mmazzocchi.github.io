@@ -37,7 +37,7 @@ const styles = {
   }
 };
 
-const BaseHomeIcon = ({ classes, hover }) => (
+const BaseHomeIcon = lockAspect(({ classes, hover }) => (
   <div
     className={ classes.home_icon_text }
     style={ hover ? {
@@ -45,9 +45,7 @@ const BaseHomeIcon = ({ classes, hover }) => (
     } : {} }>
     MM
   </div>
-);
-
-const InnerHomeIcon = ({ ...rest }) => (lockAspect(BaseHomeIcon, { ...rest }));
+));
 
 const Cover = ({ className, hover }) => (
   <div
@@ -66,7 +64,7 @@ const HomeIcon = ({ classes }) => {
       onMouseEnter={ () => { setHover(true); } }
       onMouseLeave={ () => { setHover(false); } }>
 
-      <InnerHomeIcon classes={ classes } hover={ hover }/>
+      <BaseHomeIcon classes={ classes } hover={ hover }/>
 
       <Cover className={ classes.cover_left } hover={ hover } />
       <Cover className={ classes.cover_right } hover={ hover } />
