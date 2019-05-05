@@ -1,11 +1,16 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import { color1, standard_shadow } from '../styles.js';
+import {
+  color1,
+  color3,
+  standard_shadow,
+  semi_transparent
+} from '../styles.js';
 
 const styles = {
   box: {
     'color': color1,
-    'background': 'rgba(0, 0, 0, 0.7)',
+    'background': color3+semi_transparent,
     'padding': '50px',
     'box-shadow': standard_shadow,
   },
