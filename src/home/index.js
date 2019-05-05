@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import splash from './splash.jpg';
-import Greeting from './Greeting.js';
+import Header from './Header.js';
 
 const styles = {
   splash: {
@@ -15,13 +15,6 @@ const styles = {
     'background-position': 'center',
     'z-index': -1,
   },
-  header: {
-    'display': 'flex',
-    'align-items': 'center',
-  },
-  greeting_col: {
-    'padding': '100px',
-  },
   content: {
   },
   container: {
@@ -34,11 +27,9 @@ const Home = ({ classes }) => (
     <div className={ classes.container }>
       <div className={ classes.splash }>
       </div>
-      <div className={ classes.header }>
-        <div className={ classes.greeting_col }>
-          <Greeting />
-        </div>
-      </div>
+
+      <Header />
+
       <div className={ classes.content }>
         
       </div>
