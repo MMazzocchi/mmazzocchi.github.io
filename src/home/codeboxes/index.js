@@ -1,8 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import lockAspect from '../../utils/lockAspect.js';
 import dc from './dc.png';
-import useAutoCounter from './useAutoCounter.js';
+import useAutoWarningCounter from './useAutoWarningCounter.js';
 import code_strings from './code_strings.js';
 import {
   color1,
@@ -26,59 +25,61 @@ const styles = {
     'justify-content': 'center',
   },
   textbox: {
-    'color': color1,
-    'padding': '10px',
-    'font-size': 'large',
     'background': color3+semi_transparent,
     'box-shadow': standard_shadow,
-    'transition': 'opacity 0.5s',
+    'transition': 'max-height 0.5s',
+    'overflow-y': 'hidden',
+    'max-height': 0,
+  },
+  code: {
+    'padding': '10px',
+    'color': color1,
+    'font-size': 'large',
+    'margin': 0,
   },
   row: {
     'display': 'flex',
   },
   boxes_container: {
     'position': 'relative',
+    'padding-left': '100px',
+    'padding-right': '100px',
   }
 };
 
-const TextBoxes = ({ index, classes }) => (
-  <Fragment>
-    { code_strings.map((str, i) => (
-      <div key={ `codebox-${ i }` } className={ classes.overlay }>
-        <pre
-           className={ classes.textbox }
-           style={ i === index ? {} : { opacity: 0 }}
-        >
-          { str }
-        </pre>
-      </div>
-    )) }
-  </Fragment>
+const TextBoxes = ({ index, closing, classes }) => (
+  <div className={ classes.overlay }>
+    <div
+      className={ classes.textbox }
+      style={ closing ? {} : { maxHeight: '100%' }}>
+      <pre className={ classes.code }>
+        { code_strings[index] }
+      </pre>
+    </div>
+  </div>
 );
 
 const FadingBoxes = ({ classes }) => {
-  const index = useAutoCounter({ n: code_strings.length, duration: 5000 });
+  const { count, warning } =
+    useAutoWarningCounter({ warning_duration: 500, duration: 5000 });
 
   return (
     <div className={ classes.row }>
       <div className={ classes.boxes_container }>
         <img src={ dc } width="300px" alt="DC" />
-        <TextBoxes classes={ classes } index={ index } />
+        <TextBoxes
+          classes={ classes }
+          index={ count % code_strings.length }
+          closing={ warning } />
       </div>
     </div>
   );
 };
 
-const InnerCodeBoxes = lockAspect(({ classes }) => (
+const CodeBoxes = ({ classes }) => (
   <div className={ classes.container }>
     <FadingBoxes classes={ classes }/>
-  </div>
-));
-
-const CodeBoxes = ({ classes }) => (
-  <div>
-    <InnerCodeBoxes classes={ classes }/>
-  </div>
+  </div> 
 );
 
 export default withStyles(styles)(CodeBoxes);
