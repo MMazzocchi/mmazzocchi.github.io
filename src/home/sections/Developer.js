@@ -1,5 +1,6 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
+import CodeBoxes from './CodeBoxes.js';
 
 const styles = {
   container: {
@@ -19,7 +20,7 @@ const Developer = ({ classes }) => (
       Polyglot Developer
     </div>
     <div>
-
+      <CodeBoxes />
     </div>
   </div>
 );
