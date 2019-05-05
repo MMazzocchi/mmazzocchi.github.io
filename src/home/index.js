@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import splash from './splash.jpg';
 import Header from './Header.js';
+import { color1, standard_shadow } from '../styles.js';
+
 
 const styles = {
   splash: {
@@ -9,16 +11,25 @@ const styles = {
     'top': 0,
     'left': 0,
     'width': '100%',
-    'min-height': '75%',
+    'min-height': '40%',
     'background-image': `url(${ splash })`,
     'background-size': 'cover',
     'background-position': 'center',
     'z-index': -1,
   },
   content: {
+    'min-height': '1000px',
+    'background-color': color1,
+    'box-shadow': standard_shadow,
+    'width': '90%',
+    'max-width': '1000px',
   },
   container: {
     'position': 'relative',
+  },
+  content_container: {
+    'display': 'flex',
+    'justify-content': 'center',
   }
 };
 
@@ -30,8 +41,10 @@ const Home = ({ classes }) => (
 
       <Header />
 
-      <div className={ classes.content }>
-        
+      <div className={ classes.content_container }>
+        <div className={ classes.content }>
+
+        </div>
       </div>
     </div>
   </Fragment>
