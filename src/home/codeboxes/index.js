@@ -21,7 +21,7 @@ const styles = {
 
 const FadingBoxes = ({ classes }) => {
   const { count, warning } =
-    useAutoWarningCounter({ warning_duration: 500, duration: 5000 });
+    useAutoWarningCounter({ warning_duration: 750, duration: 5000 });
 
   return (
     <div className={ classes.row }>
