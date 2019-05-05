@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import lockAspect from '../../utils/lockAspect.js';
-import dc from './dc.svg';
+import dc from './dc.png';
 import useAutoCounter from './useAutoCounter.js';
 import code_strings from './code_strings.js';
 import {
@@ -10,7 +10,6 @@ import {
   standard_shadow,
   semi_transparent
 } from '../../styles.js';
-
 
 const styles = {
   container: {
@@ -29,7 +28,7 @@ const styles = {
   textbox: {
     'color': color1,
     'padding': '10px',
-    'font-size': 'medium',
+    'font-size': 'large',
     'background': color3+semi_transparent,
     'box-shadow': standard_shadow,
     'transition': 'opacity 0.5s',
@@ -63,7 +62,7 @@ const FadingBoxes = ({ classes }) => {
   return (
     <div className={ classes.row }>
       <div className={ classes.boxes_container }>
-        <img src={ dc } alt="DC" />
+        <img src={ dc } width="300px" alt="DC" />
         <TextBoxes classes={ classes } index={ index } />
       </div>
     </div>
