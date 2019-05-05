@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import splash from './splash.jpg';
 import Header from './Header.js';
+import Developer from './sections/Developer.js';
 import { color1, standard_shadow } from '../styles.js';
 
 
@@ -43,6 +44,8 @@ const Home = ({ classes }) => (
 
       <div className={ classes.content_container }>
         <div className={ classes.content }>
+
+        <Developer />
 
         </div>
       </div>
