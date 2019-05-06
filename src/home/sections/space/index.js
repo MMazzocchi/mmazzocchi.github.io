@@ -57,11 +57,11 @@ const Planet = ({ classes, x, y }) => (
   </div>
 );
 
-const Systems = ({ classes }) => (
+const Space = ({ classes }) => (
   <Section>
     <div>
       <div className={ classes.title }>
-        Space Systems
+        Space Space
       </div>
       <div>
         A large part of my career has taken place within organizations and teams
@@ -80,4 +80,4 @@ const Systems = ({ classes }) => (
   </Section>
 );
 
-export default withStyles(styles)(Systems);
+export default withStyles(styles)(Space);

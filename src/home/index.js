@@ -4,7 +4,7 @@ import splash from './splash.jpg';
 import Header from './Header.js';
 import { color1, standard_shadow } from '../styles.js';
 import Hello from './sections/hello';
-import Systems from './sections/space';
+import Space from './sections/space';
 
 const styles = {
   splash: {
@@ -45,7 +45,7 @@ const Home = ({ classes }) => (
       <div className={ classes.content_container }>
         <div className={ classes.content }>
           <Hello />
-          <Systems />
+          <Space />
         </div>
       </div>
     </div>
