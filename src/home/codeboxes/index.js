@@ -28,7 +28,6 @@ const FadingBoxes = ({ classes }) => {
       <div className={ classes.boxes_container }>
         <img src={ dc } width="300px" alt="DC" />
         <CodeBox
-          classes={ classes }
           closing={ warning }>
           { code_strings[count % code_strings.length] }
         </CodeBox>
