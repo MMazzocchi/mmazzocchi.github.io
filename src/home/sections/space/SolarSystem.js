@@ -59,7 +59,7 @@ const Sun = ({ classes }) => (
 const Planet = ({ classes, x, y, orbit_radius, duration }) => (
   <div
     className={ classes.planet_container }
-    style={{ 'animation-duration': duration }}>
+    style={{ animationDuration: duration }}>
 
     <div
       className={ classes.orbit }
