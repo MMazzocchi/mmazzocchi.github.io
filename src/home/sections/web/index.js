@@ -2,16 +2,24 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import Section from '../Section.js';
 import { color3 } from '../../../styles.js';
+import Breather from './Breather.js';
 
 const styles = {
   title: {
     'color': color3,
     'font-size': 'xx-large',
   },
+  left_col: {
+    'padding-right': '20px',
+  }
 };
 
 const Web = ({ classes }) => (
   <Section>
+    <div className={ classes.left_col }>
+      <Breather />
+    </div>
+
     <div>
       <div className={ classes.title }>
         Web Development
