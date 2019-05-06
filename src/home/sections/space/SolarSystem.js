@@ -1,6 +1,7 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import { color2 } from '../../../styles.js';
+import './orbit.css';
 
 const styles = {
   solar_system: {
@@ -14,6 +15,18 @@ const styles = {
     'left': 0,
     'width': '100%',
     'height': '100%',
+    'animation-name': 'orbit',
+    'animation-iteration-count': 'infinite',
+    'animation-timing-function': 'linear',
+    'display': 'flex',
+    'align-items': 'center',
+    'justify-content': 'center',
+  },
+  orbit: {
+    'border': '1px '+color2+' solid',
+    'width': 0,
+    'height': 0,
+    'border-radius': '50%',
   },
   planet: {
     'padding': '5px',
@@ -43,8 +56,17 @@ const Sun = ({ classes }) => (
   </div>
 );
 
-const Planet = ({ classes, x, y }) => (
-  <div className={ classes.planet_container }>
+const Planet = ({ classes, x, y, orbit_radius, duration }) => (
+  <div
+    className={ classes.planet_container }
+    style={{ 'animation-duration': duration }}>
+
+    <div
+      className={ classes.orbit }
+      style={{
+        'padding': orbit_radius,
+      }}></div>
+
     <div className={ classes.body } style={{ top: y, left: x }}>
       <div className={ classes.planet }></div>
     </div>
@@ -54,10 +76,10 @@ const Planet = ({ classes, x, y }) => (
 const SolarSystem = ({ classes }) => (
   <div className={ classes.solar_system }>
     <Sun classes={ classes } />
-    <Planet classes={ classes } x="10%" y="50%" />
-    <Planet classes={ classes } x="18%" y="50%" />
-    <Planet classes={ classes } x="26%" y="50%" />
-    <Planet classes={ classes } x="34%" y="50%" />
+    <Planet classes={ classes } orbit_radius="40%" y="10%" x="50%" duration="27s" />
+    <Planet classes={ classes } orbit_radius="32%" y="18%" x="50%" duration="9s" />
+    <Planet classes={ classes } orbit_radius="24%" y="26%" x="50%" duration="3s" />
+    <Planet classes={ classes } orbit_radius="16%" y="34%" x="50%" duration="1s" />
   </div>
 );
 

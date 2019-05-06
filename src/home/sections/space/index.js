@@ -18,7 +18,7 @@ const Space = ({ classes }) => (
   <Section>
     <div>
       <div className={ classes.title }>
-        Space Space
+        Space Systems
       </div>
       <div>
         A large part of my career has taken place within organizations and teams
