@@ -4,7 +4,7 @@ import splash from './splash.jpg';
 import Header from './Header.js';
 import { color1, standard_shadow } from '../styles.js';
 import Hello from './sections/hello';
-import Systems from './sections/Systems.js';
+import Systems from './sections/space';
 
 const styles = {
   splash: {

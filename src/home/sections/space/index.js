@@ -1,7 +1,7 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import Section from './Section.js';
-import { color2, color3 } from '../../styles.js';
+import Section from '../Section.js';
+import { color2, color3 } from '../../../styles.js';
 
 const styles = {
   title: {
