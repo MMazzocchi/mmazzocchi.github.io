@@ -1,8 +1,8 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import Section from './Section.js';
+import Section from '../Section.js';
 import me from './me.jpg';
-import { color3, standard_shadow } from '../../styles.js';
+import { color3, standard_shadow } from '../../../styles.js';
 
 const styles = {
   hello: {
