@@ -3,6 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles.js';
 import splash from './splash.jpg';
 import Header from './Header.js';
 import { color1, standard_shadow } from '../styles.js';
+import Hello from './sections/Hello.js';
 
 const styles = {
   splash: {
@@ -42,7 +43,7 @@ const Home = ({ classes }) => (
 
       <div className={ classes.content_container }>
         <div className={ classes.content }>
-
+          <Hello />
         </div>
       </div>
     </div>
