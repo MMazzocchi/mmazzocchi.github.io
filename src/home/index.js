@@ -21,7 +21,6 @@ const styles = {
     'z-index': -1,
   },
   content: {
-    'min-height': '1000px',
     'background-color': color1,
     'box-shadow': standard_shadow,
     'width': '90%',
