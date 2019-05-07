@@ -6,8 +6,8 @@ import './orbit.css';
 
 const styles = {
   solar_system: {
-    'min-width': '200px',
-    'min-height': '200px',
+    'min-width': '150px',
+    'min-height': '150px',
     'position': 'relative',
   },
   sun: {
@@ -36,10 +36,10 @@ const Sun = ({ classes }) => (
 const SolarSystem = ({ classes }) => (
   <div className={ classes.solar_system }>
     <Sun classes={ classes } />
-    <Planet orbit_radius="40%" y="10%" x="50%" duration="27s" />
-    <Planet orbit_radius="32%" y="18%" x="50%" duration="9s" />
-    <Planet orbit_radius="24%" y="26%" x="50%" duration="3s" />
-    <Planet orbit_radius="16%" y="34%" x="50%" duration="1s" />
+    <Planet orbit_radius="50%" y="0%" x="50%" duration="27s" />
+    <Planet orbit_radius="40%" y="10%" x="50%" duration="9s" />
+    <Planet orbit_radius="30%" y="20%" x="50%" duration="3s" />
+    <Planet orbit_radius="20%" y="30%" x="50%" duration="1s" />
   </div>
 );
 
