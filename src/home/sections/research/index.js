@@ -29,7 +29,7 @@ const Research = ({ classes }) => (
       </div>
     </div>
     <div className={ classes.icon }>
-      <i class="fas fa-flask"></i>
+      <i className="fas fa-flask"></i>
     </div>
   </Section>
 );
