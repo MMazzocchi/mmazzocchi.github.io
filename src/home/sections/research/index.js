@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import Section from '../Section.js';
 import { color5, color3 } from '../../../styles.js';
 
 const styles = {
@@ -16,7 +15,7 @@ const styles = {
 };
 
 const Research = ({ classes }) => (
-  <Section>
+  <Fragment>
     <div>
       <div className={ classes.title }>
         Research
@@ -31,7 +30,7 @@ const Research = ({ classes }) => (
     <div className={ classes.icon }>
       <i className="fas fa-flask"></i>
     </div>
-  </Section>
+  </Fragment>
 );
 
 export default withStyles(styles)(Research);

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import Section from '../Section.js';
 import { color3 } from '../../../styles.js';
 import SolarSystem from './SolarSystem.js';
 
@@ -15,7 +14,7 @@ const styles = {
 };
 
 const Space = ({ classes }) => (
-  <Section>
+  <Fragment>
     <div>
       <div className={ classes.title }>
         Space Systems
@@ -30,7 +29,7 @@ const Space = ({ classes }) => (
     <div className={ classes.solar_system }>
       <SolarSystem />
     </div>
-  </Section>
+  </Fragment>
 );
 
 export default withStyles(styles)(Space);

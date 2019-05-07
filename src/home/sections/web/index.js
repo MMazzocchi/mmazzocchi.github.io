@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import Section from '../Section.js';
 import { color3 } from '../../../styles.js';
 import Breather from './Breather.js';
 
@@ -15,7 +14,7 @@ const styles = {
 };
 
 const Web = ({ classes }) => (
-  <Section>
+  <Fragment>
     <div className={ classes.left_col }>
       <Breather />
     </div>
@@ -31,7 +30,7 @@ const Web = ({ classes }) => (
         Django, and React.
       </div>
     </div>
-  </Section>
+  </Fragment>
 );
 
 export default withStyles(styles)(Web);

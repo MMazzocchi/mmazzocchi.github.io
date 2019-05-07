@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import Section from '../Section.js';
 import { color3 } from '../../../styles.js';
 import Heart from './Heart.js';
 
@@ -15,7 +14,7 @@ const styles = {
 };
 
 const Personal = ({ classes }) => (
-  <Section>
+  <Fragment>
     <div className={ classes.heart }>
       <Heart />
     </div>
@@ -31,7 +30,7 @@ const Personal = ({ classes }) => (
         please see my GitHub account.
       </div>
     </div>
-  </Section>
+  </Fragment>
 );
 
 export default withStyles(styles)(Personal);

@@ -44,11 +44,21 @@ const Content = ({ classes }) => (
         <Section>
           <Hello />
         </Section>
+        <Section>
+          <Space />
+        </Section>
 
-        <Space />
-        <Web />
-        <Research />
-        <Personal />
+        <Section>
+          <Web />
+        </Section>
+
+        <Section>
+          <Research />
+        </Section>
+
+        <Section>
+          <Personal />
+        </Section>
       </ContentRows>
     </div>
   </div>
