@@ -8,6 +8,7 @@ import Hello from './sections/hello';
 import Space from './sections/space';
 import Web from './sections/web';
 import Personal from './sections/personal';
+import Research from './sections/research';
 
 const styles = {
   splash: {
@@ -57,6 +58,7 @@ const Home = ({ classes }) => (
           <Hello />
           <Space />
           <Web />
+          <Research />
           <Personal />
         </div>
       </div>

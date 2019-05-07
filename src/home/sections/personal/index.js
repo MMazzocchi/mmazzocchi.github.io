@@ -10,12 +10,16 @@ const styles = {
     'font-size': 'xx-large',
   },
   heart: {
-    'padding-left': '20px',
+    'padding-right': '20px',
   }
 };
 
 const Personal = ({ classes }) => (
   <Section>
+    <div className={ classes.heart }>
+      <Heart />
+    </div>
+
     <div>
       <div className={ classes.title }>
         Personal Projects 
@@ -26,9 +30,6 @@ const Personal = ({ classes }) => (
         have contributed to my growth as a developer. For more information,
         please see my GitHub account.
       </div>
-    </div>
-    <div className={ classes.heart }>
-      <Heart />
     </div>
   </Section>
 );

@@ -1,6 +1,7 @@
 @keyframes beat {
-  0% { font-weight: 100; font-size: medium; }
-  80% { font-weight: 800; font-size: 0.9em; }
-  85% { font-weight: 100; font-size: medium; }
-  90% { font-weight: 800; font-size: 0.9em; }
+  0% { font-size: medium; }
+  90% { font-size: 0.8em; }
+  92% { font-size: medium; }
+  94% { font-size: 0.8em; }
+  96% { font-size: medium; }
 }
