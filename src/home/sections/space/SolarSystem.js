@@ -1,6 +1,6 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import { color2 } from '../../../styles.js';
+import { color4 } from '../../../styles.js';
 import './orbit.css';
 
 const styles = {
@@ -23,20 +23,20 @@ const styles = {
     'justify-content': 'center',
   },
   orbit: {
-    'border': '1px '+color2+' solid',
+    'border': '1px '+color4+' solid',
     'width': 0,
     'height': 0,
     'border-radius': '50%',
   },
   planet: {
     'padding': '5px',
-    'background-color': color2,
+    'background-color': color4,
     'border-radius': '5px',
   },
   sun: {
     'padding': '15px',
     'border-radius': '15px',
-    'background-color': color2,
+    'background-color': color4,
   },
   body: {
     'position': 'absolute',

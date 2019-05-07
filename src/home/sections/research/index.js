@@ -1,7 +1,7 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import Section from '../Section.js';
-import { color2, color3 } from '../../../styles.js';
+import { color5, color3 } from '../../../styles.js';
 
 const styles = {
   title: {
@@ -9,7 +9,7 @@ const styles = {
     'font-size': 'xx-large',
   },
   icon: {
-    'color': color2,
+    'color': color5,
     'font-size': '5em',
     'padding': '20px',
   }
