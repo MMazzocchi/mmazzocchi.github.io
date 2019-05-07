@@ -14,8 +14,8 @@ const styles = {
   },
   boxes_container: {
     'position': 'relative',
-    'padding-left': '100px',
-    'padding-right': '100px',
+    'padding-left': '80px',
+    'padding-right': '80px',
   }
 };
 

@@ -7,7 +7,7 @@ const styles = {
   header: {
     'display': 'flex',
     'align-items': 'center',
-    'justify-content': 'space-around',
+    'justify-content': 'center',
   },
   col: {
     'padding': '50px',
