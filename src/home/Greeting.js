@@ -7,7 +7,8 @@ import {
   color3,
   standard_shadow,
   elevated_shadow,
-  semi_transparent
+  semi_transparent,
+  breakpoints,
 } from '../styles.js';
 
 const styles = {
@@ -21,6 +22,17 @@ const styles = {
     'font-weight': 600,
     'font-size': 'xx-large',
     'padding-bottom': '2vh',
+  },
+  title: {
+    'font-size': 'medium',
+    'padding-bottom': '2vh',
+  },
+  location: {
+    'font-size': 'small',
+    'padding-bottom': '2vh',
+  },
+  button_box: {
+    'display': 'flex',
   },
   button: {
     'background': color2,
@@ -39,6 +51,21 @@ const styles = {
   link: {
     'text-decoration': 'none',
     'color': color1,
+  },
+
+  [`@media (max-width: ${ breakpoints.md })`]: {
+    greeting: {
+      'text-align': 'center',
+    },
+    title: {
+      'text-align': 'center',
+    },
+    location: {
+      'text-align': 'center',
+    },
+    button_box: {
+      'justify-content': 'center',
+    }
   }
 };
 
@@ -47,16 +74,18 @@ const Greeting = ({ classes }) => (
     <div className={ classes.greeting }>
       Welcome.
     </div>
-    <div style={{ fontSize: 'medium' }}>
+    <div className={ classes.title }>
       Max Mazzocchi, Software Developer
     </div>
-    <div style={{ fontSize: 'small', paddingBottom: '10px', }}>
+    <div className={ classes.location }>
       Washington DC/Northern Virginia
     </div>
-    <div className={ classes.button }>
-      <a className={ classes.link } href="mailto://maxwell.mazzocchi@gmail.com">
-        Contact Me
-      </a>
+    <div className={ classes.button_box }>
+      <div className={ classes.button }>
+        <a className={ classes.link } href="mailto://maxwell.mazzocchi@gmail.com">
+          Contact Me
+        </a>
+      </div>
     </div>
   </div>
 );
