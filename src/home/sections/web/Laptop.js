@@ -1,0 +1,18 @@
+import React from 'react';
+import withStyles from '@material-ui/core/styles/withStyles.js';
+import { color2 } from '../../../styles.js';
+
+const styles = {
+  icon: {
+    'color': color2,
+    'font-size': '5em',
+  }
+};
+
+const Laptop = ({ classes }) => (
+  <div className={ classes.icon }>
+    <i className="fas fa-laptop"></i>
+  </div>
+);
+
+export default withStyles(styles)(Laptop);
