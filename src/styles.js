@@ -9,6 +9,14 @@ const standard_shadow = '0 0 8px 0 '+color3;
 const elevated_shadow = '0 0 12px 0 '+color3;
 const semi_transparent = 'E4';
 
+const breakpoints = {
+  xs: '0px',
+  s:  '600px',
+  md: '960px',
+  lg: '1280px',
+  xl: '1920px',
+}
+
 export {
   color1,
   color2,
@@ -18,5 +26,6 @@ export {
   color5,
   standard_shadow,
   elevated_shadow,
-  semi_transparent
+  semi_transparent,
+  breakpoints,
 };
