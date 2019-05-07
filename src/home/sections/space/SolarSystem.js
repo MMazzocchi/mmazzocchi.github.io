@@ -10,29 +10,6 @@ const styles = {
     'min-height': '200px',
     'position': 'relative',
   },
-  orbit_container: {
-    'position': 'absolute',
-    'top': 0,
-    'left': 0,
-    'width': '100%',
-    'height': '100%',
-    'display': 'flex',
-    'align-items': 'center',
-    'justify-content': 'center',
-  },
-  body_container: {
-    'position': 'absolute',
-    'top': 0,
-    'left': 0,
-    'width': '100%',
-    'height': '100%',
-    'animation-name': 'orbit',
-    'animation-iteration-count': 'infinite',
-    'animation-timing-function': 'linear',
-    'display': 'flex',
-    'align-items': 'center',
-    'justify-content': 'center',
-  },
   sun: {
     'padding': '15px',
     'border-radius': '15px',
@@ -59,10 +36,10 @@ const Sun = ({ classes }) => (
 const SolarSystem = ({ classes }) => (
   <div className={ classes.solar_system }>
     <Sun classes={ classes } />
-    <Planet classes={ classes } orbit_radius="40%" y="10%" x="50%" duration="27s" />
-    <Planet classes={ classes } orbit_radius="32%" y="18%" x="50%" duration="9s" />
-    <Planet classes={ classes } orbit_radius="24%" y="26%" x="50%" duration="3s" />
-    <Planet classes={ classes } orbit_radius="16%" y="34%" x="50%" duration="1s" />
+    <Planet orbit_radius="40%" y="10%" x="50%" duration="27s" />
+    <Planet orbit_radius="32%" y="18%" x="50%" duration="9s" />
+    <Planet orbit_radius="24%" y="26%" x="50%" duration="3s" />
+    <Planet orbit_radius="16%" y="34%" x="50%" duration="1s" />
   </div>
 );
 
