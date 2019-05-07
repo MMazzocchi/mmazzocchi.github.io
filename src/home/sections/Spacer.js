@@ -3,7 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles.js';
 
 const styles = {
   spacer: {
-    'min-width': '20px',
+    'min-width': '50px',
     'height': 0,
   }
 };
