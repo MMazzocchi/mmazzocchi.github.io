@@ -31,8 +31,12 @@ const ContentRows = ({ children }) => (
   <Fragment>
     { children.map((child, i) => (
       <Fragment key={ `content-row-${ i }` }>
-      { ((i % 2) === 1) && (child.type === Section) ?
-        <Section reverse={ true } {...child.props} /> :
+      { (child.type === Section) ?
+        <Section
+          reverse={ (i%2) === 1 }
+          last={ (i+1) === children.length }
+          { ...child.props } />
+        :
         child
       }
       </Fragment>

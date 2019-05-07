@@ -11,14 +11,16 @@ const styles = {
     'margin-right': '50px',
     'margin-top': '20px',
     'padding-bottom': '20px',
-    'border-bottom': '1px '+color3+' solid',
   },
 };
 
-const Section = ({ classes, children, reverse }) => (
+const Section = ({ classes, children, reverse, last }) => (
   <div
     className={ classes.section }
-    style={ reverse ? { flexDirection: 'row-reverse' } : {}}>
+    style={{
+      flexDirection: reverse ? 'row-reverse' : '',
+      borderBottom: last ? '' : '1px'+color3+' solid',
+     }}>
     { children }
   </div>
 );
