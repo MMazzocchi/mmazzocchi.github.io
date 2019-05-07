@@ -11,7 +11,7 @@ const styles = {
 
 const Laptop = ({ classes }) => (
   <div className={ classes.icon }>
-    <i className="fas fa-laptop"></i>
+    <i className="fas fa-laptop-code"></i>
   </div>
 );
 
