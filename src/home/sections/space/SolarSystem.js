@@ -15,9 +15,16 @@ const styles = {
     'left': 0,
     'width': '100%',
     'height': '100%',
-    'animation-name': 'orbit',
-    'animation-iteration-count': 'infinite',
-    'animation-timing-function': 'linear',
+    'display': 'flex',
+    'align-items': 'center',
+    'justify-content': 'center',
+  },
+  orbit_container: {
+    'position': 'absolute',
+    'top': 0,
+    'left': 0,
+    'width': '100%',
+    'height': '100%',
     'display': 'flex',
     'align-items': 'center',
     'justify-content': 'center',
@@ -27,6 +34,19 @@ const styles = {
     'width': 0,
     'height': 0,
     'border-radius': '50%',
+  },
+  body_container: {
+    'position': 'absolute',
+    'top': 0,
+    'left': 0,
+    'width': '100%',
+    'height': '100%',
+    'animation-name': 'orbit',
+    'animation-iteration-count': 'infinite',
+    'animation-timing-function': 'linear',
+    'display': 'flex',
+    'align-items': 'center',
+    'justify-content': 'center',
   },
   planet: {
     'padding': '5px',
@@ -59,16 +79,21 @@ const Sun = ({ classes }) => (
 const Planet = ({ classes, x, y, orbit_radius, duration }) => (
   <div
     className={ classes.planet_container }
-    style={{ animationDuration: duration }}>
+    >
 
-    <div
-      className={ classes.orbit }
-      style={{
-        'padding': orbit_radius,
-      }}></div>
+    <div className={ classes.orbit_container }>
+      <div
+        className={ classes.orbit }
+        style={{
+          'padding': orbit_radius,
+        }}></div>
+    </div>
 
-    <div className={ classes.body } style={{ top: y, left: x }}>
-      <div className={ classes.planet }></div>
+    <div className={ classes.body_container }
+      style={{ animationDuration: duration }}>
+      <div className={ classes.body } style={{ top: y, left: x }}>
+        <div className={ classes.planet }></div>
+      </div>
     </div>
   </div>
 );
