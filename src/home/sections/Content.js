@@ -26,9 +26,14 @@ const styles = {
   },
 };
 
+// Content rows will reverse every other Section it has as a child
 const ContentRows = ({ children }) => (
   <Fragment>
-    { children }
+    { children.map((child, i) => (
+      ((i % 2) === 1) && (child.type === Section) ?
+      <Section reverse={ true } {...child.props} /> :
+      child
+    )) }
   </Fragment> 
 );
 
