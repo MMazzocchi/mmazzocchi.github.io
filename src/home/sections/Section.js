@@ -9,8 +9,8 @@ const styles = {
     'justify-content': 'space-between',
     'margin-left': '50px',
     'margin-right': '50px',
-    'margin-top': '20px',
-    'padding-bottom': '20px',
+    'margin-top': '30px',
+    'padding-bottom': '30px',
   },
 };
 
