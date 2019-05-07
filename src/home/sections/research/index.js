@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import { color5, color3 } from '../../../styles.js';
+import Spacer from '../Spacer.js';
 
 const styles = {
   title: {
@@ -18,6 +19,9 @@ const Research = ({ classes }) => (
     <div className={ classes.icon }>
       <i className="fas fa-flask"></i>
     </div>
+
+    <Spacer />
+
     <div>
       <div className={ classes.title }>
         Research

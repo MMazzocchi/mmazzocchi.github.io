@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import me from './me.jpg';
 import { color3, standard_shadow } from '../../../styles.js';
+import Spacer from '../Spacer.js';
 
 const styles = {
   hello: {
@@ -17,6 +18,8 @@ const styles = {
 const Hello = ({ classes }) => (
   <Fragment>
     <img className={ classes.picture } src={me} alt="Max Mazzocchi" />
+
+    <Spacer />
 
     <div>
       <div className={ classes.hello }>

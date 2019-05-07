@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import { color3 } from '../../../styles.js';
 import Breather from './Breather.js';
+import Spacer from '../Spacer.js';
 
 const styles = {
   title: {
@@ -13,6 +14,8 @@ const styles = {
 const Web = ({ classes }) => (
   <Fragment>
     <Breather />
+
+    <Spacer />
 
     <div>
       <div className={ classes.title }>

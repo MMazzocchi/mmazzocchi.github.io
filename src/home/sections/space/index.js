@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import { color3 } from '../../../styles.js';
 import SolarSystem from './SolarSystem.js';
+import Spacer from '../Spacer.js';
 
 const styles = {
   title: {
@@ -13,6 +14,9 @@ const styles = {
 const Space = ({ classes }) => (
   <Fragment>
     <SolarSystem />
+
+    <Spacer />
+
     <div>
       <div className={ classes.title }>
         Space Systems
