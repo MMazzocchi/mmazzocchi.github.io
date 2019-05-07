@@ -39,10 +39,6 @@ const Footer = ({ classes }) => (
         Wikimedia Source
       </Link>
     </div>
-    <div>
-      All other content made by me, which I think is pretty cool since I used to
-      be purely a systems guy.
-    </div>
   </div>
 );
 
