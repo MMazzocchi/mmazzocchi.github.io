@@ -15,8 +15,10 @@ const styles = {
   },
 };
 
-const Section = ({ classes, children }) => (
-  <div className={ classes.section }>
+const Section = ({ classes, children, reverse }) => (
+  <div
+    className={ classes.section }
+    style={ reverse ? { flexDirection: 'row-reverse' } : {}}>
     { children }
   </div>
 );
