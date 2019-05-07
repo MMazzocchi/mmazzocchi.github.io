@@ -3,12 +3,8 @@ import withStyles from '@material-ui/core/styles/withStyles.js';
 import splash from './splash.jpg';
 import Header from './Header.js';
 import Footer from './Footer.js';
-import { color1, color3, standard_shadow } from '../styles.js';
-import Hello from './sections/hello';
-import Space from './sections/space';
-import Web from './sections/web';
-import Personal from './sections/personal';
-import Research from './sections/research';
+import { color3 } from '../styles.js';
+import Content from './sections/Content.js';
 
 const styles = {
   splash: {
@@ -22,18 +18,8 @@ const styles = {
     'background-position': 'center',
     'z-index': -1,
   },
-  content: {
-    'background-color': color1,
-    'box-shadow': standard_shadow,
-    'width': '90%',
-    'max-width': '1000px',
-  },
   container: {
     'position': 'relative',
-  },
-  content_container: {
-    'display': 'flex',
-    'justify-content': 'center',
   },
   bottom_splash: {
     'position': 'absolute',
@@ -52,17 +38,7 @@ const Home = ({ classes }) => (
       <div className={ classes.splash }></div>
 
       <Header />
-
-      <div className={ classes.content_container }>
-        <div className={ classes.content }>
-          <Hello />
-          <Space />
-          <Web />
-          <Research />
-          <Personal />
-        </div>
-      </div>
-
+      <Content />
       <Footer />
 
       <div className={ classes.bottom_splash }></div>
