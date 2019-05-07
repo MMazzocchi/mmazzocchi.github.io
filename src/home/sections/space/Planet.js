@@ -4,17 +4,7 @@ import { color4 } from '../../../styles.js';
 import './orbit.css';
 
 const styles = {
-  planet_container: {
-    'position': 'absolute',
-    'top': 0,
-    'left': 0,
-    'width': '100%',
-    'height': '100%',
-    'display': 'flex',
-    'align-items': 'center',
-    'justify-content': 'center',
-  },
-  orbit_container: {
+  container: {
     'position': 'absolute',
     'top': 0,
     'left': 0,
@@ -61,17 +51,10 @@ const styles = {
 };
 
 const Planet = ({ classes, x, y, orbit_radius, duration }) => (
-  <div
-    className={ classes.planet_container }
-    >
-
-    <div className={ classes.orbit_container }>
-      <div
-        className={ classes.orbit }
-        style={{
-          'padding': orbit_radius,
-        }}></div>
-    </div>
+  <div className={ classes.container }>
+    <div
+      className={ classes.orbit }
+      style={{ 'padding': orbit_radius }}></div>
 
     <div className={ classes.body_container }
       style={{ animationDuration: duration }}>
