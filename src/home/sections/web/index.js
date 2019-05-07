@@ -8,16 +8,11 @@ const styles = {
     'color': color3,
     'font-size': 'xx-large',
   },
-  left_col: {
-    'padding-right': '20px',
-  }
 };
 
 const Web = ({ classes }) => (
   <Fragment>
-    <div className={ classes.left_col }>
-      <Breather />
-    </div>
+    <Breather />
 
     <div>
       <div className={ classes.title }>

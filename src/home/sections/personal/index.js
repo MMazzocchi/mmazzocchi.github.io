@@ -8,16 +8,11 @@ const styles = {
     'color': color3,
     'font-size': 'xx-large',
   },
-  heart: {
-    'padding-right': '20px',
-  }
 };
 
 const Personal = ({ classes }) => (
   <Fragment>
-    <div className={ classes.heart }>
-      <Heart />
-    </div>
+    <Heart />
 
     <div>
       <div className={ classes.title }>

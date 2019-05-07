@@ -10,12 +10,14 @@ const styles = {
   icon: {
     'color': color5,
     'font-size': '5em',
-    'padding': '20px',
   }
 };
 
 const Research = ({ classes }) => (
   <Fragment>
+    <div className={ classes.icon }>
+      <i className="fas fa-flask"></i>
+    </div>
     <div>
       <div className={ classes.title }>
         Research
@@ -26,9 +28,6 @@ const Research = ({ classes }) => (
         played a software support role to experts in various fields, providing
         rapid prototyping and data analysis capabilities.
       </div>
-    </div>
-    <div className={ classes.icon }>
-      <i className="fas fa-flask"></i>
     </div>
   </Fragment>
 );

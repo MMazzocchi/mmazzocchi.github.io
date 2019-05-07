@@ -8,13 +8,11 @@ const styles = {
     'color': color3,
     'font-size': 'xx-large',
   },
-  solar_system: {
-    'padding-left': '20px',
-  }
 };
 
 const Space = ({ classes }) => (
   <Fragment>
+    <SolarSystem />
     <div>
       <div className={ classes.title }>
         Space Systems
@@ -25,9 +23,6 @@ const Space = ({ classes }) => (
         both ground and flight systems, spanning a wide variety of technologies
         and languages, including C/C++, Java, Python, and FORTRAN. 
       </div>
-    </div>
-    <div className={ classes.solar_system }>
-      <SolarSystem />
     </div>
   </Fragment>
 );

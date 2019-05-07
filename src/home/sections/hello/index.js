@@ -10,7 +10,6 @@ const styles = {
   },
   picture: {
     'box-shadow': standard_shadow,
-    'margin-right': '50px',
     'min-width': '200px',
   }
 };
