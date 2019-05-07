@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { color1, standard_shadow } from '../../styles.js';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 
@@ -24,14 +24,31 @@ const styles = {
   },
 };
 
+const ContentRow = ({ children }) => (
+  <Fragment>
+    { children }
+  </Fragment>
+);
+
+const ContentRows = ({ children }) => (
+  <Fragment>
+    { children }
+  </Fragment> 
+);
+
 const Content = ({ classes }) => (
   <div className={ classes.content_container }>
     <div className={ classes.content }>
-      <Hello />
-      <Space />
-      <Web />
-      <Research />
-      <Personal />
+      <ContentRows>
+        <ContentRow>
+          <Hello />
+        </ContentRow>
+
+        <Space />
+        <Web />
+        <Research />
+        <Personal />
+      </ContentRows>
     </div>
   </div>
 );
