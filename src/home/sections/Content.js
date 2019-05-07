@@ -30,9 +30,12 @@ const styles = {
 const ContentRows = ({ children }) => (
   <Fragment>
     { children.map((child, i) => (
-      ((i % 2) === 1) && (child.type === Section) ?
-      <Section reverse={ true } {...child.props} /> :
-      child
+      <Fragment key={ `content-row-${ i }` }>
+      { ((i % 2) === 1) && (child.type === Section) ?
+        <Section reverse={ true } {...child.props} /> :
+        child
+      }
+      </Fragment>
     )) }
   </Fragment> 
 );
