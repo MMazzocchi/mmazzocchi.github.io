@@ -21,7 +21,7 @@ const styles = {
     'color': 'red',
     'font-weight': 100,
     'animation-name': 'beat',
-    'animation-duration': '2s', 
+    'animation-duration': '5s', 
     'animation-iteration-count': 'infinite',
     'animation-timing-function': 'step-end',
     'margin': 0,
