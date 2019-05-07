@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import { color1, standard_shadow } from '../../styles.js';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 
+import Section from './Section.js';
+
 import Hello from './hello';
 import Space from './space';
 import Web from './web';
@@ -24,12 +26,6 @@ const styles = {
   },
 };
 
-const ContentRow = ({ children }) => (
-  <Fragment>
-    { children }
-  </Fragment>
-);
-
 const ContentRows = ({ children }) => (
   <Fragment>
     { children }
@@ -40,9 +36,9 @@ const Content = ({ classes }) => (
   <div className={ classes.content_container }>
     <div className={ classes.content }>
       <ContentRows>
-        <ContentRow>
+        <Section>
           <Hello />
-        </ContentRow>
+        </Section>
 
         <Space />
         <Web />

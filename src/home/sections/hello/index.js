@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import Section from '../Section.js';
 import me from './me.jpg';
 import { color3, standard_shadow } from '../../../styles.js';
 
@@ -17,7 +16,7 @@ const styles = {
 };
 
 const Hello = ({ classes }) => (
-  <Section>
+  <Fragment>
     <img className={ classes.picture } src={me} alt="Max Mazzocchi" />
 
     <div>
@@ -32,7 +31,7 @@ const Hello = ({ classes }) => (
         organizations, so please feel free to get in touch!
       </div>
     </div>
-  </Section>
+  </Fragment>
 );
 
 export default withStyles(styles)(Hello);
