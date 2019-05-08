@@ -13,7 +13,7 @@ const styles = {
 const Contact = ({ classes }) => (
   <Fragment>
     <div className={ classes.button_box }>
-      <Button href="mailto://maxwell.mazzocchi@gmail.com">
+      <Button href="mailto:maxwell.mazzocchi@gmail.com">
         Contact Me
       </Button>
     </div>
