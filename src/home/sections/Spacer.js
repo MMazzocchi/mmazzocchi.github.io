@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles.js';
 const styles = {
   spacer: {
     'min-width': '50px',
-    'height': 0,
+    'min-height': '50px',
   }
 };
 
