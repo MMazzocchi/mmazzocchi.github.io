@@ -12,6 +12,7 @@ const styles = {
   picture: {
     'box-shadow': standard_shadow,
     'min-width': '200px',
+    'max-width': '100%',
   }
 };
 
