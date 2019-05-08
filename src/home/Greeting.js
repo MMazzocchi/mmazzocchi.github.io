@@ -2,14 +2,12 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
 import {
   color1,
-  color2,
-  color2_light,
   color3,
   standard_shadow,
-  elevated_shadow,
   semi_transparent,
   breakpoints,
 } from '../styles.js';
+import Button from './Button.js';
 
 const styles = {
   box: {
@@ -33,24 +31,6 @@ const styles = {
   },
   button_box: {
     'display': 'flex',
-  },
-  button: {
-    'background': color2,
-    'font-weight': 600,
-    'text-align': 'center',
-    'padding': '10px',
-    'box-shadow': standard_shadow,
-    'display': 'inline-block',
-    'border-radius': '5px',
-    'transition': 'background 0.2s, box_shadow 0.2s',
-    '&:hover': {
-      'background': color2_light,
-      'box_shadow': elevated_shadow,
-    }
-  },
-  link: {
-    'text-decoration': 'none',
-    'color': color1,
   },
 
   [`@media (max-width: ${ breakpoints.md })`]: {
@@ -81,11 +61,9 @@ const Greeting = ({ classes }) => (
       Washington DC/Northern Virginia
     </div>
     <div className={ classes.button_box }>
-      <div className={ classes.button }>
-        <a className={ classes.link } href="mailto://maxwell.mazzocchi@gmail.com">
-          Contact Me
-        </a>
-      </div>
+      <Button href="mailto://maxwell.mazzocchi@gmail.com">
+        Contact Me
+      </Button>
     </div>
   </div>
 );
