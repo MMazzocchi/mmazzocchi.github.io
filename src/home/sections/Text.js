@@ -1,6 +1,6 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles.js';
-import { color3 } from '../../styles.js';
+import { color3, breakpoints } from '../../styles.js';
 
 const styles = {
   title: {
@@ -9,6 +9,11 @@ const styles = {
   },
   text: {
     'color': color3,
+  },
+  [`@media (max-width: ${ breakpoints.md })`]: {
+    title: {
+      'text-align': 'center',
+    }
   }
 };
 
