@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles.js';
+import withStyles from 'react-jss';
 import { color1 } from '../styles.js';
 
 const styles = {

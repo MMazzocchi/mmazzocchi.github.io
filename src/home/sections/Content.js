@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { color1, standard_shadow } from '../../styles.js';
-import withStyles from '@material-ui/core/styles/withStyles.js';
+import withStyles from 'react-jss';
 
 import Section from './Section.js';
 

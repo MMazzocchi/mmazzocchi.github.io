@@ -1,5 +1,5 @@
 import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles.js';
+import withStyles from 'react-jss';
 import dc from './dc.png';
 import useAutoWarningCounter from './useAutoWarningCounter.js';
 import code_strings from './code_strings.js';

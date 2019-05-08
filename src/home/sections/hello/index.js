@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles.js';
+import withStyles from 'react-jss';
 import me from './me.jpg';
 import { standard_shadow } from '../../../styles.js';
 import Spacer from '../Spacer.js';

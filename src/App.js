@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import './App.css';
 import NavBar from './navbar';
-import withStyles from '@material-ui/core/styles/withStyles.js';
+import withStyles from 'react-jss';
 import Home from './home/';
 import '@fortawesome/fontawesome-free/css/all.css';
 

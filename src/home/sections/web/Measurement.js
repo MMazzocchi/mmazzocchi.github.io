@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles.js';
+import withStyles from 'react-jss';
 import { color2 } from '../../../styles.js';
 
 const border = '2px '+color2+' solid';

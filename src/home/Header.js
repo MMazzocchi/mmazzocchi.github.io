@@ -1,5 +1,5 @@
 import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles.js';
+import withStyles from 'react-jss';
 import Greeting from './Greeting.js';
 import CodeBoxes from './codeboxes';
 import { breakpoints } from '../styles.js';

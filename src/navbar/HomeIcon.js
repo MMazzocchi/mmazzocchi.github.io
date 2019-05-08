@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles.js';
+import withStyles from 'react-jss';
 import lockAspect from '../utils/lockAspect.js';
 import { color1, color3 } from '../styles.js';
 
