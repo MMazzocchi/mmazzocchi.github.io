@@ -1,34 +1,21 @@
 import React, { Fragment } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles.js';
-import { color3 } from '../../../styles.js';
 import Spacer from '../Spacer.js';
 import Laptop from './Laptop.js';
+import Text from '../Text.js';
 
-const styles = {
-  title: {
-    'color': color3,
-    'font-size': 'xx-large',
-  },
-};
-
-const Web = ({ classes }) => (
+const Web = () => (
   <Fragment>
     <Laptop />
 
     <Spacer />
 
-    <div>
-      <div className={ classes.title }>
-        Web Development
-      </div>
-      <div>
-        In recent positions, and on personal projects, I continuously develop
-        experience in web service development and deployment. This has included
-        both front-end and back-end systems, as well as frameworks like NodeJS,
-        Django, and React.
-      </div>
-    </div>
+    <Text title="Web Development">
+      In recent positions, and on personal projects, I continuously develop
+      experience in web service development and deployment. This has included
+      both front-end and back-end systems, as well as frameworks like NodeJS,
+      Django, and React.
+    </Text>
   </Fragment>
 );
 
-export default withStyles(styles)(Web);
+export default Web;
