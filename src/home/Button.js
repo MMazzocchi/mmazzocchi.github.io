@@ -17,10 +17,10 @@ const styles = {
     'box-shadow': standard_shadow,
     'display': 'inline-block',
     'border-radius': '5px',
-    'transition': 'background 0.2s, box_shadow 0.2s',
+    'transition': 'background 0.2s, box-shadow 0.2s',
     '&:hover': {
       'background': color2_light,
-      'box_shadow': elevated_shadow,
+      'box-shadow': elevated_shadow,
     }
   },
   link: {
