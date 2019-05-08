@@ -1,47 +1,49 @@
-import React from "react";
-import Button from 'reactstrap/lib/Button';
-import CardBody from 'reactstrap/lib/CardBody';
-import CardText from 'reactstrap/lib/CardText';
-import Col from 'reactstrap/lib/Col';
-import Row from 'reactstrap/lib/Row';
-import { SkillBar } from "./SkillBar.js";
-import { Link } from "react-router-dom";
-import { CatBox } from "../CatBox.js";
+import React, { Fragment } from 'react';
+import withStyles from 'react-jss';
+import splash from './splash.jpg';
+import Header from './Header.js';
+import Footer from './Footer.js';
+import { color3 } from '../styles.js';
+import Content from './sections/Content.js';
 
-const Home = () => (
-  <React.Fragment>
-    <Row className="align-items-center">
-      <Col md="6">
-        <div className="portrait">
-          <img src="images/me.jpg"
-               className="rounded-circle img-fluid mx-auto d-block portrait shadow" />
-        </div>
-      </Col>
-      <Col md="6">
-        <Row>
-          <Col className="border-bottom">
-            <h1>Max Mazzocchi</h1>
-            <p>Software Developer, Northern Virginia/Washington DC</p>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-    <SkillBar />
-    <CatBox title="$ cat hello.txt">
-      <CardBody>
-        <CardText> 
-          Thanks for visiting my homepage! I am a software developer
-          currently located in the Northern Virginia/DC metro area. My
-          professional experience includes software positions in aerospace,
-          defense, research, and development, working on a variety of
-          applications and solutions.
-        </CardText>
-        <Button color="primary" block tag={ Link } to="/contact">
-          Let&#39;s talk!
-        </Button>
-      </CardBody>
-    </CatBox>
-  </React.Fragment>
+const styles = {
+  splash: {
+    'position': 'absolute',
+    'top': 0,
+    'left': 0,
+    'width': '100%',
+    'min-height': '40%',
+    'background-image': `url(${ splash })`,
+    'background-size': 'cover',
+    'background-position': 'center',
+    'z-index': -1,
+  },
+  container: {
+    'position': 'relative',
+  },
+  bottom_splash: {
+    'position': 'absolute',
+    'bottom': 0,
+    'left': 0,
+    'width': '100%',
+    'min-height': '20%',
+    'background-color': color3,
+    'z-index': -1,
+  }
+};
+
+const Home = ({ classes }) => (
+  <Fragment>
+    <div className={ classes.container }>
+      <div className={ classes.splash }></div>
+
+      <Header />
+      <Content />
+      <Footer />
+
+      <div className={ classes.bottom_splash }></div>
+    </div>
+  </Fragment>
 );
 
-export { Home };
+export default withStyles(styles)(Home);

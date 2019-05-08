@@ -1,12 +1,8 @@
 {
   "name": "mmazzocchi.github.io",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "description": "Personal website for Max Mazzocchi",
   "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MMazzocchi/mmazzocchi.github.io.git"
@@ -16,30 +12,29 @@
   "bugs": {
     "url": "https://github.com/MMazzocchi/mmazzocchi.github.io/issues"
   },
-  "homepage": "https://github.com/MMazzocchi/mmazzocchi.github.io#readme",
+  "homepage": "https://mmazzocchi.github.io/",
   "dependencies": {
-    "highlight.js": "^9.13.1",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-router-dom": "^4.3.1",
-    "reactstrap": "^6.5.0"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "2.1.8"
   },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "^7.1.5",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babelify": "^10.0.0",
-    "eslint": "^5.16.0",
-    "eslint-loader": "^2.1.2",
-    "eslint-plugin-react": "^7.12.4",
-    "prop-types": "^15.6.2",
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0"
+    "@fortawesome/fontawesome-free": "^5.8.1",
+    "react-jss": "^8.6.1"
   }
 }

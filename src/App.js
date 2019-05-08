@@ -1,29 +1,21 @@
-import React from "react";
-import Container from 'reactstrap/lib/Container';
-import { Nav } from "./Nav.js";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Home } from "./home";
-import { Contact } from "./contact";
-import { Projects } from "./projects";
+import React, { Fragment } from 'react';
+import './App.css';
+import NavBar from './navbar';
+import withStyles from 'react-jss';
+import Home from './home/';
+import '@fortawesome/fontawesome-free/css/all.css';
 
-const links = [
-  { text: "Home",     dest: "/",         component: Home },
-  { text: "Projects", dest: "/projects", component: Projects },
-  { text: "Contact",  dest: "/contact",  component: Contact },
-];
+const styles = {
+};
 
-const App = () => (
-  <Router>
-    <Container>
-      <Nav links={ links } />
+const App = ({ classes }) => (
+  <Fragment>
+    <NavBar />
 
-      { links.map(({ dest, component }) => (
-        <Route key={ `route-${ dest }` }
-               path={ dest }
-               component={ component } exact />
-      )) }
-     </Container>
-  </Router>
+    <div>
+      <Home />
+    </div>
+  </Fragment>
 );
 
-export { App };
+export default withStyles(styles)(App);
