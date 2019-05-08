@@ -9,6 +9,7 @@ import Space from './space';
 import Web from './web';
 import Personal from './personal';
 import Research from './research';
+import Contact from './contact';
 
 const styles = {
   content: {
@@ -65,6 +66,10 @@ const Content = ({ classes }) => (
 
         <Section>
           <Personal />
+        </Section>
+
+        <Section>
+          <Contact />
         </Section>
       </ContentRows>
     </div>
