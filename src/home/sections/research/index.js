@@ -20,7 +20,7 @@ const Research = ({ classes }) => (
     <Spacer />
 
     <Text title="Research">
-      I've had the opportunity to particpate in and contribut to multiple
+      I've had the opportunity to participate in and contribute to multiple
       ongoing research projects throughout my career. In these positions, I've
       played a software support role to experts in various fields, providing
       rapid prototyping and data analysis capabilities.

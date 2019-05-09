@@ -10,7 +10,7 @@ const Personal = () => (
     <Spacer />
 
     <Text title="Personal Projects">
-      I regularly spend time pursuing personal projects in a wide variery of
+      I regularly spend time pursuing personal projects in a wide variety of
       technologies. Some of these get finished, others don't, but all of them
       have contributed to my growth as a developer. For more information,
       please see my GitHub account.
