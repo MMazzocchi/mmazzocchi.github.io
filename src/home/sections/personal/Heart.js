@@ -8,8 +8,8 @@ const styles = {
     'align-items': 'center',
     'justify-content': 'center',
     'margin': '10px',
-    'min-height': '100px',
-    'min-width': '100px',
+    'min-height': '120px',
+    'min-width': '120px',
     'flex-direction': 'column',
   },
   inner: {
