@@ -1,6 +1,11 @@
 # mmazzocchi.github.io
 The personal site for Max Mazzocchi.
 
+**NOTE**: GitHub pages requires that personal sites be served from the `master`
+branch. Because of this, the base branch is called `production`. `master` is
+used only by the `gh-pages` script, which will overwrite it with changes on
+deployment.
+
 ## Getting Started
 ### Prerequisites
 Install `npm` if not already installed.
@@ -12,9 +17,20 @@ $ cd mmazzocchi.github.io/
 $ npm install
 ```
 
-### Build
+### Start a Development Server
+```
+$ npm start
+```
+
+### Build a Production Build
 ```
 $ npm run build
+```
+
+### Deploy
+**NOTW**: This will overwrite `master`!
+```
+$ npm run deploy
 ```
 
 ## License
