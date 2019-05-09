@@ -21,7 +21,7 @@ const styles = {
   textbox: {
     'background': color3+semi_transparent,
     'box-shadow': standard_shadow,
-    'transition': 'max-height 0.5s linear',
+    'transition': 'max-height 0.8s linear',
     'overflow-y': 'hidden',
     'max-height': 0,
   },
