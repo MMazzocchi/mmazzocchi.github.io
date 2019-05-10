@@ -5,7 +5,7 @@ import Home from './home/';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { color3 } from './styles.js';
 import splash from './splash.jpg';
-import Header from './Header.js';
+import Header from './header';
 import Footer from './Footer.js';
 
 const styles = {

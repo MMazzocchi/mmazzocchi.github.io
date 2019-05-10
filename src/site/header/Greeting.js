@@ -6,8 +6,8 @@ import {
   standard_shadow,
   semi_transparent,
   breakpoints,
-} from './styles.js';
-import Button from './Button.js';
+} from '../styles.js';
+import Button from '../Button.js';
 
 const styles = {
   box: {
