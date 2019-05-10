@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
 import NavBar from './navbar';
 import withStyles from 'react-jss';
-import Home from './home/';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { color3 } from './styles.js';
 import splash from './splash.jpg';
 import Header from './header';
+import Content from './Content.js';
+import Home from './home';
 import Footer from './Footer.js';
 
 const styles = {
@@ -42,7 +43,9 @@ const Site = ({ classes }) => (
       <div className={ classes.splash }></div>
 
       <Header />
-      <Home />
+      <Content>
+        <Home />
+      </Content>
       <Footer />
 
       <div className={ classes.bottom_splash }></div>

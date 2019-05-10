@@ -1,14 +1,58 @@
 import React, { Fragment } from 'react';
-import withStyles from 'react-jss';
-import Content from './sections/Content.js';
 
-const styles = {
-};
+import Section from './Section.js';
 
-const Home = ({ classes }) => (
+import Hello from './sections/hello';
+import Space from './sections/space';
+import Web from './sections/web';
+import Personal from './sections/personal';
+import Research from './sections/research';
+import Contact from './sections/contact';
+
+// Content rows will reverse every other Section it has as a child
+const ContentRows = ({ children }) => (
   <Fragment>
-    <Content />
-  </Fragment>
+    { children.map((child, i) => (
+      <Fragment key={ `content-row-${ i }` }>
+      { (child.type === Section) ?
+        <Section
+          first={ i === 0 }
+          last={ (i+1) === children.length }
+          reverse={ (i%2) === 1 }
+          { ...child.props } />
+        :
+        child
+      }
+      </Fragment>
+    )) }
+  </Fragment> 
 );
 
-export default withStyles(styles)(Home);
+const Home = () => (
+  <ContentRows>
+    <Section>
+      <Hello />
+    </Section>
+    <Section>
+      <Space />
+    </Section>
+
+    <Section>
+      <Web />
+    </Section>
+
+    <Section>
+      <Research />
+    </Section>
+
+    <Section>
+      <Personal />
+    </Section>
+
+    <Section>
+      <Contact />
+    </Section>
+  </ContentRows>
+);
+
+export default Home; 
