@@ -2,7 +2,7 @@ import React from 'react';
 import withStyles from 'react-jss';
 import Greeting from './Greeting.js';
 import CodeBoxes from './codeboxes';
-import { breakpoints } from '../styles.js';
+import { breakpoints } from './styles.js';
 
 const styles = {
   header: {

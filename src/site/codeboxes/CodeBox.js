@@ -5,7 +5,7 @@ import {
   color3,
   standard_shadow,
   semi_transparent
-} from '../../styles.js';
+} from '../styles.js';
 
 const styles = {
   overlay: {

@@ -6,7 +6,7 @@ import {
   color2_light,
   standard_shadow,
   elevated_shadow,
-} from '../styles.js';
+} from './styles.js';
 
 const styles = {
   button: {

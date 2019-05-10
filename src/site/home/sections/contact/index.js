@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import withStyles from 'react-jss';
-import Button from '../../Button.js';
+import Button from '../../../Button.js';
 
 const styles = {
   button_box: {
