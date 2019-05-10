@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import './App.css';
-import NavBar from './navbar';
+import NavBar from './site/navbar';
 import withStyles from 'react-jss';
-import Home from './home/';
+import Home from './site/home/';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 const styles = {
