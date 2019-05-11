@@ -8,6 +8,7 @@ import Header from './header';
 import Content from './Content.js';
 import Home from './home';
 import Footer from './Footer.js';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const styles = {
   splash: {
@@ -37,19 +38,21 @@ const styles = {
 
 const Site = ({ classes }) => (
   <Fragment>
-    <NavBar />
+    <Router>
+      <NavBar />
 
-    <div className={ classes.container }>
-      <div className={ classes.splash }></div>
+      <div className={ classes.container }>
+        <div className={ classes.splash }></div>
 
-      <Header />
-      <Content>
-        <Home />
-      </Content>
-      <Footer />
+        <Header />
+        <Content>
+          <Route exact path="/" component={ Home } />
+        </Content>
+        <Footer />
 
-      <div className={ classes.bottom_splash }></div>
-    </div>
+        <div className={ classes.bottom_splash }></div>
+      </div>
+    </Router>
   </Fragment>
 );
 
