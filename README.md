@@ -28,7 +28,7 @@ $ npm run build
 ```
 
 ### Deploy
-**NOTW**: This will overwrite `master`!
+**NOTE**: This will overwrite `master`!
 ```
 $ npm run deploy
 ```
