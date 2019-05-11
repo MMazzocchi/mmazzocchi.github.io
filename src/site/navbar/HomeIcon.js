@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import withStyles from 'react-jss';
 import lockAspect from '../utils/lockAspect.js';
+import withHover from '../utils/withHover.js';
 import { color1, color3 } from '../styles.js';
+import { Link } from "react-router-dom";
 
 const styles = {
   home_icon_text: {
@@ -34,6 +36,9 @@ const styles = {
     'height': 0,
     'transition': 'width 0.5s, height 0.5s',
     'background-color': color1,
+  },
+  link: {
+    'text-decoration': 'none'
   }
 };
 
@@ -56,20 +61,16 @@ const Cover = ({ className, hover }) => (
     } : {} }></div>
 );
 
-const HomeIcon = ({ classes }) => {
-  const [ hover, setHover ] = useState(false);
-  return (
-    <div
-      className={ classes.home_icon }
-      onMouseEnter={ () => { setHover(true); } }
-      onMouseLeave={ () => { setHover(false); } }>
+const HomeIcon = withHover(({ classes, hover }) => (
+  <Link to="/" className={ classes.link }>
+    <div className={ classes.home_icon }>
 
       <BaseHomeIcon classes={ classes } hover={ hover }/>
 
       <Cover className={ classes.cover_left } hover={ hover } />
       <Cover className={ classes.cover_right } hover={ hover } />
     </div>
-  )
-};
+  </Link>
+));
 
 export default withStyles(styles)(HomeIcon);

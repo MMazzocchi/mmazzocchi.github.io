@@ -38,6 +38,7 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
     "gh-pages": "^2.0.1",
-    "react-jss": "^8.6.1"
+    "react-jss": "^8.6.1",
+    "react-router-dom": "^5.0.0"
   }
 }

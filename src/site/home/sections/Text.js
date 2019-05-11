@@ -13,6 +13,9 @@ const styles = {
   [`@media (max-width: ${ breakpoints.md })`]: {
     title: {
       'text-align': 'center',
+    },
+    text: {
+      'text-align': 'justify',
     }
   }
 };

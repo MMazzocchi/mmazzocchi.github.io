@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import withStyles from 'react-jss';
-import { color1 } from '../styles.js';
+import { color1 } from './styles.js';
 
 const styles = {
   container: {

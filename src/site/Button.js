@@ -6,11 +6,12 @@ import {
   color2_light,
   standard_shadow,
   elevated_shadow,
-} from '../styles.js';
+} from './styles.js';
 
 const styles = {
   button: {
     'background': color2,
+    'color': color1,
     'font-weight': 600,
     'text-align': 'center',
     'padding': '10px',
@@ -23,17 +24,11 @@ const styles = {
       'box-shadow': elevated_shadow,
     }
   },
-  link: {
-    'text-decoration': 'none',
-    'color': color1,
-  },
 };
 
-const Button = ({ classes, href, children }) => (
+const Button = ({ classes, children }) => (
   <div className={ classes.button }>
-    <a className={ classes.link } href={ href }>
-      { children }
-    </a>
+    { children }
   </div>
 );
 

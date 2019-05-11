@@ -1,26 +1,18 @@
 import React from 'react';
 import withStyles from 'react-jss';
-import { color3, breakpoints } from '../../styles.js';
+import { color3, breakpoints } from '../styles.js';
 
 const styles = {
   section: {
     'display': 'flex',
     'align-items': 'center',
     'justify-content': 'space-between',
-    'margin-left': '50px',
-    'margin-right': '50px',
-    'margin-top': '30px',
-    'padding-bottom': '30px',
   },
   section_reverse: {
     'display': 'flex',
     'align-items': 'center',
     'justify-content': 'space-between',
-    'margin-left': '50px',
-    'margin-right': '50px',
-    'margin-top': '30px',
-    'padding-bottom': '30px',
-    'flex-direction': 'row-reverse'
+    'flex-direction': 'row-reverse',
   },
   [`@media (max-width: ${ breakpoints.md })`]: {
     section: {
@@ -32,11 +24,13 @@ const styles = {
   }
 };
 
-const Section = ({ classes, children, reverse, last }) => (
+const Section = ({ classes, children, reverse, last, first }) => (
   <div
     className={ reverse ? classes.section_reverse : classes.section }
     style={{
       borderBottom: last ? '' : '1px'+color3+' solid',
+      paddingBottom: last ? '' : '30px',
+      paddingTop: first ? '' : '30px',
      }}>
     { children }
   </div>
