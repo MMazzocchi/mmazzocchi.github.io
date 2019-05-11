@@ -17,10 +17,11 @@ const styles = {
     'top': 0,
     'left': 0,
     'width': '100%',
-    'min-height': '40%',
+    'min-height': '550px',
+    'height': '40%',
     'background-image': `url(${ splash })`,
     'background-size': 'cover',
-    'background-position': 'center',
+    'background-position': 'bottom',
     'z-index': -1,
   },
   container: {
