@@ -7,6 +7,7 @@ import splash from './splash.jpg';
 import Header from './header';
 import Content from './Content.js';
 import Home from './home';
+import Contact from './contact';
 import Footer from './Footer.js';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -47,6 +48,7 @@ const Site = ({ classes }) => (
         <Header />
         <Content>
           <Route exact path="/" component={ Home } />
+          <Route path="/contact" component={ Contact } />
         </Content>
         <Footer />
 

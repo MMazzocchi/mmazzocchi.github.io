@@ -8,6 +8,7 @@ import {
   breakpoints,
 } from '../styles.js';
 import Button from '../Button.js';
+import { Link } from 'react-router-dom';
 
 const styles = {
   box: {
@@ -61,9 +62,11 @@ const Greeting = ({ classes }) => (
       Washington DC/Northern Virginia
     </div>
     <div className={ classes.button_box }>
-      <Button href="mailto:maxwell.mazzocchi@gmail.com">
-        Contact Me
-      </Button>
+      <Link to="/contact">
+        <Button>
+          Contact Me
+        </Button>
+      </Link>
     </div>
   </div>
 );
