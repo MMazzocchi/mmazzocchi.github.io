@@ -1,5 +1,5 @@
 import React from 'react';
-import { color1, standard_shadow, breakpoints } from './styles.js';
+import { color1, standard_shadow } from './styles.js';
 import withStyles from 'react-jss';
 
 const styles = {
@@ -12,7 +12,8 @@ const styles = {
     'padding-top': '30px',
     'padding-bottom': '30px',
     'margin-left': '30px',
-    'margin-right': '30px'
+    'margin-right': '30px',
+    'flex-grow': 1,
   },
   container: {
     'position': 'relative',
