@@ -11,6 +11,7 @@ import {
 const styles = {
   button: {
     'background': color2,
+    'color': color1,
     'font-weight': 600,
     'text-align': 'center',
     'padding': '10px',
@@ -22,10 +23,6 @@ const styles = {
       'background': color2_light,
       'box-shadow': elevated_shadow,
     }
-  },
-  link: {
-    'text-decoration': 'none',
-    'color': color1,
   },
 };
 
