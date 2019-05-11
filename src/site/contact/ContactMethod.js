@@ -3,7 +3,6 @@ import withStyles from 'react-jss';
 import lockAspect from '../utils/lockAspect.js';
 import withHover from '../utils/withHover.js';
 import { standard_shadow, elevated_shadow, color1 } from '../styles.js';
-import { Link } from 'react-router-dom';
 
 const styles = {
   link: {
@@ -41,7 +40,7 @@ const Icon = lockAspect(({ className }) => (
 const ContactMethod = withHover(({
   classes, icon, title, href, color, elevated_color, hover,
   }) => (
-  <Link to={ href } className={ classes.link }>
+  <a href={ href } className={ classes.link }>
     <div
       className={ classes.container }
       style={{
@@ -53,7 +52,7 @@ const ContactMethod = withHover(({
         { title }
       </div>
     </div>
-  </Link>
+  </a>
 ));
 
 export default withStyles(styles)(ContactMethod);
