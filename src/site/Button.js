@@ -29,11 +29,9 @@ const styles = {
   },
 };
 
-const Button = ({ classes, href, children }) => (
+const Button = ({ classes, children }) => (
   <div className={ classes.button }>
-    <a className={ classes.link } href={ href }>
-      { children }
-    </a>
+    { children }
   </div>
 );
 
