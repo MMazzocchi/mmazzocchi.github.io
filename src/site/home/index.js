@@ -1,6 +1,4 @@
-import React, { Fragment } from 'react';
-
-import Section from './Section.js';
+import React from 'react';
 
 import Hello from './sections/hello';
 import Space from './sections/space';
@@ -9,50 +7,63 @@ import Personal from './sections/personal';
 import Research from './sections/research';
 import Contact from './sections/contact';
 
-// Content rows will reverse every other Section it has as a child
-const ContentRows = ({ children }) => (
-  <Fragment>
-    { children.map((child, i) => (
-      <Fragment key={ `content-row-${ i }` }>
-      { (child.type === Section) ?
-        <Section
-          first={ i === 0 }
-          last={ (i+1) === children.length }
-          reverse={ (i%2) === 1 }
-          { ...child.props } />
-        :
-        child
-      }
-      </Fragment>
-    )) }
-  </Fragment> 
-);
+import withStyles from 'react-jss';
+import { color3, breakpoints } from '../styles.js';
 
-const Home = () => (
-  <ContentRows>
-    <Section>
+const styles = {
+  section: {
+    'display': 'flex',
+    'align-items': 'center',
+    'justify-content': 'space-between',
+    'border-bottom': '1px'+color3+' solid',
+    'padding-bottom': '30px',
+    'padding-top':  '30px',
+
+    '&:nth-child(even)': {
+      'flex-direction': 'row-reverse',
+    },
+
+    '&:first-child': {
+      'padding-top': '0px',
+    },
+
+    '&:last-child': {
+      'padding-bottom': '0px',
+      'border-bottom': 'none',
+    },
+
+    [`@media (max-width: ${ breakpoints.md })`]: {
+      'flex-direction': 'column !important',
+    },
+  },
+};
+
+const Home = ({ classes }) => (
+  <div>
+    <div className={ classes.section }>
       <Hello />
-    </Section>
-    <Section>
+    </div>
+
+    <div className={ classes.section }>
       <Space />
-    </Section>
+    </div>
 
-    <Section>
+    <div className={ classes.section }>
       <Web />
-    </Section>
+    </div>
 
-    <Section>
+    <div className={ classes.section }>
       <Research />
-    </Section>
+    </div>
 
-    <Section>
+    <div className={ classes.section }>
       <Personal />
-    </Section>
+    </div>
 
-    <Section>
+    <div className={ classes.section }>
       <Contact />
-    </Section>
-  </ContentRows>
+    </div>
+  </div>
 );
 
-export default Home; 
+export default withStyles(styles)(Home); 
