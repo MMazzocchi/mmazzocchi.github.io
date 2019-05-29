@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import NavBar from './navbar';
 import withStyles from 'react-jss';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -26,6 +26,9 @@ const styles = {
   },
   container: {
     'position': 'relative',
+    'min-height': '100vh',
+    'display': 'flex',
+    'flex-direction': 'column',
   },
   bottom_splash: {
     'position': 'absolute',
@@ -39,24 +42,23 @@ const styles = {
 };
 
 const Site = ({ classes }) => (
-  <Fragment>
-    <Router>
+  <Router>
+
+    <div className={ classes.container }>
+      <div className={ classes.splash }></div>
+
       <NavBar />
 
-      <div className={ classes.container }>
-        <div className={ classes.splash }></div>
+      <Header />
+      <Content>
+        <Route exact path="/" component={ Home } />
+        <Route path="/contact" component={ Contact } />
+      </Content>
+      <Footer />
 
-        <Header />
-        <Content>
-          <Route exact path="/" component={ Home } />
-          <Route path="/contact" component={ Contact } />
-        </Content>
-        <Footer />
-
-        <div className={ classes.bottom_splash }></div>
-      </div>
-    </Router>
-  </Fragment>
+      <div className={ classes.bottom_splash }></div>
+    </div>
+  </Router>
 );
 
 export default withStyles(styles)(Site);

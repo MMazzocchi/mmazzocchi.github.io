@@ -21,6 +21,7 @@ const styles = {
   content_container: {
     'display': 'flex',
     'justify-content': 'center',
+    'flex-grow': 1,
   },
 };
 
