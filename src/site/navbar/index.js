@@ -7,9 +7,10 @@ const styles = {
   navbar: {
     'display': 'flex',
     'border-bottom': `3px solid${ color1 }`,
-    padding: 0,
+    'padding': 0,
     'background-color': color3,
-    'box-shadow': standard_shadow
+    'box-shadow': standard_shadow,
+    'min-width': '100%',
   },
 }; 
 

@@ -16,6 +16,7 @@ const styles = {
     'min-height': '100vh',
     'display': 'flex',
     'flex-direction': 'column',
+    'align-items': 'center',
   },
   content: {
     'background-color': color1,
