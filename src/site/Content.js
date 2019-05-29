@@ -14,22 +14,13 @@ const styles = {
     'margin-left': '30px',
     'margin-right': '30px',
     'flex-grow': 1,
-  },
-  container: {
-    'position': 'relative',
-  },
-  content_container: {
-    'display': 'flex',
     'justify-content': 'center',
-    'flex-grow': 1,
   },
 };
 
 const Content = ({ classes, children }) => (
-  <div className={ classes.content_container }>
-    <div className={ classes.content }>
-      { children }
-    </div>
+  <div className={ classes.content }>
+    { children }
   </div>
 );
 
