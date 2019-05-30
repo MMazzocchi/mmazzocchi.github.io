@@ -13,6 +13,7 @@ const styles = {
     'display': 'flex',
     'align-items': 'center',
     'margin-bottom': '20px',
+    'min-width': '60vw',
     'box-shadow': standard_shadow,
     'transition': 'box-shadow 0.2s, background-color 0.2s',
     '&:hover': {

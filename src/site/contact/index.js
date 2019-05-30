@@ -15,7 +15,6 @@ const styles = {
     'padding-bottom': '30px',
   },
   link_container: {
-    'max-width': '500px',
     'width': '100%',
     'flex-grow': 1,
     'display': 'flex',
