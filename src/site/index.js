@@ -21,7 +21,7 @@ const styles = {
   content: {
     'background-color': color1,
     'box-shadow': standard_shadow,
-    'max-width': '1000px',
+    'max-width': '60vw',
     'padding-left': '50px',
     'padding-right': '50px',
     'padding-top': '30px',
