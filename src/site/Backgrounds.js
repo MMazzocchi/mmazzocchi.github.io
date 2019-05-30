@@ -20,7 +20,7 @@ const styles = {
     'top': 0,
     'left': 0,
     'width': '100%',
-    'min-height': '550px',
+    'min-height': '650px',
     'height': '40%',
     'background-image': `url(${ splash })`,
     'background-size': 'cover',
