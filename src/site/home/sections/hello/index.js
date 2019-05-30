@@ -4,6 +4,7 @@ import me from './me.jpg';
 import { standard_shadow } from '../../../styles.js';
 import Spacer from '../Spacer.js';
 import Text from '../Text.js';
+import lockAspect from '../../../utils/lockAspect.js';
 
 const styles = {
   picture: {
@@ -13,9 +14,13 @@ const styles = {
   }
 };
 
+const Me = lockAspect(({ className }) => (
+  <img className={ className } src={me} alt="Max Mazzocchi" />
+)); 
+
 const Hello = ({ classes }) => (
   <Fragment>
-    <img className={ classes.picture } src={me} alt="Max Mazzocchi" />
+    <Me className={ classes.picture } />
 
     <Spacer />
 
