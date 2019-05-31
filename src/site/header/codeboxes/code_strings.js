@@ -30,7 +30,7 @@ print("Hello world!\\n");`,
 
 `# Bash
 
-echo "Hello world!"`,
+echo 'Hello world!'`,
 
 `// JavaScript
 
