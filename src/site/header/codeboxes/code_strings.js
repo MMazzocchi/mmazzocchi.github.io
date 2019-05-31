@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
 #include <iostream>
 
-int main(char* argc, char** argv) {
+int main(int argc, char** argv) {
   std::cout << "Hello world!" << std::endl;
   return 0;
 };`,
