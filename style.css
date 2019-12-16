@@ -1,3 +1,8 @@
+html {
+  padding: 0px;
+  margin: 0px;
+}
+
 #content {
   display: flex;
   flex-direction: column;
@@ -16,6 +21,12 @@ section {
   padding-bottom: 20px;
 }
 
+body {
+  min-height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
 .divider {
   max-width: 1000px;
   border-bottom: solid 2px steelblue;
@@ -30,4 +41,20 @@ section {
 
 #quote {
   font-size: small;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-size: small;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+a {
+  color: white;
 }
