@@ -1,0 +1,33 @@
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+h1 {
+  font-size: xx-large;
+}
+
+section {
+  max-width: 1000px;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+.divider {
+  max-width: 1000px;
+  border-bottom: solid 2px steelblue;
+  width: 100%;
+}
+
+#contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#quote {
+  font-size: small;
+}

@@ -1,0 +1,28 @@
+{
+  "name": "mmazzocchi.github.io",
+  "version": "5.0.0",
+  "description": "Personal website for Max Mazzocchi",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MMazzocchi/mmazzocchi.github.io.git"
+  },
+  "author": "Max Mazzocchi",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/MMazzocchi/mmazzocchi.github.io/issues"
+  },
+  "homepage": "https://mmazzocchi.github.io/",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0"
+  },
+  "scripts": {},
+  "eslintConfig": {},
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {}
+}
