@@ -9,6 +9,9 @@ html {
   align-items: center;
   padding-left: 20px;
   padding-right: 20px;
+
+  animation-name: dropin;
+  animation-duration: 1s;
 }
 
 h1 {
