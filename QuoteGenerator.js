@@ -10,7 +10,8 @@ const quotes= [
    hang around.`,
   "'Still alive' is kind of a low standard to be living my life by.",
   "I have a story. The story is about me. And how I am a moron.",
-  "I'm all for the reckless destruction of expensive hardware."
+  "I'm all for the reckless destruction of expensive hardware.",
+  "I demand the freedom to make bad decisions."
 ];
 
 const quoteGeneratorTemplate = document.createElement("template");
