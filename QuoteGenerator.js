@@ -11,7 +11,8 @@ const quotes= [
   "'Still alive' is kind of a low standard to be living my life by.",
   "I have a story. The story is about me. And how I am a moron.",
   "I'm all for the reckless destruction of expensive hardware.",
-  "I demand the freedom to make bad decisions."
+  "I demand the freedom to make bad decisions.",
+  "I'm here, but unlikely to be helpful.",
 ];
 
 const quoteGeneratorTemplate = document.createElement("template");
