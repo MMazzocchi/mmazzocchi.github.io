@@ -14,6 +14,7 @@ const quotes= [
   "I demand the freedom to make bad decisions.",
   "I'm here, but unlikely to be helpful.",
   "A nice benefit of working from home: after exhausting meetings, I can just lay on the floor.",
+  "throw new HeatDeathOfUniverseException()",
 ];
 
 const quoteGeneratorTemplate = document.createElement("template");
