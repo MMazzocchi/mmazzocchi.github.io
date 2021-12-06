@@ -19,7 +19,7 @@ As you can probably tell, I like to keep things simple.
 
 # Words I wrote
 
-{% assign latestPosts = site.posts | sort: "date" | slice: 0, 5%}
+{% assign latestPosts = site.posts | sort: "date" | reverse | slice: 0, 5%}
 {% for post in latestPosts  %}
 * {{ post.date | date: "%Y-%m-%d" }} - [{{ post.title }}]({{post.url}})
 {% endfor %}

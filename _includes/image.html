@@ -1,0 +1,23 @@
+{% if imageStyles != true %}
+  {% assign imageStyles = true %}
+
+<style>
+.centered-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>
+
+{% endif %}
+
+<div class="centered-image">
+  <img
+    alt="{{ include.caption }}"
+    src="{{ include.src }}"
+    class="img-responsive" />
+
+  <p>
+    <em>{{ include.caption }}</em>
+  </p>
+</div>

@@ -7,5 +7,6 @@ url: "https://maxmazzocchi.com"
 github_username:  MMazzocchi
 
 theme: minima
+
 plugins:
   - jekyll-feed
